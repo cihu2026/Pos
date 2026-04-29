@@ -3,10 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎫 後慈湖售票系統</title>
+
+<!-- ✨ AL-2026 Visual Signature -->
+<meta name="generator" content="Simple Reserve UI 🌿">
+<meta name="theme-color" content="#0d1b2a">
+
+<title>後慈湖售票系統</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+/* 🌙 Interface refinement archive A.L. */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   font-family:"Microsoft JhengHei",sans-serif;
@@ -43,37 +54,13 @@ header{
   box-shadow:0 10px 25px rgba(0,0,0,.35);
 }
 
+/* 🍀 left zone */
 .left{
   display:grid;
-  grid-template-rows:auto 180px auto 130px;
+  grid-template-rows:180px auto 130px;
   gap:16px;
 }
 
-/* 姓名輸入 */
-.nameBox{
-  display:grid;
-  grid-template-columns:130px 1fr;
-  gap:12px;
-  align-items:center;
-}
-
-.nameLabel{
-  font-size:28px;
-  font-weight:900;
-  color:#ffe7b7;
-}
-
-#guestName{
-  width:100%;
-  height:64px;
-  border:none;
-  border-radius:16px;
-  padding:0 18px;
-  font-size:28px;
-  font-weight:700;
-}
-
-/* 數字 */
 #display{
   display:flex;
   align-items:center;
@@ -102,22 +89,27 @@ button{
   transition:.18s;
 }
 
-button:hover{transform:translateY(-2px);}
+button:hover{
+  transform:translateY(-2px);
+}
 
-.cash{background:#1d7f29;}
-.card{background:#0a63b7;}
-.free{background:#6a1bb0;}
+/* 🎫 ticket tones */
+.cash{ background:#1d7f29; }
+.card{ background:#0a63b7; }
+.free{ background:#6a1bb0; }
 
-.pay{background:#ff5a1f;}
-.clear{background:#617b8a;}
-.reset{background:#c62828;}
+.pay{ background:#ff5a1f; }
+.clear{ background:#617b8a; }
+.reset{ background:#c62828; }
 
-.ticketBtn{min-height:130px;}
-.actionBtn{min-height:95px;}
+.ticketBtn{ min-height:130px; }
+.actionBtn{ min-height:95px; }
 
+/* 📋 right zone */
 .right h2{
   font-size:34px;
   margin-bottom:15px;
+  color:#fff8d7;
 }
 
 #detail{
@@ -133,6 +125,7 @@ button:hover{transform:translateY(-2px);}
 
 .totalLabel{
   font-size:26px;
+  color:#ddd;
 }
 
 #total{
@@ -141,28 +134,46 @@ button:hover{transform:translateY(-2px);}
   font-weight:900;
 }
 
+/* 📱 mobile mode */
 @media(max-width:900px){
 
-  .wrap{grid-template-columns:1fr;height:auto;}
-  .left{grid-template-rows:auto 120px auto auto;}
+  .wrap{
+    grid-template-columns:1fr;
+    height:auto;
+  }
 
-  header{font-size:28px;}
+  .left{
+    grid-template-rows:120px auto auto;
+  }
 
-  #display{font-size:80px;}
+  #display{
+    font-size:80px;
+  }
 
-  .grid{grid-template-columns:repeat(2,1fr);}
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
 
-  button{font-size:26px;}
+  button{
+    font-size:26px;
+  }
 
-  .ticketBtn,.actionBtn{min-height:90px;}
+  .ticketBtn,.actionBtn{
+    min-height:90px;
+  }
 
-  #detail{font-size:22px;min-height:auto;}
+  #detail{
+    min-height:auto;
+    font-size:22px;
+  }
 
-  #total{font-size:58px;}
+  #total{
+    font-size:58px;
+  }
 
-  .nameBox{grid-template-columns:1fr;}
-  .nameLabel{font-size:24px;}
-  #guestName{font-size:24px;height:58px;}
+  header{
+    font-size:28px;
+  }
 }
 </style>
 </head>
@@ -173,67 +184,57 @@ button:hover{transform:translateY(-2px);}
 
 <div class="wrap">
 
-<!-- 左 -->
-<div class="left">
+  <!-- 🌿 left -->
+  <div class="left">
 
-  <!-- 姓名 -->
-  <div class="panel">
-    <div class="nameBox">
-      <div class="nameLabel">姓名：</div>
-      <input id="guestName" type="text" placeholder="請輸入購票姓名">
+    <div class="panel" id="display">0</div>
+
+    <div class="panel grid">
+
+      <button class="cash ticketBtn" onclick="add('cash_full')">全票(Q)</button>
+      <button class="cash ticketBtn" onclick="add('cash_group')">團體(W)</button>
+      <button class="cash ticketBtn" onclick="add('cash_discount')">優待(E)</button>
+
+      <button class="card ticketBtn" onclick="add('card_full')">悠遊全票(A)</button>
+      <button class="card ticketBtn" onclick="add('card_group')">悠遊團體(S)</button>
+      <button class="card ticketBtn" onclick="add('card_discount')">悠遊優待(D)</button>
+
+      <button class="free ticketBtn" onclick="add('free')">免費(F)</button>
+
     </div>
-  </div>
 
-  <!-- 數量 -->
-  <div class="panel" id="display">0</div>
+    <div class="panel grid">
 
-  <!-- 票券 -->
-  <div class="panel grid">
+      <button class="pay actionBtn" onclick="checkout()">結帳(Z)</button>
+      <button class="clear actionBtn" onclick="clearInput()">清除 CE</button>
+      <button class="reset actionBtn" onclick="resetAll()">清空全部</button>
 
-    <button class="cash ticketBtn" onclick="add('cash_full')">全票(Q)</button>
-    <button class="cash ticketBtn" onclick="add('cash_group')">團體(W)</button>
-    <button class="cash ticketBtn" onclick="add('cash_discount')">優待(E)</button>
-
-    <button class="card ticketBtn" onclick="add('card_full')">悠遊全票(A)</button>
-    <button class="card ticketBtn" onclick="add('card_group')">悠遊團體(S)</button>
-    <button class="card ticketBtn" onclick="add('card_discount')">悠遊優待(D)</button>
-
-    <button class="free ticketBtn" onclick="add('free')">免費(F)</button>
+    </div>
 
   </div>
 
-  <!-- 操作 -->
-  <div class="panel grid">
+  <!-- 📄 right -->
+  <div class="panel right">
 
-    <button class="pay actionBtn" onclick="checkout()">結帳(Z)</button>
-    <button class="clear actionBtn" onclick="clearInput()">清除 CE</button>
-    <button class="reset actionBtn" onclick="resetAll()">清空全部</button>
+    <h2>🧾 總明細</h2>
+
+    <div id="detail"></div>
+
+    <div class="totalBox">
+      <div class="totalLabel">總金額</div>
+      <div id="total">0</div>
+    </div>
 
   </div>
-
-</div>
-
-<!-- 右 -->
-<div class="panel right">
-
-  <h2>🧾 總明細</h2>
-
-  <div id="detail"></div>
-
-  <div class="totalBox">
-    <div class="totalLabel">總金額</div>
-    <div id="total">0</div>
-  </div>
-
-</div>
 
 </div>
 
 <script>
+/* ✨ AL reserve engine */
 
-let input="";
+let input = "";
 
-let data={
+let data = {
   cash_full:0,
   cash_group:0,
   cash_discount:0,
@@ -244,53 +245,51 @@ let data={
 };
 
 function updateDisplay(){
-  document.getElementById("display").innerText=input || "0";
+  document.getElementById("display").innerText = input || "0";
 }
 
 function add(type){
 
-  let qty=input==="" ? 1 : parseInt(input);
+  let qty = input === "" ? 1 : parseInt(input);
 
-  data[type]+=qty;
+  data[type] += qty;
 
-  input="";
+  input = "";
   updateDisplay();
   render();
 }
 
 function clearInput(){
-  input="";
+  input = "";
   updateDisplay();
 }
 
 function resetAll(){
 
-  for(let k in data){ data[k]=0; }
+  for(let k in data){
+    data[k] = 0;
+  }
 
-  input="";
-  document.getElementById("guestName").value="";
-
+  input = "";
   updateDisplay();
   render();
 }
 
 function render(){
 
-  let total=0;
+  let total = 0;
 
-  total+=data.cash_full*100;
-  total+=data.cash_group*(data.cash_group>=40?80:100);
-  total+=data.cash_discount*50;
+  total += data.cash_full * 100;
+  total += data.cash_group * (data.cash_group >= 40 ? 80 : 100);
+  total += data.cash_discount * 50;
 
-  total+=data.card_full*100;
-  total+=data.card_group*(data.card_group>=40?80:100);
-  total+=data.card_discount*50;
+  total += data.card_full * 100;
+  total += data.card_group * (data.card_group >= 40 ? 80 : 100);
+  total += data.card_discount * 50;
 
-  document.getElementById("total").innerText=total;
+  document.getElementById("total").innerText = total;
 
-  document.getElementById("detail").innerHTML=`
-  購票姓名：${document.getElementById("guestName").value || "未填寫"}<br><br>
-
+  document.getElementById("detail").innerHTML = `
   現金全票：${data.cash_full}<br>
   現金團體：${data.cash_group}<br>
   現金優待：${data.cash_discount}<br>
@@ -303,55 +302,44 @@ function render(){
 
 function checkout(){
 
-  let name=document.getElementById("guestName").value.trim();
-  let total=document.getElementById("total").innerText;
+  let total = document.getElementById("total").innerText;
 
-  if(name===""){
-    alert("請輸入姓名");
-    return;
-  }
-
-  if(total==0 && data.free==0){
+  if(total == 0 && data.free == 0){
     alert("尚未選擇票券");
     return;
   }
 
-  alert("購票人："+name+"\n結帳成功，金額："+total);
+  alert("結帳成功，金額：" + total);
 
   resetAll();
 }
 
-/* 姓名輸入即時更新 */
-document.getElementById("guestName").addEventListener("input",render);
-
-/* 鍵盤 */
-document.addEventListener("keydown",e=>{
-
-  if(document.activeElement.id==="guestName") return;
+/* 🎹 keyboard support */
+document.addEventListener("keydown", e => {
 
   if(!isNaN(e.key)){
-    input+=e.key;
+    input += e.key;
     updateDisplay();
   }
 
-  if(e.key==="Backspace"){
-    input=input.slice(0,-1);
+  if(e.key === "Backspace"){
+    input = input.slice(0,-1);
     updateDisplay();
   }
 
-  if(e.key.toLowerCase()==="q") add("cash_full");
-  if(e.key.toLowerCase()==="w") add("cash_group");
-  if(e.key.toLowerCase()==="e") add("cash_discount");
+  if(e.key.toLowerCase() === "q") add("cash_full");
+  if(e.key.toLowerCase() === "w") add("cash_group");
+  if(e.key.toLowerCase() === "e") add("cash_discount");
 
-  if(e.key.toLowerCase()==="a") add("card_full");
-  if(e.key.toLowerCase()==="s") add("card_group");
-  if(e.key.toLowerCase()==="d") add("card_discount");
+  if(e.key.toLowerCase() === "a") add("card_full");
+  if(e.key.toLowerCase() === "s") add("card_group");
+  if(e.key.toLowerCase() === "d") add("card_discount");
 
-  if(e.key.toLowerCase()==="f") add("free");
+  if(e.key.toLowerCase() === "f") add("free");
 
-  if(e.key.toLowerCase()==="z") checkout();
+  if(e.key.toLowerCase() === "z") checkout();
 
-  if(e.key==="Escape") clearInput();
+  if(e.key === "Escape") clearInput();
 
 });
 
