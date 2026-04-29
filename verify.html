@@ -1,1 +1,285 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><title>verify</title></head><body><h1>📱 驗票頁</h1></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>📱 後慈湖驗票系統</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:"Microsoft JhengHei",sans-serif;
+  background:
+  linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.70)),
+  url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
+  center/cover no-repeat fixed;
+  color:#fff;
+  min-height:100vh;
+  padding:20px;
+}
+
+/* 🌿 hidden signature AL-2026 */
+
+header{
+  text-align:center;
+  font-size:34px;
+  font-weight:900;
+  color:#ffb15a;
+  margin-bottom:20px;
+}
+
+.wrap{
+  max-width:720px;
+  margin:auto;
+}
+
+.card{
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
+  border-radius:26px;
+  padding:24px;
+  box-shadow:0 10px 25px rgba(0,0,0,.35);
+  margin-bottom:18px;
+}
+
+#reader{
+  width:100%;
+  border-radius:18px;
+  overflow:hidden;
+}
+
+#result{
+  text-align:center;
+  font-size:30px;
+  font-weight:900;
+  padding:18px;
+}
+
+.ok{
+  color:#7CFF7C;
+}
+
+.fail{
+  color:#ff6b6b;
+}
+
+.info{
+  font-size:22px;
+  line-height:1.8;
+}
+
+button{
+  width:100%;
+  margin-top:15px;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  background:#1d7f29;
+  color:#fff;
+  font-size:22px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.footer{
+  text-align:center;
+  color:#ddd;
+  margin-top:10px;
+}
+
+@media(max-width:768px){
+
+  header{
+    font-size:28px;
+  }
+
+  #result{
+    font-size:24px;
+  }
+
+  .info{
+    font-size:19px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>📱 後慈湖驗票系統 🌿</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <div id="reader"></div>
+  </div>
+
+  <div class="card">
+    <div id="result">請將 QR Code 對準鏡頭</div>
+
+    <div class="info" id="detail">
+      票號：--<br>
+      狀態：等待掃描
+    </div>
+
+    <button onclick="restartScan()">🔄 重新掃描</button>
+  </div>
+
+</div>
+
+<div class="footer">
+後慈湖售票系統 v2.0 PRO
+</div>
+
+<script>
+
+let scanner;
+let scanning = false;
+
+/* 嗶聲 */
+function beep(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = 900;
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
+  }catch(e){}
+}
+
+/* 震動 */
+function vibrate(){
+  if(navigator.vibrate){
+    navigator.vibrate(150);
+  }
+}
+
+/* 顯示結果 */
+function showResult(msg, ok=true, id="--"){
+
+  const r = document.getElementById("result");
+  const d = document.getElementById("detail");
+
+  r.innerText = msg;
+  r.className = ok ? "ok" : "fail";
+
+  d.innerHTML = `
+    票號：${id}<br>
+    狀態：${msg}
+  `;
+
+  beep();
+  vibrate();
+}
+
+/* 抓 ticket id */
+function getTicketId(text){
+
+  try{
+
+    if(text.includes("id=")){
+      let url = new URL(text);
+      return url.searchParams.get("id");
+    }
+
+    return text.trim();
+
+  }catch(e){
+
+    const match = text.match(/id=([^&]+)/);
+    if(match) return match[1];
+
+    return text.trim();
+  }
+}
+
+/* 驗票 */
+function verifyTicket(ticketId){
+
+  if(typeof google !== "undefined" &&
+     google.script &&
+     google.script.run){
+
+      google.script.run
+        .withSuccessHandler(function(res){
+
+          const ok = res.includes("成功");
+
+          showResult(res, ok, ticketId);
+
+        })
+        .verifyTicket(ticketId);
+
+  }else{
+
+      /* GitHub 示範模式 */
+      showResult("🟢 驗票成功", true, ticketId);
+  }
+}
+
+/* 掃描成功 */
+function onScanSuccess(decodedText){
+
+  if(scanning) return;
+
+  scanning = true;
+
+  const ticketId = getTicketId(decodedText);
+
+  verifyTicket(ticketId);
+
+  setTimeout(()=>{
+    scanning = false;
+  },2500);
+}
+
+/* 啟動掃描 */
+function startScan(){
+
+  scanner = new Html5Qrcode("reader");
+
+  scanner.start(
+    { facingMode:"environment" },
+    {
+      fps:10,
+      qrbox:{ width:250, height:250 }
+    },
+    onScanSuccess
+  ).catch(err=>{
+    showResult("❌ 無法開啟鏡頭", false);
+  });
+}
+
+/* 重掃 */
+function restartScan(){
+
+  document.getElementById("result").innerText =
+    "請將 QR Code 對準鏡頭";
+
+  document.getElementById("result").className = "";
+
+  document.getElementById("detail").innerHTML =
+    "票號：--<br>狀態：等待掃描";
+}
+
+/* 啟動 */
+startScan();
+
+</script>
+
+</body>
+</html>
