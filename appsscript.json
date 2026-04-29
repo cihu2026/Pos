@@ -1,1 +1,10 @@
-{"timeZone":"Asia/Taipei","exceptionLogging":"STACKDRIVER"}
+{
+  "timeZone": "Asia/Taipei",
+  "dependencies": {},
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "webapp": {
+    "access": "ANYONE",
+    "executeAs": "USER_DEPLOYING"
+  }
+}
