@@ -1,3 +1,3 @@
-# Houcihu GitHub Final
+# 後慈湖售票系統 v1.2 FINAL
 
-GitHub Pages 正式營運版。
+最新版整合包。
