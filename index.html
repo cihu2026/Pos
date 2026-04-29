@@ -1,1 +1,347 @@
-<!DOCTYPE html><html lang='zh-Hant'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>後慈湖售票系統 v1.2 FINAL</title><link rel='stylesheet' href='css/style.css'></head><body><header>🎟️ 後慈湖售票系統 v1.2 FINAL 🌿</header><main><a href='ticket.html'>🎫 門票頁</a><a href='verify.html'>📱 驗票頁</a><a href='stats.html'>📊 統計頁</a></main><script src='js/app.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>🎟️ 後慈湖售票系統 v2.0</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:"Microsoft JhengHei",sans-serif;
+  background:
+  linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.55)),
+  url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
+  center/cover no-repeat fixed;
+  color:#fff;
+  min-height:100vh;
+}
+
+/* 🌿 隱藏署名 AL-2026 */
+
+header{
+  text-align:center;
+  padding:18px 10px;
+  font-size:38px;
+  font-weight:900;
+  color:#ffb15a;
+  text-shadow:0 4px 10px rgba(0,0,0,.6);
+}
+
+.wrap{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:16px;
+  padding:16px;
+  min-height:calc(100vh - 90px);
+}
+
+.panel{
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
+  border-radius:24px;
+  padding:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.35);
+}
+
+.left{
+  display:grid;
+  grid-template-rows:170px auto 120px;
+  gap:16px;
+}
+
+#display{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:120px;
+  font-weight:900;
+  color:#9cff8e;
+  background:rgba(0,0,0,.35);
+  border-radius:24px;
+  letter-spacing:6px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+button{
+  border:none;
+  border-radius:20px;
+  color:#fff;
+  font-size:28px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+.ticketBtn{min-height:115px;}
+.actionBtn{min-height:88px;}
+
+.cash{background:#1f7a1f;}
+.card{background:#0a63b7;}
+.free{background:#6a1bb0;}
+
+.pay{background:#ff5a1f;}
+.clear{background:#607d8b;}
+.reset{background:#c62828;}
+
+.right h2{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+#detail{
+  font-size:24px;
+  line-height:1.9;
+  min-height:400px;
+}
+
+.totalLabel{
+  margin-top:15px;
+  font-size:24px;
+  color:#ddd;
+  text-align:right;
+}
+
+#total{
+  font-size:72px;
+  font-weight:900;
+  color:#76ffd8;
+  text-align:right;
+}
+
+@media(max-width:900px){
+
+  .wrap{
+    grid-template-columns:1fr;
+  }
+
+  .left{
+    grid-template-rows:120px auto auto;
+  }
+
+  #display{
+    font-size:76px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  button{
+    font-size:24px;
+  }
+
+  .ticketBtn,.actionBtn{
+    min-height:88px;
+  }
+
+  #detail{
+    min-height:auto;
+    font-size:22px;
+  }
+
+  #total{
+    font-size:56px;
+  }
+
+  header{
+    font-size:28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>🎟️ 後慈湖售票系統 v2.0 🌿</header>
+
+<div class="wrap">
+
+  <!-- 左側 -->
+  <div class="left">
+
+    <div class="panel" id="display">0</div>
+
+    <div class="panel grid">
+
+      <button class="cash ticketBtn" onclick="add('cash_full')">全票(Q)</button>
+      <button class="cash ticketBtn" onclick="add('cash_group')">團體(W)</button>
+      <button class="cash ticketBtn" onclick="add('cash_discount')">優待(E)</button>
+
+      <button class="card ticketBtn" onclick="add('card_full')">悠遊全票(A)</button>
+      <button class="card ticketBtn" onclick="add('card_group')">悠遊團體(S)</button>
+      <button class="card ticketBtn" onclick="add('card_discount')">悠遊優待(D)</button>
+
+      <button class="free ticketBtn" onclick="add('free')">免費(F)</button>
+
+    </div>
+
+    <div class="panel grid">
+
+      <button class="pay actionBtn" onclick="checkout()">結帳(Z)</button>
+      <button class="clear actionBtn" onclick="clearInput()">清除 CE</button>
+      <button class="reset actionBtn" onclick="resetAll()">清空全部</button>
+
+    </div>
+
+  </div>
+
+  <!-- 右側 -->
+  <div class="panel right">
+
+    <h2>🧾 總明細</h2>
+
+    <div id="detail"></div>
+
+    <div class="totalLabel">總金額</div>
+    <div id="total">0</div>
+
+  </div>
+
+</div>
+
+<script>
+
+let input = "";
+
+let data = {
+  cash_full:0,
+  cash_group:0,
+  cash_discount:0,
+  card_full:0,
+  card_group:0,
+  card_discount:0,
+  free:0
+};
+
+function updateDisplay(){
+  document.getElementById("display").innerText = input || "0";
+}
+
+function add(type){
+
+  let qty = input === "" ? 1 : parseInt(input);
+
+  data[type] += qty;
+
+  input = "";
+  updateDisplay();
+  render();
+}
+
+function clearInput(){
+  input = "";
+  updateDisplay();
+}
+
+function resetAll(){
+
+  for(let k in data){
+    data[k] = 0;
+  }
+
+  input = "";
+  updateDisplay();
+  render();
+}
+
+function render(){
+
+  let total = 0;
+
+  total += data.cash_full * 100;
+  total += data.cash_group * (data.cash_group >= 40 ? 80 : 100);
+  total += data.cash_discount * 50;
+
+  total += data.card_full * 100;
+  total += data.card_group * (data.card_group >= 40 ? 80 : 100);
+  total += data.card_discount * 50;
+
+  document.getElementById("total").innerText = total;
+
+  document.getElementById("detail").innerHTML = `
+  現金全票：${data.cash_full}<br>
+  現金團體：${data.cash_group}<br>
+  現金優待：${data.cash_discount}<br>
+  悠遊全票：${data.card_full}<br>
+  悠遊團體：${data.card_group}<br>
+  悠遊優待：${data.card_discount}<br>
+  免費票：${data.free}
+  `;
+}
+
+function checkout(){
+
+  let total = parseInt(document.getElementById("total").innerText);
+
+  if(total === 0 && data.free === 0){
+    alert("⚠️ 尚未選擇票券");
+    return;
+  }
+
+  let order = {
+    ...data,
+    total: total,
+    ticketId: "T" + new Date().getTime()
+  };
+
+  if(typeof google !== "undefined" && google.script && google.script.run){
+    google.script.run.saveOrder(order);
+  }
+
+  alert("🎉 結帳成功 金額：" + total);
+
+  resetAll();
+}
+
+/* ⌨️ 鍵盤 */
+document.addEventListener("keydown",e=>{
+
+  if(!isNaN(e.key)){
+    input += e.key;
+    updateDisplay();
+  }
+
+  if(e.key === "Backspace"){
+    input = input.slice(0,-1);
+    updateDisplay();
+  }
+
+  if(e.key.toLowerCase() === "q") add("cash_full");
+  if(e.key.toLowerCase() === "w") add("cash_group");
+  if(e.key.toLowerCase() === "e") add("cash_discount");
+
+  if(e.key.toLowerCase() === "a") add("card_full");
+  if(e.key.toLowerCase() === "s") add("card_group");
+  if(e.key.toLowerCase() === "d") add("card_discount");
+
+  if(e.key.toLowerCase() === "f") add("free");
+
+  if(e.key.toLowerCase() === "z") checkout();
+
+  if(e.key === "Escape") clearInput();
+
+});
+
+updateDisplay();
+render();
+
+</script>
+
+</body>
+</html>
