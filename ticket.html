@@ -1,1 +1,209 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><title>ticket</title></head><body><h1>🎫 門票頁</h1></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>🎫 後慈湖門票</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:"Microsoft JhengHei",sans-serif;
+  background:
+  linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.70)),
+  url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
+  center/cover no-repeat fixed;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+/* 🌿 AL-2026 hidden signature */
+
+.card{
+  width:100%;
+  max-width:520px;
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
+  border-radius:28px;
+  padding:28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  text-align:center;
+}
+
+.title{
+  font-size:34px;
+  font-weight:900;
+  color:#ffb15a;
+  margin-bottom:18px;
+}
+
+.ticketNo{
+  font-size:30px;
+  font-weight:800;
+  color:#7effd7;
+  margin-bottom:20px;
+  word-break:break-all;
+}
+
+.row{
+  font-size:24px;
+  margin:12px 0;
+}
+
+.status{
+  margin-top:26px;
+  font-size:30px;
+  font-weight:900;
+}
+
+.ok{
+  color:#7CFF7C;
+}
+
+.fail{
+  color:#ff6b6b;
+}
+
+.qr{
+  margin-top:22px;
+}
+
+.qr img{
+  width:220px;
+  height:220px;
+  background:#fff;
+  padding:10px;
+  border-radius:16px;
+}
+
+.footer{
+  margin-top:18px;
+  color:#ddd;
+  font-size:16px;
+}
+
+@media(max-width:768px){
+
+  .title{
+    font-size:28px;
+  }
+
+  .ticketNo{
+    font-size:24px;
+  }
+
+  .row{
+    font-size:20px;
+  }
+
+  .status{
+    font-size:26px;
+  }
+
+  .qr img{
+    width:180px;
+    height:180px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="title">🎫 後慈湖門票</div>
+
+  <div class="ticketNo" id="ticketId">票號：讀取中...</div>
+
+  <div class="row" id="type">票種：--</div>
+  <div class="row" id="money">💰 金額：0</div>
+  <div class="row" id="people">👥 人數：0 人</div>
+
+  <div class="status ok" id="status">🟢 有效票券</div>
+
+  <div class="qr" id="qrBox"></div>
+
+  <div class="footer">
+    後慈湖售票系統 v2.0 PRO
+  </div>
+
+</div>
+
+<script>
+
+/* 讀網址參數 */
+function getParam(name){
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+const id = getParam("id") || ("T" + Date.now());
+
+document.getElementById("ticketId").innerText = "票號：" + id;
+
+/* 顯示資料 */
+function showTicket(res){
+
+  document.getElementById("type").innerText =
+    "票種：" + (res.type || "--");
+
+  document.getElementById("money").innerText =
+    "💰 金額：" + Number(res.money || 0).toLocaleString("zh-TW");
+
+  document.getElementById("people").innerText =
+    "👥 人數：" + (res.people || 0) + " 人";
+
+  const status = document.getElementById("status");
+
+  status.innerText = res.status || "🟢 有效票券";
+
+  if((res.status || "").includes("成功") ||
+     (res.status || "").includes("有效")){
+      status.className = "status ok";
+  }else{
+      status.className = "status fail";
+  }
+
+  /* QR Code */
+  const url = window.location.href.split("?")[0] + "?id=" + id;
+
+  document.getElementById("qrBox").innerHTML =
+    '<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='
+    + encodeURIComponent(url) + '">';
+}
+
+/* Apps Script 模式 */
+if(typeof google !== "undefined" &&
+   google.script &&
+   google.script.run){
+
+    google.script.run
+      .withSuccessHandler(showTicket)
+      .getTicketInfo(id);
+
+}else{
+
+  /* GitHub 示範模式 */
+  showTicket({
+    type:"現金團體",
+    money:200,
+    people:2,
+    status:"🟢 有效票券"
+  });
+}
+
+</script>
+
+</body>
+</html>
