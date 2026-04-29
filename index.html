@@ -3,78 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>後慈湖售票系統</title>
+    <title>後慈湖售票系統 v1.1 PRO</title>
     <style>
-        /* 基礎設定：防止手機縮放與版面跑位 */
+        /* 基礎樣式 */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: "Microsoft JhengHei", sans-serif;
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background: #0d1b2a; /* 深藍色背景 */
             background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
+        /* 標題區 */
         header {
-            padding: 60px 20px 40px;
+            padding: 50px 20px;
             font-size: 32px;
             font-weight: 900;
             color: #ff9a36;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            letter-spacing: 2px;
+            text-align: center;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
-        /* 導覽按鈕設計 */
-        .btn {
-            display: block;
-            margin: 15px 0;
-            width: 85%;
-            max-width: 320px;
-            padding: 22px 0;
-            background: #2d6a4f;
+        /* 按鈕容器 */
+        .menu-container {
+            width: 100%;
+            max-width: 350px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 按鈕基本樣式 */
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 22px;
+            background: #415a77; /* 中性深藍 */
             color: white;
             text-decoration: none;
-            border-radius: 16px;
+            border-radius: 20px;
             font-size: 24px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.1s, background 0.2s;
-            -webkit-tap-highlight-color: transparent; /* 移除手機點擊藍框 */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: all 0.1s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* 手機按下的觸感回饋 */
-        .btn:active {
-            transform: scale(0.96);
-            background: #40916c;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        /* 重點功能按鈕 (開始售票) */
+        .btn-main {
+            background: #1d7f29; /* 森林綠 */
+            border: 1px solid #52b788;
         }
 
-        /* 第一個按鈕特別顯眼 */
-        .btn-primary {
-            background: #1d7f29;
-            border: 2px solid #52b788;
+        /* 點擊效果 */
+        .nav-btn:active {
+            transform: scale(0.95); /* 縮小回饋 */
+            filter: brightness(1.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .footer-info {
+        /* 頁尾文字 */
+        footer {
             margin-top: auto;
-            padding-bottom: 30px;
+            padding: 30px;
             font-size: 14px;
             color: rgba(255,255,255,0.4);
+            letter-spacing: 1px;
+        }
+
+        /* 圖示間距 */
+        span.icon {
+            margin-right: 12px;
+            font-size: 28px;
         }
     </style>
 </head>
 <body>
 
-    <header>🎟️ 後慈湖售票<br>v1.1 PRO</header>
+    <header>
+        🎟️ 後慈湖售票<br>
+        <small style="font-size: 18px; opacity: 0.8; letter-spacing: 2px;">V1.1 PRO 🌿</small>
+    </header>
 
-    <a href="#" class="btn btn-primary">🎟️ 開始售票</a>
-    <a href="verify.html" class="btn">📱 驗票入口</a>
-    <a href="stats.html" class="btn">📊 今日統計</a>
+    <div class="menu-container">
+        <a href="issue.html" class="nav-btn btn-main">
+            <span class="icon">🎟️</span> 開始售票
+        </a>
 
-    <div class="footer-info">桃園市政府觀光導覽管理系統</div>
+        <a href="verify.html" class="nav-btn">
+            <span class="icon">📱</span> 驗票入口
+        </a>
+
+        <a href="stats.html" class="nav-btn">
+            <span class="icon">📊</span> 今日統計
+        </a>
+    </div>
+
+    <footer>
+        後慈湖
+    </footer>
 
 </body>
 </html>
