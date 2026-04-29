@@ -1,3 +1,3 @@
-# 後慈湖售票系統 v1.1 PRO
+# Houcihu GitHub Final
 
-已打包示範版本。
+GitHub Pages 正式營運版。
