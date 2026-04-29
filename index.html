@@ -2,317 +2,240 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>🎟️ 後慈湖售票系統 v1.2 FINAL</title>
 
 <style>
-html, body {
-  margin:0;
-  height:100%;
-  overflow:hidden;
-  font-family:"Noto Sans TC", -apple-system, sans-serif;
-  user-select: none; /* 防止長按選取文字 */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-body {
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-  url("https://images.unsplash.com/photo-1501785888041-af3ef285b470") center/cover;
+body{
+    font-family:"Microsoft JhengHei","PingFang TC",sans-serif;
+    min-height:100vh;
+    background:
+    linear-gradient(rgba(8,18,34,.55),rgba(8,18,34,.78)),
+    url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
+    center/cover no-repeat fixed;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow:hidden;
 }
 
-.container {
-  display:grid;
-  grid-template-columns: 1.5fr 1fr;
-  height:100vh;
-  gap:8px;
-  padding:8px;
+/* 🌿 hidden signature AL-2026 */
+
+header{
+    width:100%;
+    text-align:center;
+    padding:42px 18px 22px;
 }
 
-.panel {
-  backdrop-filter: blur(15px);
-  background: rgba(255,255,255,0.15);
-  border-radius:15px;
-  padding:12px;
-  color:white;
-  display: flex;
-  flex-direction: column;
+.logo{
+    font-size:46px;
+    margin-bottom:8px;
+    filter:drop-shadow(0 6px 12px rgba(0,0,0,.45));
 }
 
-.left {
-  display:grid;
-  grid-template-rows: auto 1fr auto;
-  gap:8px;
+.title{
+    font-size:34px;
+    font-weight:900;
+    color:#ffb15a;
+    letter-spacing:2px;
+    text-shadow:0 4px 12px rgba(0,0,0,.55);
 }
 
-/* 🔢 數字顯示區 */
-#inputQty {
-  font-size:120px; /* 手機版適中尺寸 */
-  text-align:center;
-  color:#00ffcc;
-  background:rgba(0,0,0,0.7);
-  border-radius:15px;
-  margin-bottom: 5px;
-  font-weight: bold;
-  text-shadow: 0 0 20px rgba(0,255,204,0.5);
+.sub{
+    margin-top:8px;
+    font-size:16px;
+    letter-spacing:3px;
+    color:rgba(255,255,255,.78);
 }
 
-#currentType {
-  text-align:center;
-  font-size:20px;
-  height: 24px;
-  color: #ff9a36;
+.panel{
+    width:100%;
+    max-width:420px;
+    padding:0 22px;
 }
 
-/* 按鈕樣式 */
-.grid {
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:8px;
+.menu{
+    background:rgba(255,255,255,.10);
+    backdrop-filter:blur(12px);
+    border-radius:28px;
+    padding:24px;
+    box-shadow:0 14px 28px rgba(0,0,0,.32);
+    border:1px solid rgba(255,255,255,.08);
 }
 
-button {
-  width:100%;
-  height:100%;
-  font-size:22px;
-  border:none;
-  border-radius:12px;
-  color:white;
-  font-weight: bold;
-  transition: opacity 0.1s;
+.nav-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    padding:20px 22px;
+    margin-bottom:16px;
+    border-radius:22px;
+    text-decoration:none;
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    transition:.15s ease;
+    box-shadow:0 8px 16px rgba(0,0,0,.25);
 }
 
-button:active {
-  opacity: 0.6; /* 點擊回饋 */
+.nav-btn:last-child{
+    margin-bottom:0;
 }
 
-/* 按鈕顏色定義 */
-.cash { background:#2e7d32; border-bottom: 4px solid #1b5e20; }
-.card { background:#0277bd; border-bottom: 4px solid #01579b; }
-.free { background:#6a1b9a; border-bottom: 4px solid #4a148c; }
-.checkout { background:#e64a19; border-bottom: 4px solid #bf360c; }
-.clear { background:#455a64; border-bottom: 4px solid #263238; }
-.clear-all { background:#c62828; border-bottom: 4px solid #b71c1c; }
-
-/* 明細與總額 */
-#list { 
-  font-size:18px; 
-  line-height: 1.6;
-  flex-grow: 1;
-  overflow-y: auto;
-}
-.total {
-  font-size:60px;
-  text-align:right;
-  color:#80cbc4;
-  border-top: 1px solid rgba(255,255,255,0.2);
+.nav-btn:active{
+    transform:scale(.97);
 }
 
-#warn { color:#ffeb3b; font-weight: bold; min-height: 20px; }
-
-/* 📱 手機版調整 */
-@media (max-width:768px){
-  .container { grid-template-columns:1fr; grid-template-rows: 1fr 1fr; }
-  #inputQty { font-size:90px; }
-  .grid { grid-template-columns:repeat(3,1fr); } /* 維持三欄較好操作 */
+.left{
+    display:flex;
+    align-items:center;
 }
 
-/* 🔢 彈出鍵盤全螢幕 */
-#numpad {
-  display:none;
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.95);
-  justify-content:center;
-  align-items:center;
-  z-index:999;
+.icon{
+    font-size:30px;
+    margin-right:14px;
 }
 
-#numpad .pad-box {
-  background:#333;
-  padding:25px;
-  border-radius:20px;
-  width: 90%;
-  max-width: 320px;
+.arrow{
+    font-size:24px;
+    opacity:.75;
 }
 
-.pad-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
+.main{
+    background:linear-gradient(135deg,#1d7f29,#2ea043);
 }
 
-.pad-grid button {
-  height: 80px;
-  font-size: 30px;
-  background: #444;
+.verify{
+    background:linear-gradient(135deg,#0a63b7,#2b7cd3);
+}
+
+.stats{
+    background:linear-gradient(135deg,#7a4b00,#c17d11);
+}
+
+.quick{
+    margin-top:18px;
+    text-align:center;
+    font-size:15px;
+    color:rgba(255,255,255,.72);
+    line-height:1.8;
+}
+
+.badges{
+    margin-top:18px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.badge{
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    font-size:13px;
+    color:#fff;
+}
+
+footer{
+    margin-top:auto;
+    padding:26px;
+    font-size:13px;
+    color:rgba(255,255,255,.42);
+    letter-spacing:2px;
+}
+
+/* 📱 */
+@media(max-width:480px){
+
+    .logo{
+        font-size:38px;
+    }
+
+    .title{
+        font-size:28px;
+    }
+
+    .nav-btn{
+        font-size:21px;
+        padding:18px;
+    }
+
+    .icon{
+        font-size:26px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
-  <div class="left">
-    <div class="panel">
-      <div id="inputQty" onclick="openPad()">000</div>
-      <div id="currentType"></div>
+    <div class="logo">🏞️</div>
+
+    <div class="title">後慈湖售票系統</div>
+
+    <div class="sub">V1.2 FINAL 🌿</div>
+
+</header>
+
+<div class="panel">
+
+    <div class="menu">
+
+        <a href="issue.html" class="nav-btn main">
+            <div class="left">
+                <span class="icon">🎟️</span>
+                開始售票
+            </div>
+            <span class="arrow">›</span>
+        </a>
+
+        <a href="verify.html" class="nav-btn verify">
+            <div class="left">
+                <span class="icon">📱</span>
+                驗票入口
+            </div>
+            <span class="arrow">›</span>
+        </a>
+
+        <a href="stats.html" class="nav-btn stats">
+            <div class="left">
+                <span class="icon">📊</span>
+                今日統計
+            </div>
+            <span class="arrow">›</span>
+        </a>
+
+        <div class="quick">
+            ⚡ GitHub Pages 正式營運版<br>
+            支援手機 / 平板 / 電腦
+        </div>
+
+        <div class="badges">
+            <div class="badge">QR 驗票</div>
+            <div class="badge">POS 系統</div>
+            <div class="badge">即時統計</div>
+        </div>
+
     </div>
-
-    <div class="panel grid">
-      <button class="cash" onclick="add('現金全票','cash_full')">全票</button>
-      <button class="cash" onclick="add('現金團體','cash_group')">團體</button>
-      <button class="cash" onclick="add('現金優待','cash_discount')">優待</button>
-      <button class="card" onclick="add('悠遊全票','card_full')">悠遊全票</button>
-      <button class="card" onclick="add('悠遊團體','card_group')">悠遊團體</button>
-      <button class="card" onclick="add('悠遊優待','card_discount')">悠遊優待</button>
-      <button class="free" onclick="add('免費票','free')" style="grid-column: span 3;">免費票</button>
-    </div>
-
-    <div class="panel grid">
-      <button class="checkout" onclick="checkout()">結帳</button>
-      <button class="clear" onclick="clearInput()">CE</button>
-      <button class="clear-all" onclick="reset()">清空</button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2 style="margin-top:0">🧾 總明細</h2>
-    <div id="list"></div>
-    <div id="warn"></div>
-    <div class="total" id="total">0</div>
-  </div>
 
 </div>
 
-<div id="numpad">
-  <div class="pad-box">
-    <div id="padDisplay" style="font-size:80px; color:#00ffcc; text-align:center; margin-bottom:20px;">0</div>
-    <div class="pad-grid">
-      <button onclick="padPress(1)">1</button>
-      <button onclick="padPress(2)">2</button>
-      <button onclick="padPress(3)">3</button>
-      <button onclick="padPress(4)">4</button>
-      <button onclick="padPress(5)">5</button>
-      <button onclick="padPress(6)">6</button>
-      <button onclick="padPress(7)">7</button>
-      <button onclick="padPress(8)">8</button>
-      <button onclick="padPress(9)">9</button>
-      <button onclick="padClear()" style="background:#c62828;">重填</button>
-      <button onclick="padPress(0)">0</button>
-      <button onclick="padOK()" style="background:#2e7d32;">確定</button>
-      <button onclick="document.getElementById('numpad').style.display='none'" style="grid-column: span 3; height: 50px; font-size: 18px; margin-top:10px; background:#555;">取消</button>
-    </div>
-  </div>
-</div>
-
-<script>
-let input="";
-let data={
-  cash_full:0,cash_group:0,cash_discount:0,
-  card_full:0,card_group:0,card_discount:0,
-  free:0
-};
-
-function updateDisplay(){
-  let show = input || "0";
-  // 如果大於 0 則自動補位，否則顯示 000
-  document.getElementById("inputQty").innerText = show === "0" ? "000" : show.padStart(3,"0");
-}
-
-function add(name,type){
-  let qty = input === "" ? 1 : parseInt(input);
-  data[type] += qty;
-  document.getElementById("currentType").innerText = "已加入: " + name + " x" + qty;
-  input = "";
-  updateDisplay();
-  calc();
-}
-
-function clearInput(){ input=""; updateDisplay(); }
-
-function reset(){
-  if(!confirm("確定要清空目前所有資料嗎？")) return;
-  for(let k in data) data[k]=0;
-  input="";
-  document.getElementById("currentType").innerText="";
-  updateDisplay();
-  calc();
-}
-
-function calc(){
-  let total=0;
-  total += data.cash_full * 100;
-  total += (data.cash_group >= 40 ? 80 : 100) * data.cash_group;
-  total += data.cash_discount * 50;
-  total += data.card_full * 100;
-  total += (data.card_group >= 40 ? 80 : 100) * data.card_group;
-  total += data.card_discount * 50;
-
-  document.getElementById("total").innerText = total;
-
-  document.getElementById("list").innerHTML = `
-    現金全票: ${data.cash_full}<br>
-    現金團體: ${data.cash_group}<br>
-    現金優待: ${data.cash_discount}<br>
-    <hr style="border:0.5px solid rgba(255,255,255,0.2)">
-    悠遊全票: ${data.card_full}<br>
-    悠遊團體: ${data.card_group}<br>
-    悠遊優待: ${data.card_discount}<br>
-    免費票數: ${data.free}
-  `;
-
-  let warn="";
-  if(data.cash_group > 0 && data.cash_group < 40) warn += "⚠️ 現金團體未達40人<br>";
-  if(data.card_group > 0 && data.card_group < 40) warn += "⚠️ 悠遊團體未達40人";
-  document.getElementById("warn").innerHTML = warn;
-}
-
-function checkout(){
-  let total = parseInt(document.getElementById("total").innerText);
-  if(total === 0 && data.free === 0) return alert("請先輸入票數");
-
-  if(!confirm("即將結帳，總金額：$" + total + "\n確定送出？")) return;
-
-  // 檢查 google.script.run 是否存在 (Apps Script 環境)
-  if (typeof google !== 'undefined' && google.script && google.script.run) {
-    google.script.run.withSuccessHandler(() => {
-      alert("結帳成功！");
-      reset();
-    }).saveOrder({...data, total});
-  } else {
-    alert("本地測試環境：結帳金額 $" + total);
-    console.log("Order Data:", {...data, total});
-    // 雖然是測試，但為了示範我也清空
-    // reset(); 
-  }
-}
-
-/* 🔢 彈出鍵盤控制 */
-let padValue="";
-function openPad(){
-  padValue = "";
-  document.getElementById("padDisplay").innerText = "0";
-  document.getElementById("numpad").style.display = "flex";
-}
-
-function padPress(n){
-  if(padValue.length < 3) padValue += n;
-  document.getElementById("padDisplay").innerText = padValue;
-}
-
-function padClear(){ padValue = ""; document.getElementById("padDisplay").innerText = "0"; }
-
-function padOK(){
-  if(padValue !== "") {
-    input = padValue;
-    updateDisplay();
-  }
-  document.getElementById("numpad").style.display = "none";
-}
-
-// 初始化
-updateDisplay();
-</script>
+<footer>
+Houcihu Scenic Ticketing System
+</footer>
 
 </body>
 </html>
