@@ -4,166 +4,137 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
+<title></title>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>🎟️ 後慈湖售票機 PRO</title>
 
 <style>
 body{
-  margin:0;
-  font-family:"Microsoft JhengHei";
-  background:#0d1b2a;
-  color:#fff;
+margin:0;
+font-family:"Microsoft JhengHei";
+background:#0d1b2a;
+color:#fff;
 }
 
 /* 標題 */
 header{
-  text-align:center;
-  padding:20px;
-  font-size:32px;
-  font-weight:900;
-  color:#ff9a36;
+text-align:center;
+font-size:32px;
+padding:20px;
+color:#ff9a36;
+font-weight:900;
 }
 
-/* 整體 */
-.wrap{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:10px;
-  padding:10px;
-  height:calc(100vh - 80px);
-}
-
-/* 左側 */
-.left{
-  display:grid;
-  grid-template-rows:120px auto 100px;
-  gap:10px;
-}
-
-.panel{
-  background:#1b263b;
-  border-radius:20px;
-  padding:10px;
-}
-
-/* 🔢 顯示 */
+/* 顯示 */
 #display{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:90px;
-  font-weight:900;
-  color:#00ffcc;
-  cursor:pointer;
+font-size:100px;
+text-align:center;
+background:#000;
+color:#00ffcc;
+margin:10px;
+border-radius:20px;
+padding:20px;
+cursor:pointer;
 }
 
 /* 按鈕 */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+padding:10px;
 }
 
 button{
-  border:none;
-  border-radius:15px;
-  font-size:22px;
-  color:#fff;
+height:80px;
+font-size:22px;
+border:none;
+border-radius:16px;
+color:#fff;
 }
 
-/* 顏色 */
-.cash{background:#1b5e20;}
-.card{background:#01579b;}
-.free{background:#4a148c;}
+.cash{background:#1d7f29;}
+.card{background:#0a63b7;}
+.free{background:#6a1bb0;}
 .pay{background:#ff5722;}
-.clear{background:#546e7a;}
+.clear{background:#607d8b;}
 .reset{background:#c62828;}
 
-/* 右側 */
-#detail{
-  font-size:20px;
-  line-height:1.8;
-}
-
 #total{
-  font-size:60px;
-  text-align:right;
-  color:#80cbc4;
+font-size:60px;
+text-align:center;
+margin:10px;
+color:#00ffcc;
 }
 
 /* 🔢 鍵盤 */
 #pad{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.8);
-  justify-content:center;
-  align-items:center;
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+justify-content:center;
+align-items:center;
 }
 
 .padBox{
-  background:#222;
-  padding:20px;
-  border-radius:20px;
+background:#222;
+padding:20px;
+border-radius:20px;
+text-align:center;
 }
 
 #padDisplay{
-  font-size:50px;
-  margin-bottom:10px;
-  text-align:right;
+font-size:50px;
+margin-bottom:10px;
 }
 
 .padGrid{
-  display:grid;
-  grid-template-columns:repeat(3,70px);
-  gap:10px;
+display:grid;
+grid-template-columns:repeat(3,80px);
+gap:10px;
 }
 
 .padGrid button{
-  height:60px;
-  font-size:22px;
+height:60px;
+font-size:22px;
 }
 </style>
 </head>
 
 <body>
 
-<header>🎟️ 後慈湖售票機 PRO</header>
+<header>🎟️ 後慈湖售票機 🌿</header>
 
-<div class="wrap">
+<div id="display" onclick="openPad()">0</div>
 
-<div class="left">
+<div class="grid">
 
-<div class="panel" id="display">0</div>
+<button class="cash" onclick="add(100)">全票 🎫 (Q)</button>
+<button class="cash" onclick="add(80)">團體 👥 (W)</button>
+<button class="cash" onclick="add(50)">優待 💸 (E)</button>
 
-<div class="panel grid">
+<button class="card" onclick="add(100)">悠遊 🎟️ (A)</button>
+<button class="card" onclick="add(80)">悠遊團體 👥 (S)</button>
+<button class="card" onclick="add(50)">悠遊優待 💳 (D)</button>
 
-<button class="cash" onclick="add('cash_full')">全票</button>
-<button class="cash" onclick="add('cash_group')">團體</button>
-<button class="cash" onclick="add('cash_discount')">優待</button>
+<button class="free" onclick="add(0)">免費 🆓 (F)</button>
 
-<button class="card" onclick="add('card_full')">悠遊全票</button>
-<button class="card" onclick="add('card_group')">悠遊團體</button>
-<button class="card" onclick="add('card_discount')">悠遊優待</button>
-
-<button class="free" onclick="add('free')">免費</button>
-
-</div>
-
-<div class="panel grid">
-<button class="pay" onclick="checkout()">結帳</button>
-<button class="clear" onclick="clearInput()">CE</button>
-<button class="reset" onclick="resetAll()">清空</button>
-</div>
+<button class="pay" onclick="checkout()">結帳 💰 (Z)</button>
+<button class="clear" onclick="clearInput()">清除</button>
+<button class="reset" onclick="reset()">清空</button>
 
 </div>
 
-<div class="panel">
-<h2>🧾 明細</h2>
-<div id="detail"></div>
 <div id="total">0</div>
-</div>
-
-</div>
 
 <!-- 🔢 鍵盤 -->
 <div id="pad">
@@ -172,21 +143,18 @@ button{
 <div id="padDisplay">0</div>
 
 <div class="padGrid">
-<button onclick="num(1)">1</button>
-<button onclick="num(2)">2</button>
-<button onclick="num(3)">3</button>
-
-<button onclick="num(4)">4</button>
-<button onclick="num(5)">5</button>
-<button onclick="num(6)">6</button>
-
-<button onclick="num(7)">7</button>
-<button onclick="num(8)">8</button>
-<button onclick="num(9)">9</button>
-
+<button onclick="press(1)">1</button>
+<button onclick="press(2)">2</button>
+<button onclick="press(3)">3</button>
+<button onclick="press(4)">4</button>
+<button onclick="press(5)">5</button>
+<button onclick="press(6)">6</button>
+<button onclick="press(7)">7</button>
+<button onclick="press(8)">8</button>
+<button onclick="press(9)">9</button>
 <button onclick="clearPad()">清</button>
-<button onclick="num(0)">0</button>
-<button onclick="ok()">確定</button>
+<button onclick="press(0)">0</button>
+<button onclick="okPad()">確定</button>
 </div>
 
 </div>
@@ -195,98 +163,99 @@ button{
 <script>
 
 let input="";
-let padVal="";
+let total=0;
 
-let data={
-cash_full:0,cash_group:0,cash_discount:0,
-card_full:0,card_group:0,card_discount:0,
-free:0
-};
-
-/* 點擊顯示 */
-document.getElementById("display").onclick=()=>{
-  padVal=input;
-  document.getElementById("pad").style.display="flex";
-  updatePad();
-};
-
-function updateDisplay(){
-  document.getElementById("display").innerText=input||"0";
-}
-
-function updatePad(){
-  document.getElementById("padDisplay").innerText=padVal||"0";
-}
-
-function num(n){
-  padVal+=n;
-  updatePad();
-}
-
-function clearPad(){
-  padVal="";
-  updatePad();
-}
-
-function ok(){
-  input=padVal;
-  document.getElementById("pad").style.display="none";
-  updateDisplay();
+/* 顯示 */
+function update(){
+document.getElementById("display").innerText=input||"0";
+document.getElementById("total").innerText=total;
 }
 
 /* 加票 */
-function add(type){
-  let qty=input?parseInt(input):1;
-  data[type]+=qty;
-  input="";
-  updateDisplay();
-  render();
+function add(price){
+let qty=input===""?1:parseInt(input);
+total+=qty*price;
+input="";
+update();
 }
 
+/* 清除 */
 function clearInput(){
-  input="";
-  updateDisplay();
+input="";
+update();
 }
 
-function resetAll(){
-  for(let k in data) data[k]=0;
-  input="";
-  updateDisplay();
-  render();
+function reset(){
+total=0;
+input="";
+update();
 }
 
-function render(){
-
-  let total=0;
-
-  total+=data.cash_full*100;
-  total+=data.cash_group*(data.cash_group>=40?80:100);
-  total+=data.cash_discount*50;
-
-  total+=data.card_full*100;
-  total+=data.card_group*(data.card_group>=40?80:100);
-  total+=data.card_discount*50;
-
-  document.getElementById("total").innerText=total;
-
-  document.getElementById("detail").innerHTML=`
-  現金全票:${data.cash_full}<br>
-  現金團體:${data.cash_group}<br>
-  現金優待:${data.cash_discount}<br>
-  悠遊全票:${data.card_full}<br>
-  悠遊團體:${data.card_group}<br>
-  悠遊優待:${data.card_discount}<br>
-  免費:${data.free}
-  `;
-}
-
+/* 結帳 */
 function checkout(){
-  alert("完成！");
-  resetAll();
+if(total===0){
+alert("⚠️ 沒有金額");
+return;
+}
+alert("🎉 結帳成功："+total);
+reset();
 }
 
-updateDisplay();
-render();
+/* 🔢 鍵盤 */
+let padVal="";
+
+function openPad(){
+padVal=input||"";
+document.getElementById("padDisplay").innerText=padVal||"0";
+document.getElementById("pad").style.display="flex";
+}
+
+function press(n){
+if(padVal.length<3){
+padVal+=n;
+}
+document.getElementById("padDisplay").innerText=padVal;
+}
+
+function clearPad(){
+padVal="";
+document.getElementById("padDisplay").innerText="0";
+}
+
+function okPad(){
+input=padVal||"";
+update();
+document.getElementById("pad").style.display="none";
+}
+
+/* ⌨️ 快捷鍵 */
+document.addEventListener("keydown",e=>{
+
+if(!isNaN(e.key)){
+input+=e.key;
+update();
+}
+
+if(e.key==="Backspace"){
+input=input.slice(0,-1);
+update();
+}
+
+if(e.key.toLowerCase()==="q") add(100);
+if(e.key.toLowerCase()==="w") add(80);
+if(e.key.toLowerCase()==="e") add(50);
+
+if(e.key.toLowerCase()==="a") add(100);
+if(e.key.toLowerCase()==="s") add(80);
+if(e.key.toLowerCase()==="d") add(50);
+
+if(e.key.toLowerCase()==="f") add(0);
+
+if(e.key.toLowerCase()==="z") checkout();
+
+});
+
+update();
 
 </script>
 
