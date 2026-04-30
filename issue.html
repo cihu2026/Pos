@@ -2,304 +2,191 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>🎟️ 後慈湖售票機 v2.1 PRO</title>
+<title>🎟️ 後慈湖售票機 PRO</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
 body{
-  font-family:"Microsoft JhengHei","PingFang TC",sans-serif;
-  min-height:100vh;
-  background:
-  linear-gradient(rgba(8,18,34,.55),rgba(8,18,34,.82)),
-  url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
-  center/cover no-repeat fixed;
+  margin:0;
+  font-family:"Microsoft JhengHei";
+  background:#0d1b2a;
   color:#fff;
 }
 
-/* 🌿 hidden signature AL-2026 */
-
+/* 標題 */
 header{
   text-align:center;
-  padding:18px 10px;
-  font-size:34px;
+  padding:20px;
+  font-size:32px;
   font-weight:900;
-  color:#ffb15a;
-  text-shadow:0 4px 10px rgba(0,0,0,.55);
+  color:#ff9a36;
 }
 
+/* 整體 */
 .wrap{
   display:grid;
   grid-template-columns:2fr 1fr;
-  gap:16px;
-  padding:16px;
-  min-height:calc(100vh - 80px);
+  gap:10px;
+  padding:10px;
+  height:calc(100vh - 80px);
+}
+
+/* 左側 */
+.left{
+  display:grid;
+  grid-template-rows:120px auto 100px;
+  gap:10px;
 }
 
 .panel{
-  background:rgba(255,255,255,.10);
-  backdrop-filter:blur(10px);
-  border-radius:26px;
-  padding:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.35);
+  background:#1b263b;
+  border-radius:20px;
+  padding:10px;
 }
 
-.left{
-  display:grid;
-  grid-template-rows:160px auto 115px;
-  gap:16px;
-}
-
+/* 🔢 顯示 */
 #display{
   display:flex;
-  align-items:center;
   justify-content:center;
-  font-size:120px;
+  align-items:center;
+  font-size:90px;
   font-weight:900;
-  color:#98ffb0;
-  background:rgba(0,0,0,.35);
-  border-radius:24px;
-  letter-spacing:6px;
+  color:#00ffcc;
   cursor:pointer;
 }
 
+/* 按鈕 */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-button{
-  border:none;
-  border-radius:20px;
-  color:#fff;
-  font-size:28px;
-  font-weight:800;
-  cursor:pointer;
-}
-
-button:active{
-  transform:scale(.96);
-}
-
-.ticketBtn{min-height:108px;}
-.actionBtn{min-height:82px;}
-
-.cash{background:#1d7f29;}
-.card{background:#0a63b7;}
-.free{background:#6a1bb0;}
-
-.pay{background:#ff5a1f;}
-.clear{background:#607d8b;}
-.reset{background:#c62828;}
-
-.right h2{
-  font-size:30px;
-  margin-bottom:10px;
-}
-
-#detail{
-  font-size:23px;
-  line-height:1.9;
-  min-height:390px;
-}
-
-.totalLabel{
-  margin-top:10px;
-  text-align:right;
-  font-size:22px;
-  color:#ddd;
-}
-
-#total{
-  text-align:right;
-  font-size:70px;
-  font-weight:900;
-  color:#7ef7d2;
-}
-
-.tip{
-  margin-top:12px;
-  font-size:15px;
-  color:#ddd;
-  line-height:1.7;
-}
-
-/* 🔢 數字鍵盤 */
-#padWrap{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-
-.pad{
-  width:330px;
-  background:#132238;
-  border-radius:24px;
-  padding:18px;
-}
-
-#padDisplay{
-  height:80px;
-  background:#000;
-  color:#98ffb0;
-  font-size:52px;
-  font-weight:900;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  padding:0 18px;
-  border-radius:18px;
-  margin-bottom:14px;
-}
-
-.padGrid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
 }
 
-.padBtn{
-  height:68px;
-  font-size:28px;
+button{
   border:none;
-  border-radius:16px;
-  background:#345;
+  border-radius:15px;
+  font-size:22px;
   color:#fff;
-  font-weight:900;
 }
 
-.padOk{background:#1d7f29;}
-.padDel{background:#c62828;}
-.padClear{background:#607d8b;}
+/* 顏色 */
+.cash{background:#1b5e20;}
+.card{background:#01579b;}
+.free{background:#4a148c;}
+.pay{background:#ff5722;}
+.clear{background:#546e7a;}
+.reset{background:#c62828;}
 
-@media(max-width:900px){
+/* 右側 */
+#detail{
+  font-size:20px;
+  line-height:1.8;
+}
 
-  .wrap{grid-template-columns:1fr;}
+#total{
+  font-size:60px;
+  text-align:right;
+  color:#80cbc4;
+}
 
-  .left{
-    grid-template-rows:110px auto auto;
-  }
+/* 🔢 鍵盤 */
+#pad{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  justify-content:center;
+  align-items:center;
+}
 
-  #display{
-    font-size:72px;
-  }
+.padBox{
+  background:#222;
+  padding:20px;
+  border-radius:20px;
+}
 
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+#padDisplay{
+  font-size:50px;
+  margin-bottom:10px;
+  text-align:right;
+}
 
-  button{
-    font-size:22px;
-  }
+.padGrid{
+  display:grid;
+  grid-template-columns:repeat(3,70px);
+  gap:10px;
+}
 
-  .ticketBtn,.actionBtn{
-    min-height:84px;
-  }
-
-  #detail{
-    min-height:auto;
-    font-size:21px;
-  }
-
-  #total{
-    font-size:54px;
-  }
-
-  header{
-    font-size:28px;
-  }
+.padGrid button{
+  height:60px;
+  font-size:22px;
 }
 </style>
 </head>
 
 <body>
 
-<header>🎟️ 後慈湖售票機 v2.1 PRO 🌿</header>
+<header>🎟️ 後慈湖售票機 PRO</header>
 
 <div class="wrap">
 
 <div class="left">
 
-<div class="panel" id="display" onclick="openPad()">0</div>
+<div class="panel" id="display">0</div>
 
 <div class="panel grid">
 
-<button class="cash ticketBtn" onclick="add('cash_full')">全票(Q)</button>
-<button class="cash ticketBtn" onclick="add('cash_group')">團體(W)</button>
-<button class="cash ticketBtn" onclick="add('cash_discount')">優待(E)</button>
+<button class="cash" onclick="add('cash_full')">全票</button>
+<button class="cash" onclick="add('cash_group')">團體</button>
+<button class="cash" onclick="add('cash_discount')">優待</button>
 
-<button class="card ticketBtn" onclick="add('card_full')">悠遊全票(A)</button>
-<button class="card ticketBtn" onclick="add('card_group')">悠遊團體(S)</button>
-<button class="card ticketBtn" onclick="add('card_discount')">悠遊優待(D)</button>
+<button class="card" onclick="add('card_full')">悠遊全票</button>
+<button class="card" onclick="add('card_group')">悠遊團體</button>
+<button class="card" onclick="add('card_discount')">悠遊優待</button>
 
-<button class="free ticketBtn" onclick="add('free')">免費(F)</button>
+<button class="free" onclick="add('free')">免費</button>
 
 </div>
 
 <div class="panel grid">
-
-<button class="pay actionBtn" onclick="checkout()">結帳(Z)</button>
-<button class="clear actionBtn" onclick="clearInput()">清除 CE</button>
-<button class="reset actionBtn" onclick="resetAll()">清空全部</button>
-
+<button class="pay" onclick="checkout()">結帳</button>
+<button class="clear" onclick="clearInput()">CE</button>
+<button class="reset" onclick="resetAll()">清空</button>
 </div>
 
 </div>
 
-<div class="panel right">
-
-<h2>🧾 總明細</h2>
-
+<div class="panel">
+<h2>🧾 明細</h2>
 <div id="detail"></div>
-
-<div class="totalLabel">總金額</div>
 <div id="total">0</div>
-
-<div class="tip">
-點擊上方數字可輸入數量<br>
-⌨️ 支援鍵盤快捷鍵
 </div>
 
 </div>
 
-</div>
-
-<!-- 🔢 數字鍵盤 -->
-<div id="padWrap">
-<div class="pad">
+<!-- 🔢 鍵盤 -->
+<div id="pad">
+<div class="padBox">
 
 <div id="padDisplay">0</div>
 
 <div class="padGrid">
-<button class="padBtn" onclick="padNum(1)">1</button>
-<button class="padBtn" onclick="padNum(2)">2</button>
-<button class="padBtn" onclick="padNum(3)">3</button>
+<button onclick="num(1)">1</button>
+<button onclick="num(2)">2</button>
+<button onclick="num(3)">3</button>
 
-<button class="padBtn" onclick="padNum(4)">4</button>
-<button class="padBtn" onclick="padNum(5)">5</button>
-<button class="padBtn" onclick="padNum(6)">6</button>
+<button onclick="num(4)">4</button>
+<button onclick="num(5)">5</button>
+<button onclick="num(6)">6</button>
 
-<button class="padBtn" onclick="padNum(7)">7</button>
-<button class="padBtn" onclick="padNum(8)">8</button>
-<button class="padBtn" onclick="padNum(9)">9</button>
+<button onclick="num(7)">7</button>
+<button onclick="num(8)">8</button>
+<button onclick="num(9)">9</button>
 
-<button class="padBtn padClear" onclick="padClear()">清</button>
-<button class="padBtn" onclick="padNum(0)">0</button>
-<button class="padBtn padDel" onclick="padBack()">⌫</button>
-
-<button class="padBtn padOk" style="grid-column:1/4" onclick="padOk()">確定</button>
+<button onclick="clearPad()">清</button>
+<button onclick="num(0)">0</button>
+<button onclick="ok()">確定</button>
 </div>
 
 </div>
@@ -308,7 +195,7 @@ button:active{
 <script>
 
 let input="";
-let padValue="";
+let padVal="";
 
 let data={
 cash_full:0,cash_group:0,cash_discount:0,
@@ -316,125 +203,87 @@ card_full:0,card_group:0,card_discount:0,
 free:0
 };
 
+/* 點擊顯示 */
+document.getElementById("display").onclick=()=>{
+  padVal=input;
+  document.getElementById("pad").style.display="flex";
+  updatePad();
+};
+
 function updateDisplay(){
-document.getElementById("display").innerText=input||"0";
+  document.getElementById("display").innerText=input||"0";
 }
 
+function updatePad(){
+  document.getElementById("padDisplay").innerText=padVal||"0";
+}
+
+function num(n){
+  padVal+=n;
+  updatePad();
+}
+
+function clearPad(){
+  padVal="";
+  updatePad();
+}
+
+function ok(){
+  input=padVal;
+  document.getElementById("pad").style.display="none";
+  updateDisplay();
+}
+
+/* 加票 */
 function add(type){
-let qty=input===""?1:parseInt(input);
-data[type]+=qty;
-input="";
-updateDisplay();
-render();
+  let qty=input?parseInt(input):1;
+  data[type]+=qty;
+  input="";
+  updateDisplay();
+  render();
 }
 
 function clearInput(){
-input="";
-updateDisplay();
+  input="";
+  updateDisplay();
 }
 
 function resetAll(){
-for(let k in data){data[k]=0;}
-input="";
-updateDisplay();
-render();
+  for(let k in data) data[k]=0;
+  input="";
+  updateDisplay();
+  render();
 }
 
 function render(){
 
-let total=0;
+  let total=0;
 
-total+=data.cash_full*100;
-total+=data.cash_group*(data.cash_group>=40?80:100);
-total+=data.cash_discount*50;
+  total+=data.cash_full*100;
+  total+=data.cash_group*(data.cash_group>=40?80:100);
+  total+=data.cash_discount*50;
 
-total+=data.card_full*100;
-total+=data.card_group*(data.card_group>=40?80:100);
-total+=data.card_discount*50;
+  total+=data.card_full*100;
+  total+=data.card_group*(data.card_group>=40?80:100);
+  total+=data.card_discount*50;
 
-document.getElementById("total").innerText=total.toLocaleString("zh-TW");
+  document.getElementById("total").innerText=total;
 
-document.getElementById("detail").innerHTML=`
-現金全票：${data.cash_full}<br>
-現金團體：${data.cash_group}<br>
-現金優待：${data.cash_discount}<br>
-悠遊全票：${data.card_full}<br>
-悠遊團體：${data.card_group}<br>
-悠遊優待：${data.card_discount}<br>
-免費票：${data.free}
-`;
+  document.getElementById("detail").innerHTML=`
+  現金全票:${data.cash_full}<br>
+  現金團體:${data.cash_group}<br>
+  現金優待:${data.cash_discount}<br>
+  悠遊全票:${data.card_full}<br>
+  悠遊團體:${data.card_group}<br>
+  悠遊優待:${data.card_discount}<br>
+  免費:${data.free}
+  `;
 }
 
 function checkout(){
-
-let total=parseInt(document.getElementById("total").innerText.replace(/,/g,""));
-
-if(total===0 && data.free===0){
-alert("⚠️ 尚未選票");
-return;
+  alert("完成！");
+  resetAll();
 }
-
-alert("🎉 結帳成功\n總金額："+total);
-resetAll();
-}
-
-/* 🔢 keypad */
-function openPad(){
-padValue=input||"";
-document.getElementById("padDisplay").innerText=padValue||"0";
-document.getElementById("padWrap").style.display="flex";
-}
-
-function padNum(n){
-if(padValue.length>=3)return;
-padValue+=n;
-document.getElementById("padDisplay").innerText=padValue;
-}
-
-function padClear(){
-padValue="";
-document.getElementById("padDisplay").innerText="0";
-}
-
-function padBack(){
-padValue=padValue.slice(0,-1);
-document.getElementById("padDisplay").innerText=padValue||"0";
-}
-
-function padOk(){
-input=padValue;
-updateDisplay();
-document.getElementById("padWrap").style.display="none";
-}
-
-/* ⌨️ keyboard */
-document.addEventListener("keydown",e=>{
-
-if(!isNaN(e.key)){
-input+=e.key;
-updateDisplay();
-}
-
-if(e.key==="Backspace"){
-input=input.slice(0,-1);
-updateDisplay();
-}
-
-if(e.key.toLowerCase()==="q") add("cash_full");
-if(e.key.toLowerCase()==="w") add("cash_group");
-if(e.key.toLowerCase()==="e") add("cash_discount");
-
-if(e.key.toLowerCase()==="a") add("card_full");
-if(e.key.toLowerCase()==="s") add("card_group");
-if(e.key.toLowerCase()==="d") add("card_discount");
-
-if(e.key.toLowerCase()==="f") add("free");
-
-if(e.key.toLowerCase()==="z") checkout();
-
-if(e.key==="Escape") clearInput();
-
-});
 
 updateDisplay();
 render();
