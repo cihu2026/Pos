@@ -22,7 +22,6 @@ color:#ff9a36;
 font-weight:900;
 }
 
-/* ⭐ 輸入框 */
 #display{
 width:100%;
 font-size:100px;
@@ -36,7 +35,6 @@ border:none;
 outline:none;
 }
 
-/* 按鈕 */
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
@@ -110,8 +108,8 @@ oninput="handleInput(this.value)">
 
 let input="";
 let total=0;
+let isSubmitting=false; // ⭐ 防重送
 
-/* ⭐ 明細 */
 let data={
 full:0,
 group:0,
@@ -122,19 +120,18 @@ card_discount:0,
 free:0
 };
 
-/* ⭐ 輸入處理（核心） */
+/* 輸入 */
 function handleInput(val){
 input = val.replace(/\D/g,'').slice(0,4);
 update();
 }
 
-/* ⭐ 更新畫面 */
+/* 更新 */
 function update(){
 
-const el=document.getElementById("display");
-el.value=input||"";
+document.getElementById("display").value = input || "";
 
-document.getElementById("total").innerText=total;
+document.getElementById("total").innerText = total.toLocaleString();
 
 document.getElementById("detail").innerHTML=`
 🎫 全票：${data.full}<br>
@@ -147,19 +144,23 @@ document.getElementById("detail").innerHTML=`
 `;
 }
 
-/* ⭐ 加票 */
+/* 加票 */
 function add(price,type){
 
-let qty=input?Number(input):1;
+let qty = input ? Number(input) : 1;
 
-total+=qty*price;
+if(isNaN(qty)) qty = 1;
 
-if(type) data[type]+=qty;
+total += qty * price;
 
-/* ⭐ 清空 + focus */
+if(type) data[type] += qty;
+
 input="";
 update();
-document.getElementById("display").focus();
+
+let el=document.getElementById("display");
+el.focus();
+el.select(); // ⭐ 自動選取
 }
 
 /* 清除 */
@@ -176,13 +177,17 @@ for(let k in data){data[k]=0;}
 update();
 }
 
-/* ⭐ 結帳 */
+/* 結帳 */
 function checkout(){
+
+if(isSubmitting) return; // ⭐ 防連點
 
 if(total===0){
 alert("⚠️ 沒有金額");
 return;
 }
+
+isSubmitting=true;
 
 let order={
   total:total,
@@ -191,27 +196,38 @@ let order={
 
 fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec",{
   method:"POST",
+  headers:{
+    "Content-Type":"application/json"
+  },
   body:JSON.stringify(order)
 })
-.then(res=>res.json())
+.then(res=>{
+  if(!res.ok) throw new Error("網路錯誤");
+  return res.json();
+})
 .then(res=>{
 
-  let ticketId = res.id;
+  if(!res.id){
+    throw new Error("沒有回傳票號");
+  }
 
-  let url = "https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=ticket&id="+ticketId;
+  let url = "https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=ticket&id="+res.id;
 
   window.open(url,"_blank");
 
   resetAll();
 
 })
-.catch(()=>{
-  alert("❌ 傳送失敗");
+.catch(err=>{
+  alert("❌ 結帳失敗：" + err.message);
+})
+.finally(()=>{
+  isSubmitting=false;
 });
 
 }
 
-/* ⭐ 快捷鍵（完全修好） */
+/* 快捷鍵 */
 document.addEventListener("keydown",e=>{
 
 const key=e.key.toLowerCase();
@@ -229,9 +245,11 @@ if(key==="z"){checkout();return;}
 
 });
 
-/* ⭐ 自動 focus */
+/* focus */
 window.onload=function(){
-document.getElementById("display").focus();
+let el=document.getElementById("display");
+el.focus();
+el.select();
 }
 
 update();
