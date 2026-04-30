@@ -10,32 +10,31 @@
 body{
 margin:0;
 font-family:"Microsoft JhengHei";
-background:linear-gradient(180deg,#0d1b2a,#1b263b);
+background:linear-gradient(180deg,#1b4332,#081c15);
 color:#fff;
 }
 
 /* 標題 */
 header{
 text-align:center;
-font-size:30px;
+font-size:28px;
 padding:20px;
-color:#a8ffcc;
+color:#d8f3dc;
 font-weight:900;
 }
 
-/* 顯示區（改成玻璃感） */
+/* ⭐ 玻璃卡片 */
 #display{
-width:100%;
+width:90%;
+margin:15px auto;
 font-size:90px;
 text-align:center;
-background:rgba(255,255,255,0.05);
-color:#a8ffcc;
-margin:10px;
-border-radius:20px;
-padding:20px;
-border:none;
-outline:none;
-font-weight:bold;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(12px);
+border-radius:25px;
+padding:25px;
+color:#b7efc5;
+border:1px solid rgba(255,255,255,0.2);
 }
 
 /* 按鈕區 */
@@ -44,51 +43,59 @@ display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
 padding:10px;
+width:90%;
+margin:auto;
 }
 
+/* 按鈕 */
 button{
-height:75px;
+height:70px;
 font-size:20px;
 border:none;
-border-radius:18px;
+border-radius:20px;
 color:#fff;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
 transition:0.1s;
 }
 
-/* 點擊回饋 */
 button:active{
 transform:scale(0.95);
-filter:brightness(1.2);
 }
 
-.cash{background:#1d7f29;}
-.card{background:#0a63b7;}
-.free{background:#6a1bb0;}
-.pay{
-background:linear-gradient(135deg,#ff5a1f,#ff9a36);
+/* 顏色升級 */
+.cash{background:linear-gradient(135deg,#2d6a4f,#40916c);}
+.card{background:linear-gradient(135deg,#1d3557,#457b9d);}
+.free{background:linear-gradient(135deg,#6a1b9a,#9d4edd);}
+.pay{background:linear-gradient(135deg,#ff7b00,#ffb703);}
+.clear{background:#6c757d;}
+.reset{
+background:linear-gradient(135deg,#d00000,#ff595e);
+height:80px;
 font-size:24px;
-font-weight:900;
 }
-.clear{background:#607d8b;}
-.reset{background:#c62828;}
 
-/* 明細 */
+/* 明細卡片 */
 #detail{
-font-size:20px;
-text-align:left;
-line-height:1.6;
+width:90%;
+margin:15px auto;
+font-size:18px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+border-radius:20px;
 padding:15px;
+line-height:1.8;
 max-height:220px;
 overflow:auto;
 }
 
 /* 總金額 */
 #total{
-font-size:60px;
+font-size:55px;
 text-align:center;
 margin:10px;
-color:#00ffcc;
+color:#95d5b2;
 font-weight:bold;
+text-shadow:0 0 10px rgba(0,255,200,0.6);
 }
 </style>
 </head>
