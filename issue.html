@@ -10,71 +10,85 @@
 body{
 margin:0;
 font-family:"Microsoft JhengHei";
-background:linear-gradient(180deg,#1b4332,#081c15);
+background:linear-gradient(180deg,#0d1b2a,#1b263b);
 color:#fff;
 }
 
 /* 標題 */
 header{
 text-align:center;
-font-size:28px;
-padding:20px;
+font-size:26px;
+padding:18px;
 color:#d8f3dc;
 font-weight:900;
 }
 
-/* ⭐ 玻璃卡片 */
+/* 顯示區 */
 #display{
 width:90%;
 margin:15px auto;
-font-size:90px;
+font-size:85px;
 text-align:center;
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(12px);
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+color:#a8ffcc;
 border-radius:25px;
-padding:25px;
-color:#b7efc5;
-border:1px solid rgba(255,255,255,0.2);
+padding:20px;
+border:1px solid rgba(255,255,255,0.15);
+font-weight:bold;
+}
+
+/* focus效果 */
+#display:focus{
+box-shadow:0 0 15px rgba(0,255,200,0.2);
+background:rgba(255,255,255,0.12);
 }
 
 /* 按鈕區 */
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:10px;
+gap:14px;
+padding:12px;
 width:90%;
 margin:auto;
 }
 
 /* 按鈕 */
 button{
-height:70px;
+height:68px;
 font-size:20px;
 border:none;
 border-radius:20px;
 color:#fff;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
-transition:0.1s;
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
+transition:0.12s;
 }
 
 button:active{
 transform:scale(0.95);
+filter:brightness(1.2);
 }
 
-/* 顏色升級 */
+/* 顏色 */
 .cash{background:linear-gradient(135deg,#2d6a4f,#40916c);}
 .card{background:linear-gradient(135deg,#1d3557,#457b9d);}
 .free{background:linear-gradient(135deg,#6a1b9a,#9d4edd);}
-.pay{background:linear-gradient(135deg,#ff7b00,#ffb703);}
+
+/* 結帳 */
+.pay{
+background:linear-gradient(135deg,#ff5a1f,#ff9a36);
+font-size:24px;
+font-weight:900;
+}
+
 .clear{background:#6c757d;}
 .reset{
 background:linear-gradient(135deg,#d00000,#ff595e);
-height:80px;
-font-size:24px;
+font-size:22px;
 }
 
-/* 明細卡片 */
+/* 明細 */
 #detail{
 width:90%;
 margin:15px auto;
@@ -83,19 +97,21 @@ background:rgba(255,255,255,0.08);
 backdrop-filter:blur(10px);
 border-radius:20px;
 padding:15px;
-line-height:1.8;
+line-height:1.7;
 max-height:220px;
 overflow:auto;
 }
 
-/* 總金額 */
+/* ⭐ 金額（已取消發光） */
 #total{
-font-size:55px;
+font-size:58px;
 text-align:center;
 margin:10px;
-color:#95d5b2;
-font-weight:bold;
-text-shadow:0 0 10px rgba(0,255,200,0.6);
+color:#ffffff;
+font-weight:900;
+letter-spacing:2px;
+border-top:1px solid rgba(255,255,255,0.2);
+padding-top:10px;
 }
 </style>
 </head>
@@ -108,6 +124,7 @@ text-shadow:0 0 10px rgba(0,255,200,0.6);
 type="text"
 inputmode="numeric"
 placeholder="0"
+autocomplete="off"
 oninput="handleInput(this.value)">
 
 <div class="grid">
@@ -147,13 +164,11 @@ card_discount:0,
 free:0
 };
 
-/* 輸入 */
 function handleInput(val){
 input = val.replace(/\D/g,'').slice(0,4);
 update();
 }
 
-/* 更新畫面 */
 function update(){
 
 document.getElementById("display").value = input || "";
@@ -162,9 +177,9 @@ document.getElementById("total").innerText = total.toLocaleString();
 
 document.getElementById("detail").innerHTML=`
 📄 交易明細<br><br>
-🎫 現金全票：${data.full}<br>
-👥 現金團體：${data.group}<br>
-👦 現金優待：${data.discount}<br>
+🎫 全票：${data.full}<br>
+👥 團體：${data.group}<br>
+👦 優待：${data.discount}<br>
 💳 悠遊全票：${data.card_full}<br>
 💳 悠遊團體：${data.card_group}<br>
 💳 悠遊優待：${data.card_discount}<br>
@@ -172,7 +187,6 @@ document.getElementById("detail").innerHTML=`
 `;
 }
 
-/* 加票 */
 function add(price,type){
 
 navigator.vibrate && navigator.vibrate(20);
@@ -192,13 +206,11 @@ el.focus();
 el.select();
 }
 
-/* 清除 */
 function clearInput(){
 input="";
 update();
 }
 
-/* 重設 */
 function resetAll(){
 total=0;
 input="";
@@ -206,7 +218,6 @@ for(let k in data){data[k]=0;}
 update();
 }
 
-/* 結帳 */
 function checkout(){
 
 if(isSubmitting) return;
@@ -250,7 +261,6 @@ fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgU
 });
 }
 
-/* 快捷鍵 */
 document.addEventListener("keydown",e=>{
 const key=e.key.toLowerCase();
 
@@ -266,7 +276,6 @@ if(key==="f"){add(0,'free');return;}
 if(key==="z"){checkout();return;}
 });
 
-/* focus */
 window.onload=function(){
 let el=document.getElementById("display");
 el.focus();
