@@ -10,72 +10,92 @@
 body{
 margin:0;
 font-family:"Microsoft JhengHei";
-background:#0d1b2a;
+background:linear-gradient(180deg,#0d1b2a,#1b263b);
 color:#fff;
 }
 
+/* 標題 */
 header{
 text-align:center;
-font-size:32px;
+font-size:30px;
 padding:20px;
-color:#ff9a36;
+color:#a8ffcc;
 font-weight:900;
 }
 
+/* 顯示區（改成玻璃感） */
 #display{
 width:100%;
-font-size:100px;
+font-size:90px;
 text-align:center;
-background:#000;
-color:#00ffcc;
+background:rgba(255,255,255,0.05);
+color:#a8ffcc;
 margin:10px;
 border-radius:20px;
 padding:20px;
 border:none;
 outline:none;
+font-weight:bold;
 }
 
+/* 按鈕區 */
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:10px;
+gap:12px;
 padding:10px;
 }
 
 button{
-height:80px;
-font-size:22px;
+height:75px;
+font-size:20px;
 border:none;
-border-radius:16px;
+border-radius:18px;
 color:#fff;
+transition:0.1s;
+}
+
+/* 點擊回饋 */
+button:active{
+transform:scale(0.95);
+filter:brightness(1.2);
 }
 
 .cash{background:#1d7f29;}
 .card{background:#0a63b7;}
 .free{background:#6a1bb0;}
-.pay{background:#ff5722;}
+.pay{
+background:linear-gradient(135deg,#ff5a1f,#ff9a36);
+font-size:24px;
+font-weight:900;
+}
 .clear{background:#607d8b;}
 .reset{background:#c62828;}
 
+/* 明細 */
 #detail{
-font-size:22px;
-text-align:center;
-line-height:1.8;
-padding:10px;
+font-size:20px;
+text-align:left;
+line-height:1.6;
+padding:15px;
+max-height:220px;
+overflow:auto;
 }
 
+/* 總金額 */
 #total{
 font-size:60px;
 text-align:center;
 margin:10px;
 color:#00ffcc;
+font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<header>🎟️ 後慈湖售票機 🌿</header>
+<header>🌿 後慈湖售票系統</header>
 
 <input id="display"
 type="text"
@@ -85,19 +105,19 @@ oninput="handleInput(this.value)">
 
 <div class="grid">
 
-<button class="cash" onclick="add(100,'full')">全票 🎫 (Q)</button>
-<button class="cash" onclick="add(80,'group')">團體 👥 (W)</button>
-<button class="cash" onclick="add(50,'discount')">優待 💸 (E)</button>
+<button class="cash" onclick="add(100,'full')">🎫 全票 (Q)</button>
+<button class="cash" onclick="add(80,'group')">👥 團體 (W)</button>
+<button class="cash" onclick="add(50,'discount')">👦 優待 (E)</button>
 
-<button class="card" onclick="add(100,'card_full')">悠遊 🎟️ (A)</button>
-<button class="card" onclick="add(80,'card_group')">悠遊團體 👥 (S)</button>
-<button class="card" onclick="add(50,'card_discount')">悠遊優待 💳 (D)</button>
+<button class="card" onclick="add(100,'card_full')">💳 悠遊全票 (A)</button>
+<button class="card" onclick="add(80,'card_group')">💳 悠遊團體 (S)</button>
+<button class="card" onclick="add(50,'card_discount')">💳 悠遊優待 (D)</button>
 
-<button class="free" onclick="add(0,'free')">免費 🆓 (F)</button>
+<button class="free" onclick="add(0,'free')">🆓 免費 (F)</button>
 
-<button class="pay" onclick="checkout()">結帳 💰 (Z)</button>
-<button class="clear" onclick="clearInput()">清除</button>
-<button class="reset" onclick="resetAll()">清空</button>
+<button class="pay" onclick="checkout()">💰 結帳 (Z)</button>
+<button class="clear" onclick="clearInput()">✖ 清除</button>
+<button class="reset" onclick="resetAll()">❌ 全部重設</button>
 
 </div>
 
@@ -108,7 +128,7 @@ oninput="handleInput(this.value)">
 
 let input="";
 let total=0;
-let isSubmitting=false; // ⭐ 防重送
+let isSubmitting=false;
 
 let data={
 full:0,
@@ -126,7 +146,7 @@ input = val.replace(/\D/g,'').slice(0,4);
 update();
 }
 
-/* 更新 */
+/* 更新畫面 */
 function update(){
 
 document.getElementById("display").value = input || "";
@@ -134,21 +154,23 @@ document.getElementById("display").value = input || "";
 document.getElementById("total").innerText = total.toLocaleString();
 
 document.getElementById("detail").innerHTML=`
-🎫 全票：${data.full}<br>
-👥 團體：${data.group}<br>
-💸 優待：${data.discount}<br>
-🎟️ 悠遊全票：${data.card_full}<br>
-👥 悠遊團體：${data.card_group}<br>
+📄 交易明細<br><br>
+🎫 現金全票：${data.full}<br>
+👥 現金團體：${data.group}<br>
+👦 現金優待：${data.discount}<br>
+💳 悠遊全票：${data.card_full}<br>
+💳 悠遊團體：${data.card_group}<br>
 💳 悠遊優待：${data.card_discount}<br>
-🆓 免費票：${data.free}
+🆓 免費：${data.free}
 `;
 }
 
 /* 加票 */
 function add(price,type){
 
-let qty = input ? Number(input) : 1;
+navigator.vibrate && navigator.vibrate(20);
 
+let qty = input ? Number(input) : 1;
 if(isNaN(qty)) qty = 1;
 
 total += qty * price;
@@ -160,7 +182,7 @@ update();
 
 let el=document.getElementById("display");
 el.focus();
-el.select(); // ⭐ 自動選取
+el.select();
 }
 
 /* 清除 */
@@ -169,7 +191,7 @@ input="";
 update();
 }
 
-/* 清空 */
+/* 重設 */
 function resetAll(){
 total=0;
 input="";
@@ -180,7 +202,7 @@ update();
 /* 結帳 */
 function checkout(){
 
-if(isSubmitting) return; // ⭐ 防連點
+if(isSubmitting) return;
 
 if(total===0){
 alert("⚠️ 沒有金額");
@@ -201,17 +223,12 @@ fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgU
   },
   body:JSON.stringify(order)
 })
-.then(res=>{
-  if(!res.ok) throw new Error("網路錯誤");
-  return res.json();
-})
+.then(res=>res.json())
 .then(res=>{
 
-  if(!res.id){
-    throw new Error("沒有回傳票號");
-  }
+  if(!res.id) throw new Error("沒有票號");
 
-  let url = "https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=ticket&id="+res.id;
+  let url="https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=ticket&id="+res.id;
 
   window.open(url,"_blank");
 
@@ -219,17 +236,15 @@ fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgU
 
 })
 .catch(err=>{
-  alert("❌ 結帳失敗：" + err.message);
+  alert("❌ 結帳失敗："+err.message);
 })
 .finally(()=>{
   isSubmitting=false;
 });
-
 }
 
 /* 快捷鍵 */
 document.addEventListener("keydown",e=>{
-
 const key=e.key.toLowerCase();
 
 if(key==="q"){add(100,'full');return;}
@@ -242,7 +257,6 @@ if(key==="d"){add(50,'card_discount');return;}
 
 if(key==="f"){add(0,'free');return;}
 if(key==="z"){checkout();return;}
-
 });
 
 /* focus */
