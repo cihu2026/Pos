@@ -184,18 +184,31 @@ alert("⚠️ 沒有金額");
 return;
 }
 
+let order={
+  total:total,
+  detail:data
+};
+
 fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec",{
-method:"POST",
-body:JSON.stringify({
-total:total,
-time:new Date().toLocaleString()
+  method:"POST",
+  body:JSON.stringify(order)
 })
+.then(res=>res.json())
+.then(res=>{
+
+  let ticketId = res.id;
+
+  let url = "https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=ticket&id="+ticketId;
+
+  window.open(url,"_blank");
+
+  resetAll();
+
 })
-.then(()=>{
-alert("🎉 結帳成功："+total);
-resetAll();
-})
-.catch(()=>alert("❌ 傳送失敗"));
+.catch(()=>{
+  alert("❌ 傳送失敗");
+});
+
 }
 
 /* ⭐ 快捷鍵（完全修好） */
