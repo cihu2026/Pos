@@ -22,7 +22,7 @@ color:#ff9a36;
 font-weight:900;
 }
 
-/* ⭐ 改成 input */
+/* ⭐ 輸入框 */
 #display{
 width:100%;
 font-size:100px;
@@ -80,11 +80,10 @@ color:#00ffcc;
 <header>🎟️ 後慈湖售票機 🌿</header>
 
 <input id="display"
-type="number"
+type="text"
 inputmode="numeric"
-pattern="[0-9]*"
 placeholder="0"
-oninput="input=this.value">
+oninput="handleInput(this.value)">
 
 <div class="grid">
 
@@ -112,6 +111,7 @@ oninput="input=this.value">
 let input="";
 let total=0;
 
+/* ⭐ 明細 */
 let data={
 full:0,
 group:0,
@@ -122,35 +122,44 @@ card_discount:0,
 free:0
 };
 
-/* 顯示 */
+/* ⭐ 輸入處理（核心） */
+function handleInput(val){
+input = val.replace(/\D/g,'').slice(0,4);
+update();
+}
+
+/* ⭐ 更新畫面 */
 function update(){
 
-document.getElementById("display").value = input;
-document.getElementById("total").innerText = total;
+const el=document.getElementById("display");
+el.value=input||"";
+
+document.getElementById("total").innerText=total;
 
 document.getElementById("detail").innerHTML=`
-全票：${data.full}<br>
-團體：${data.group}<br>
-優待：${data.discount}<br>
-悠遊全票：${data.card_full}<br>
-悠遊團體：${data.card_group}<br>
-悠遊優待：${data.card_discount}<br>
-免費票：${data.free}
+🎫 全票：${data.full}<br>
+👥 團體：${data.group}<br>
+💸 優待：${data.discount}<br>
+🎟️ 悠遊全票：${data.card_full}<br>
+👥 悠遊團體：${data.card_group}<br>
+💳 悠遊優待：${data.card_discount}<br>
+🆓 免費票：${data.free}
 `;
 }
 
-/* 加票 */
+/* ⭐ 加票 */
 function add(price,type){
 
-let qty = input ? Number(input) : 1;
+let qty=input?Number(input):1;
 
-total += qty * price;
+total+=qty*price;
 
-if(type) data[type] += qty;
+if(type) data[type]+=qty;
 
-/* ⭐ 清空輸入 */
-input = "";
+/* ⭐ 清空 + focus */
+input="";
 update();
+document.getElementById("display").focus();
 }
 
 /* 清除 */
@@ -167,7 +176,7 @@ for(let k in data){data[k]=0;}
 update();
 }
 
-/* 結帳 */
+/* ⭐ 結帳 */
 function checkout(){
 
 if(total===0){
@@ -187,15 +196,13 @@ alert("🎉 結帳成功："+total);
 resetAll();
 })
 .catch(()=>alert("❌ 傳送失敗"));
-
 }
 
-/* ⭐ 鍵盤（修正版） */
+/* ⭐ 快捷鍵（完全修好） */
 document.addEventListener("keydown",e=>{
 
 const key=e.key.toLowerCase();
 
-/* 快捷鍵優先 */
 if(key==="q"){add(100,'full');return;}
 if(key==="w"){add(80,'group');return;}
 if(key==="e"){add(50,'discount');return;}
@@ -208,6 +215,11 @@ if(key==="f"){add(0,'free');return;}
 if(key==="z"){checkout();return;}
 
 });
+
+/* ⭐ 自動 focus */
+window.onload=function(){
+document.getElementById("display").focus();
+}
 
 update();
 
