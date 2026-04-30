@@ -2,14 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title></title>
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>🎟️ 後慈湖售票機 PRO</title>
 
@@ -21,7 +14,6 @@ background:#0d1b2a;
 color:#fff;
 }
 
-/* 標題 */
 header{
 text-align:center;
 font-size:32px;
@@ -30,7 +22,6 @@ color:#ff9a36;
 font-weight:900;
 }
 
-/* 顯示 */
 #display{
 font-size:100px;
 text-align:center;
@@ -42,7 +33,6 @@ padding:20px;
 cursor:pointer;
 }
 
-/* 按鈕 */
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
@@ -72,14 +62,10 @@ margin:10px;
 color:#00ffcc;
 }
 
-/* 🔢 鍵盤 */
 #pad{
 display:none;
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
+inset:0;
 background:rgba(0,0,0,0.9);
 justify-content:center;
 align-items:center;
@@ -101,11 +87,6 @@ margin-bottom:10px;
 display:grid;
 grid-template-columns:repeat(3,80px);
 gap:10px;
-}
-
-.padGrid button{
-height:60px;
-font-size:22px;
 }
 </style>
 </head>
@@ -130,13 +111,12 @@ font-size:22px;
 
 <button class="pay" onclick="checkout()">結帳 💰 (Z)</button>
 <button class="clear" onclick="clearInput()">清除</button>
-<button class="reset" onclick="reset()">清空</button>
+<button class="reset" onclick="resetAll()">清空</button>
 
 </div>
 
 <div id="total">0</div>
 
-<!-- 🔢 鍵盤 -->
 <div id="pad">
 <div class="padBox">
 
@@ -167,15 +147,15 @@ let total=0;
 
 /* 顯示 */
 function update(){
-document.getElementById("display").innerText=input||"0";
-document.getElementById("total").innerText=total;
+document.getElementById("display").innerText = input || "0";
+document.getElementById("total").innerText = total;
 }
 
 /* 加票 */
 function add(price){
-let qty=input===""?1:parseInt(input);
-total+=qty*price;
-input="";
+let qty = input === "" ? 1 : Number(input);
+total += qty * price;
+input = "";
 update();
 }
 
@@ -185,55 +165,48 @@ input="";
 update();
 }
 
-function reset(){
+function resetAll(){
 total=0;
 input="";
 update();
 }
 
-/* 結帳 */
+/* 結帳（已接你的 GAS） */
 function checkout(){
 
-  if(total===0){
-    alert("⚠️ 沒有金額");
-    return;
-  }
+if(total===0){
+alert("⚠️ 沒有金額");
+return;
+}
 
-  let order = {
-    total: total,
-    time: new Date().toLocaleString(),
-    qty: input || 1
-  };
-
-  fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec",{
-    method:"POST",
-    body: JSON.stringify(order)
-  })
-  .then(res => res.text())
-  .then(data => {
-    alert("🎉 結帳成功\n金額："+total);
-    reset();
-  })
-  .catch(err=>{
-    alert("❌ 傳送失敗");
-  });
+fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec",{
+method:"POST",
+body:JSON.stringify({
+total:total,
+time:new Date().toLocaleString()
+})
+})
+.then(()=>{
+alert("🎉 結帳成功："+total);
+resetAll();
+})
+.catch(()=>alert("❌ 傳送失敗"));
 
 }
 
-/* 🔢 鍵盤 */
+/* 🔢 keypad */
 let padVal="";
 
 function openPad(){
-padVal=input||"";
-document.getElementById("padDisplay").innerText=padVal||"0";
+padVal=input;
+document.getElementById("padDisplay").innerText = padVal || "0";
 document.getElementById("pad").style.display="flex";
 }
 
 function press(n){
-if(padVal.length<3){
-padVal+=n;
-}
-document.getElementById("padDisplay").innerText=padVal;
+if(padVal.length>=3) return;
+padVal += n;
+document.getElementById("padDisplay").innerText = padVal;
 }
 
 function clearPad(){
@@ -242,35 +215,39 @@ document.getElementById("padDisplay").innerText="0";
 }
 
 function okPad(){
-input=padVal||"";
+input = padVal || "";
 update();
 document.getElementById("pad").style.display="none";
 }
 
-/* ⌨️ 快捷鍵 */
-document.addEventListener("keydown",e=>{
+/* ⌨️ 修正後鍵盤（重點） */
+document.addEventListener("keydown", e => {
 
+const key = e.key.toLowerCase();
+
+/* ⭐ 先擋快捷鍵 */
+if(key==="q"){ add(100); return; }
+if(key==="w"){ add(80); return; }
+if(key==="e"){ add(50); return; }
+
+if(key==="a"){ add(100); return; }
+if(key==="s"){ add(80); return; }
+if(key==="d"){ add(50); return; }
+
+if(key==="f"){ add(0); return; }
+if(key==="z"){ checkout(); return; }
+
+/* ⭐ 數字 */
 if(!isNaN(e.key)){
-input+=e.key;
+input += e.key;
 update();
 }
 
+/* ⭐ 刪除 */
 if(e.key==="Backspace"){
-input=input.slice(0,-1);
+input = input.slice(0,-1);
 update();
 }
-
-if(e.key.toLowerCase()==="q") add(100);
-if(e.key.toLowerCase()==="w") add(80);
-if(e.key.toLowerCase()==="e") add(50);
-
-if(e.key.toLowerCase()==="a") add(100);
-if(e.key.toLowerCase()==="s") add(80);
-if(e.key.toLowerCase()==="d") add(50);
-
-if(e.key.toLowerCase()==="f") add(0);
-
-if(e.key.toLowerCase()==="z") checkout();
 
 });
 
