@@ -4,260 +4,318 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 <title>🌿 後慈湖售票系統</title>
+
 <style>
-    :root {
-        --bg-color: #1a2220;
-        --card-bg: #25312e;
-        --text-main: #e4ebe7;
-        --accent-cash: #3d5a52;
-        --accent-card: #3b4f63;
-        --accent-free: #564061;
-        --accent-pay: #a67c37;
-        --accent-reset: #7a3a3a;
-    }
+:root {
+    --bg: #121817;
+    --glass: rgba(255,255,255,0.06);
+    --text: #eef6f2;
 
-    body {
-        margin: 0;
-        font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-        background: var(--bg-color);
-        color: var(--text-main);
-        display: flex;
-        justify-content: center;
-        min-height: 100vh;
-    }
+    --cash: #3f6b5e;
+    --card: #3f5f7a;
+    --free: #6a4b74;
+    --pay: #c99b3c;
+    --reset: #8c3b3b;
+}
 
-    .container {
-        width: 100%;
-        max-width: 450px;
-        padding: 15px;
-        box-sizing: border-box;
-    }
+body {
+    margin: 0;
+    font-family: "PingFang TC","Microsoft JhengHei",sans-serif;
+    background: linear-gradient(180deg,#0f1413,#1a2220);
+    color: var(--text);
+}
 
-    header {
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-        color: #cfd8d3;
-        margin-bottom: 15px;
-    }
+.container {
+    max-width: 480px;
+    margin: auto;
+    padding: 15px;
+}
 
-    /* 顯示張數區域 */
-    .display-card {
-        background: var(--card-bg);
-        border-radius: 15px;
-        padding: 10px;
-        margin-bottom: 10px;
-        box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
-    }
+header {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-    #display {
-        width: 100%;
-        font-size: 64px;
-        text-align: center;
-        background: transparent;
-        border: none;
-        color: #fff;
-        outline: none;
-    }
+.display-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 10px;
+    box-shadow: inset 0 5px 20px rgba(0,0,0,0.6);
+}
 
-    /* 明細區 */
-    .detail-card {
-        background: rgba(255,255,255,0.05);
-        border-radius: 12px;
-        padding: 12px;
-        margin-bottom: 15px;
-        font-size: 14px;
-        line-height: 1.6;
-    }
+#display {
+    width: 100%;
+    font-size: 72px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: #fff;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
 
-    .detail-row {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
+.detail-card {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    font-size: 14px;
+}
 
-    /* 按鈕網格 */
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
 
-    button {
-        height: 60px;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        color: #fff;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.05s;
-    }
+button {
+    height: 70px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
 
-    button:active { transform: scale(0.97); }
-    button span { font-size: 10px; opacity: 0.7; margin-top: 2px; }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    .cash { background: var(--accent-cash); }
-    .card { background: var(--accent-card); }
-    .free { background: var(--accent-free); }
-    .clear { background: #4f5a57; }
-    .reset { background: var(--accent-reset); }
-    .pay { 
-        background: var(--accent-pay); 
-        grid-column: span 2; 
-        height: 70px; 
-        font-size: 22px; 
-        font-weight: bold;
-        margin-top: 5px;
-    }
+    box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+    transition: all 0.08s ease;
+}
 
-    /* 總計區域 */
-    .total-section {
-        text-align: center;
-        margin-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 10px;
-    }
+button:active {
+    transform: scale(0.94);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+}
 
-    .total-amount { font-size: 48px; font-weight: bold; }
-    .total-amount::before { content: "$ "; font-size: 20px; color: var(--accent-pay); }
+button span {
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.cash { background: var(--cash); }
+.card { background: var(--card); }
+.free { background: var(--free); }
+.clear { background: #555; }
+.reset { background: var(--reset); }
+
+.pay {
+    background: linear-gradient(135deg,#d4a94b,#a67c37);
+    grid-column: span 2;
+    height: 85px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.total-section {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.total-amount {
+    font-size: 56px;
+    font-weight: 800;
+}
+
+.total-amount::before {
+    content: "$ ";
+    font-size: 20px;
+    color: var(--pay);
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
-    <header>🌿 後慈湖售票系統</header>
+<header>🌿 後慈湖售票系統</header>
 
-    <div class="display-card">
-        <input id="display" type="text" inputmode="numeric" placeholder="0">
-    </div>
+<div class="display-card">
+<input id="display" type="text" inputmode="numeric" placeholder="0">
+</div>
 
-    <div class="detail-card" id="detail"></div>
+<div class="detail-card" id="detail"></div>
 
-    <div class="grid">
-        <button class="cash" onclick="add(100,'full')">🎫 全票 <span>(Q)</span></button>
-        <button class="cash" onclick="add(80,'group')">👥 團體 <span>(W)</span></button>
-        <button class="cash" onclick="add(50,'discount')">👦 優待 <span>(E)</span></button>
-        <button class="free" onclick="add(0,'free')">🆓 免費 <span>(F)</span></button>
+<div class="grid">
+<button class="cash" onclick="add(100,'full')">🎫 全票 <span>(Q)</span></button>
+<button class="cash" onclick="add(80,'group')">👥 團體 <span>(W)</span></button>
+<button class="cash" onclick="add(50,'discount')">👦 優待 <span>(E)</span></button>
+<button class="free" onclick="add(0,'free')">🆓 免費 <span>(F)</span></button>
 
-        <button class="card" onclick="add(100,'card_full')">💳 悠遊全票 <span>(A)</span></button>
-        <button class="card" onclick="add(80,'card_group')">💳 悠遊團體 <span>(S)</span></button>
-        <button class="card" onclick="add(50,'card_discount')">💳 悠遊優待 <span>(D)</span></button>
+<button class="card" onclick="add(100,'card_full')">💳 悠遊全票 <span>(A)</span></button>
+<button class="card" onclick="add(80,'card_group')">💳 悠遊團體 <span>(S)</span></button>
+<button class="card" onclick="add(50,'card_discount')">💳 悠遊優待 <span>(D)</span></button>
 
-        <button class="clear" onclick="clearInput()">✖ 清除張數</button>
-        
-        <button class="pay" onclick="checkout()">💰 結帳 <span>(Z)</span></button>
-        
-        <!-- 重設按鈕現在放在最下方，並有明顯顏色 -->
-        <button class="reset" onclick="resetAll()" style="grid-column: span 2; height: 45px; margin-top: 10px;">❌ 重設所有數據 (Delete)</button>
-    </div>
+<button class="clear" onclick="clearInput()">✖ 清除張數</button>
 
-    <div class="total-section">
-        <div class="total-amount" id="total">0</div>
-    </div>
+<button class="pay" onclick="checkout()">💰 結帳 <span>(Z)</span></button>
+
+<button class="reset" onclick="resetAll()" style="grid-column: span 2; height: 50px;">
+❌ 重設所有數據 (Delete)
+</button>
+</div>
+
+<div class="total-section">
+<div class="total-amount" id="total">0</div>
+</div>
 </div>
 
 <script>
 let input = "";
 let total = 0;
 let isSubmitting = false;
-let data = { full:0, group:0, discount:0, card_full:0, card_group:0, card_discount:0, free:0 };
+
+let data = {
+full:0, group:0, discount:0,
+card_full:0, card_group:0, card_discount:0, free:0
+};
 
 const displayEl = document.getElementById("display");
 const detailEl = document.getElementById("detail");
 const totalEl = document.getElementById("total");
 
-// 更新畫面
 function update() {
-    displayEl.value = input;
-    totalEl.innerText = total.toLocaleString();
+displayEl.value = input;
+totalEl.innerText = total.toLocaleString();
 
-    const labels = {
-        full: "全票", group: "團體", discount: "優待",
-        card_full: "悠遊全票", card_group: "悠遊團體", card_discount: "悠遊優待", free: "免費"
-    };
+const labels = {
+full:"全票", group:"團體", discount:"優待",
+card_full:"悠遊全票", card_group:"悠遊團體",
+card_discount:"悠遊優待", free:"免費"
+};
 
-    let html = `<b>交易明細：</b><br>`;
-    for (let key in data) {
-        if (data[key] > 0) {
-            html += `<div class="detail-row"><span>${labels[key]}</span><span>${data[key]} 張</span></div>`;
-        }
-    }
-    detailEl.innerHTML = html === `<b>交易明細：</b><br>` ? "等待輸入..." : html;
+let html = `<b>交易明細：</b><br>`;
+for (let key in data) {
+if (data[key] > 0) {
+html += `<div style="display:flex;justify-content:space-between;">
+<span>${labels[key]}</span><span>${data[key]} 張</span></div>`;
+}
+}
+detailEl.innerHTML = html === `<b>交易明細：</b><br>` ? "等待輸入..." : html;
 }
 
-// 加票
+function focusInput(){
+displayEl.focus();
+displayEl.select();
+}
+
 function add(price, type) {
-    if (navigator.vibrate) navigator.vibrate(15);
-    let qty = input ? parseInt(input) : 1;
-    total += qty * price;
-    data[type] += qty;
-    input = "";
-    update();
-    displayEl.focus();
+if (navigator.vibrate) navigator.vibrate(10);
+
+let qty = input ? parseInt(input) : 1;
+
+total += qty * price;
+data[type] += qty;
+
+input = "";
+update();
+focusInput();
 }
 
-// 清除輸入
 function clearInput() {
-    input = "";
-    update();
-    displayEl.focus();
+input = "";
+update();
+focusInput();
 }
 
-// 全部重設
 function resetAll() {
-    if (total > 0 && !confirm("確定要清除所有已加入的票券嗎？")) return;
-    total = 0;
-    input = "";
-    for (let k in data) data[k] = 0;
-    update();
-    displayEl.focus();
+if (total > 0 && !confirm("確定要清除所有已加入的票券嗎？")) return;
+
+total = 0;
+input = "";
+for (let k in data) data[k] = 0;
+
+update();
+focusInput();
 }
 
-// 結帳
+/* 🔥 列印功能 */
+function printTicket() {
+let labels = {
+full:"全票", group:"團體", discount:"優待",
+card_full:"悠遊全票", card_group:"悠遊團體",
+card_discount:"悠遊優待", free:"免費"
+};
+
+let rows = Object.entries(data)
+.filter(([k,v])=>v>0)
+.map(([k,v])=>`${labels[k]} x ${v}`)
+.join("<br>");
+
+let w = window.open("", "_blank");
+w.document.write(`
+<html>
+<head>
+<style>
+body{font-family:sans-serif;text-align:center;padding:20px}
+</style>
+</head>
+<body onload="window.print();window.close()">
+<h2>🌿 後慈湖入園券</h2>
+<hr>
+${rows}
+<hr>
+<b>金額：$${total}</b><br><br>
+${new Date().toLocaleString()}
+</body>
+</html>
+`);
+}
+
 function checkout() {
-    if (isSubmitting || total === 0) return;
-    if (!confirm(`確認結帳？總金額：$${total}`)) return;
+if (isSubmitting || total === 0) return;
 
-    isSubmitting = true;
-    fetch("你的API", {
-        method: "POST",
-        body: JSON.stringify({ total, data })
-    })
-    .then(() => {
-        alert("結帳成功！");
-        total = 0; input = "";
-        for (let k in data) data[k] = 0;
-        update();
-    })
-    .catch(() => alert("連線失敗"))
-    .finally(() => { isSubmitting = false; });
+if (!confirm(\`確認結帳？總金額：$\${total}\`)) return;
+
+isSubmitting = true;
+
+fetch("你的API", {
+method: "POST",
+body: JSON.stringify({ total, data })
+})
+.then(()=>{
+printTicket(); // 🔥 印票
+alert("結帳成功！");
+resetAll();
+})
+.catch(()=>alert("連線失敗"))
+.finally(()=> isSubmitting = false);
 }
 
-// 鍵盤支援
 document.addEventListener("keydown", e => {
-    const key = e.key.toLowerCase();
-    if (key === 'q') add(100, 'full');
-    else if (key === 'w') add(80, 'group');
-    else if (key === 'e') add(50, 'discount');
-    else if (key === 'a') add(100, 'card_full');
-    else if (key === 's') add(80, 'card_group');
-    else if (key === 'd') add(50, 'card_discount');
-    else if (key === 'f') add(0, 'free');
-    else if (key === 'z') checkout();
-    else if (key === 'escape') clearInput();
-    else if (key === 'delete') resetAll();
+const k = e.key.toLowerCase();
+
+if (k==='q') add(100,'full');
+else if (k==='w') add(80,'group');
+else if (k==='e') add(50,'discount');
+else if (k==='a') add(100,'card_full');
+else if (k==='s') add(80,'card_group');
+else if (k==='d') add(50,'card_discount');
+else if (k==='f') add(0,'free');
+else if (k==='z') checkout();
+else if (k==='escape') clearInput();
+else if (k==='delete') resetAll();
 });
 
 displayEl.addEventListener("input", e => {
-    input = e.target.value.replace(/\D/g, '');
-    update();
+input = e.target.value.replace(/\D/g,'');
+update();
 });
 
-window.onload = () => { update(); displayEl.focus(); };
+displayEl.addEventListener("click", ()=>{
+displayEl.select();
+});
+
+window.onload = ()=>{
+update();
+focusInput();
+};
 </script>
 
 </body>
