@@ -3,77 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>後慈湖售票系統</title>
+<title>🌿 後慈湖售票系統 v2.0</title>
 
 <style>
-body{
-margin:0;
-font-family:"Noto Sans TC", sans-serif;
-background:linear-gradient(rgba(0,40,20,0.5),rgba(0,0,0,0.6)),
-url("https://images.unsplash.com/photo-1501785888041-af3ef285b470") center/cover;
-color:white;
+:root {
+    --primary-green: #2e7d32;
+    --accent-blue: #1565c0;
+    --accent-purple: #6a1b9a;
+    --accent-orange: #f4511e;
+    --danger: #c62828;
+    --glass: rgba(255, 255, 255, 0.12);
 }
 
-.container{
-display:grid;
-grid-template-columns:2fr 1fr;
-height:100vh;
-gap:12px;
-padding:12px;
+body {
+    margin: 0;
+    font-family: "PingFang TC", "Noto Sans TC", sans-serif;
+    background: linear-gradient(rgba(0,30,15,0.7), rgba(0,0,0,0.8)),
+                url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80") center/cover fixed;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.panel{
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
-border-radius:20px;
-padding:15px;
-display:flex;
-flex-direction:column;
+.container {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    height: 100vh;
+    gap: 15px;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
-#inputQty{
-font-size:70px;
-text-align:center;
-background:none;
-border:none;
-color:#a5d6a7;
-outline:none;
+.panel {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
+/* 左側：操作區 */
+#currentType {
+    font-size: 1.2rem;
+    color: #a5d6a7;
+    height: 1.5em;
+    margin-bottom: 10px;
+    font-weight: 300;
 }
 
-button{
-border:none;
-border-radius:16px;
-padding:15px;
-font-size:18px;
-font-weight:bold;
-color:white;
-cursor:pointer;
+#inputQty {
+    font-size: 80px;
+    text-align: center;
+    background: rgba(0,0,0,0.2);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    color: #fff;
+    outline: none;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px 0;
 }
 
-.cash{background:#2e7d32;}
-.card{background:#1565c0;}
-.free{background:#6a1b9a;}
-.checkout{background:#ff7043;}
-.clear{background:#546e7a;}
-.clear-all{background:#c62828;}
+#inputQty::placeholder { color: rgba(255,255,255,0.2); }
 
-.total{
-font-size:60px;
-text-align:right;
-color:#80cbc4;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    flex-grow: 1;
 }
 
-@media(max-width:768px){
-.container{display:flex;flex-direction:column;height:auto;}
-#inputQty{font-size:40px;}
-.grid{grid-template-columns:repeat(2,1fr);}
-.total{font-size:36px;}
+button {
+    border: none;
+    border-radius: 16px;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+button:active { transform: scale(0.96); opacity: 0.8; }
+
+.cash { background: var(--primary-green); }
+.card { background: var(--accent-blue); }
+.free { background: var(--accent-purple); }
+.checkout { background: var(--accent-orange); grid-column: span 2; font-size: 1.5rem; }
+.clear { background: #546e7a; }
+.clear-all { background: var(--danger); margin-top: 15px; height: 50px; font-size: 0.9rem; opacity: 0.8; }
+
+/* 右側：明細區 */
+.detail-title {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+}
+
+#list {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    line-height: 2.2;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+#warn {
+    color: #ffeb3b;
+    font-size: 0.9rem;
+    min-height: 40px;
+    margin: 10px 0;
+}
+
+.total-label { font-size: 1rem; color: #b2dfdb; }
+.total {
+    font-size: 64px;
+    text-align: right;
+    color: #4db6ac;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+#lastTicket {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    text-align: right;
+}
+
+@media(max-width:900px){
+    body { overflow: auto; height: auto; }
+    .container { grid-template-columns: 1fr; height: auto; }
+    #inputQty { font-size: 50px; }
+    .total { font-size: 48px; }
+    .panel { height: auto; }
 }
 </style>
 </head>
@@ -82,133 +158,143 @@ color:#80cbc4;
 
 <div class="container">
 
-<!-- 左側 -->
-<div class="panel">
+    <!-- 左側：控制台 -->
+    <div class="panel">
+        <div id="currentType">後慈湖售票系統</div>
+        <input id="inputQty" placeholder="張數 (預設1)" inputmode="numeric" autocomplete="off">
 
-<div id="currentType">後慈湖售票系統</div>
+        <div class="grid">
+            <button class="cash" onclick="add('現金全票','cash_full')">🎫 全票<br><small>$100</small></button>
+            <button class="cash" onclick="add('現金團體','cash_group')">👥 團體<br><small>$80</small></button>
+            <button class="cash" onclick="add('現金優待','cash_discount')">👦 優待<br><small>$50</small></button>
 
-<input id="inputQty" placeholder="0" inputmode="numeric">
+            <button class="card" onclick="add('悠遊全票','card_full')">💳 悠全<br><small>$100</small></button>
+            <button class="card" onclick="add('悠遊團體','card_group')">💳 悠團<br><small>$80</small></button>
+            <button class="card" onclick="add('悠遊優待','card_discount')">💳 悠優<br><small>$50</small></button>
 
-<div class="grid">
-<button class="cash" onclick="add('現金全票','cash_full')">全票</button>
-<button class="cash" onclick="add('現金團體','cash_group')">團體</button>
-<button class="cash" onclick="add('現金優待','cash_discount')">優待</button>
+            <button class="free" onclick="add('免費','free')">🆓 免費<br><small>$0</small></button>
+            <button class="clear" onclick="clearInput()">✖ 清除<br><small>張數</small></button>
+            <button class="checkout" onclick="checkout()">💰 結帳</button>
+        </div>
 
-<button class="card" onclick="add('悠遊全票','card_full')">悠遊全票</button>
-<button class="card" onclick="add('悠遊團體','card_group')">悠遊團體</button>
-<button class="card" onclick="add('悠遊優待','card_discount')">悠遊優待</button>
+        <button class="clear-all" onclick="reset()">❌ 全部資料清空</button>
+    </div>
 
-<button class="free" onclick="add('免費','free')">免費</button>
-<button class="clear" onclick="clearInput()">清除</button>
-<button class="checkout" onclick="checkout()">結帳</button>
-</div>
+    <!-- 右側：明細 -->
+    <div class="panel">
+        <div class="detail-title">交易明細</div>
 
-<button class="clear-all" onclick="reset()">全部清空</button>
+        <div id="list">
+            <!-- 動態插入 -->
+        </div>
 
-</div>
+        <div id="warn"></div>
 
-<!-- 右側 -->
-<div class="panel">
-<h3>交易明細</h3>
+        <div class="total-label">應收總計</div>
+        <div class="total" id="total">0</div>
 
-<div id="list"></div>
-<div id="warn"></div>
-
-<div>應收總計</div>
-<div class="total" id="total">0</div>
-
-<div id="lastTicket"></div>
-
-</div>
+        <div id="lastTicket">尚未結帳</div>
+    </div>
 
 </div>
 
 <script>
-
-let input="";
-let data={
-cash_full:0,
-cash_group:0,
-cash_discount:0,
-card_full:0,
-card_group:0,
-card_discount:0,
-free:0
+let inputStr = "";
+let data = {
+    cash_full: 0, cash_group: 0, cash_discount: 0,
+    card_full: 0, card_group: 0, card_discount: 0, free: 0
 };
 
-document.getElementById("inputQty").addEventListener("input",e=>{
-input=e.target.value.replace(/\D/g,"");
+const inputEl = document.getElementById("inputQty");
+
+inputEl.addEventListener("input", e => {
+    inputStr = e.target.value.replace(/\D/g, "");
 });
 
-function add(name,type){
-let qty=input===""?1:parseInt(input);
-data[type]+=qty;
+function add(name, type) {
+    let qty = inputStr === "" ? 1 : parseInt(inputStr);
+    if(qty <= 0) qty = 1;
+    
+    data[type] += qty;
+    
+    document.getElementById("currentType").innerText = `已加入 ${name} x ${qty}`;
+    inputStr = "";
+    inputEl.value = "";
+    inputEl.focus(); // 保持對焦方便連續輸入
 
-document.getElementById("currentType").innerText=`加入 ${name} x${qty}`;
-input="";
-document.getElementById("inputQty").value="";
-
-calc();
+    calc();
 }
 
-function calc(){
-let total=0;
+function calc() {
+    let total = 0;
+    const labels = {
+        cash_full: "現金全票", cash_group: "現金團體", cash_discount: "現金優待",
+        card_full: "悠遊全票", card_group: "悠遊團體", card_discount: "悠遊優待", free: "免費票"
+    };
 
-total+=data.cash_full*100;
-total+=(data.cash_group>=40?80:100)*data.cash_group;
-total+=data.cash_discount*50;
+    // 計算邏輯
+    total += data.cash_full * 100;
+    total += (data.cash_group >= 40 ? 80 : 100) * data.cash_group;
+    total += data.cash_discount * 50;
 
-total+=data.card_full*100;
-total+=(data.card_group>=40?80:100)*data.card_group;
-total+=data.card_discount*50;
+    total += data.card_full * 100;
+    total += (data.card_group >= 40 ? 80 : 100) * data.card_group;
+    total += data.card_discount * 50;
 
-document.getElementById("total").innerText=total.toLocaleString();
+    document.getElementById("total").innerText = total.toLocaleString();
 
-document.getElementById("list").innerHTML=`
-現金全票：${data.cash_full}<br>
-現金團體：${data.cash_group}<br>
-現金優待：${data.cash_discount}<br>
-悠遊全票：${data.card_full}<br>
-悠遊團體：${data.card_group}<br>
-悠遊優待：${data.card_discount}<br>
-免費：${data.free}
-`;
+    // 更新明細清單 (只顯示大於 0 的項目)
+    let listHtml = "";
+    for (let [key, value] of Object.entries(data)) {
+        if(value > 0) {
+            listHtml += `<div class="item-row"><span>${labels[key]}</span><span>${value} 張</span></div>`;
+        }
+    }
+    document.getElementById("list").innerHTML = listHtml || "<div style='color:rgba(255,255,255,0.2)'>暫無資料</div>";
 
-let warn="";
-if(data.cash_group>0 && data.cash_group<40)
-warn+="⚠ 現金團體未滿40人<br>";
-
-if(data.card_group>0 && data.card_group<40)
-warn+="⚠ 悠遊團體未滿40人";
-
-document.getElementById("warn").innerHTML=warn;
+    // 團體警告邏輯
+    let warn = "";
+    if(data.cash_group > 0 && data.cash_group < 40) warn += "⚠️ 現金團體未滿 40 人 (以原價計算)<br>";
+    if(data.card_group > 0 && data.card_group < 40) warn += "⚠️ 悠遊團體未滿 40 人 (以原價計算)";
+    document.getElementById("warn").innerHTML = warn;
 }
 
-function clearInput(){
-input="";
-document.getElementById("inputQty").value="";
+function clearInput() {
+    inputStr = "";
+    inputEl.value = "";
+    inputEl.focus();
 }
 
-function reset(){
-if(!confirm("確定清空？"))return;
-for(let k in data) data[k]=0;
-calc();
+function reset() {
+    if(!confirm("確定清空目前所有選取張數？")) return;
+    for(let k in data) data[k] = 0;
+    document.getElementById("currentType").innerText = "資料已清空";
+    calc();
 }
 
-function checkout(){
-let total=parseInt(document.getElementById("total").innerText.replace(/,/g,""));
-if(total===0 && data.free===0){
-alert("請先選票");
-return;
+function checkout() {
+    let totalValue = parseInt(document.getElementById("total").innerText.replace(/,/g, ""));
+    
+    // 如果總金額為0且沒免費票，不給結帳
+    if(totalValue === 0 && data.free === 0) {
+        alert("明細中無票券！");
+        return;
+    }
+
+    if(confirm(`確認結帳？\n總額：NT$ ${totalValue.toLocaleString()}`)) {
+        document.getElementById("lastTicket").innerText = "上次結帳：" + new Date().toLocaleTimeString();
+        
+        // 這裡可以加入傳送到資料庫的程式碼
+        
+        // 重設資料
+        for(let k in data) data[k] = 0;
+        document.getElementById("currentType").innerText = "結帳完成";
+        calc();
+    }
 }
 
-alert("結帳成功\n金額："+total);
-
-document.getElementById("lastTicket").innerText="完成時間："+new Date().toLocaleString();
-
-reset();
-}
-
+// 頁面加載後自動對焦
+window.onload = () => inputEl.focus();
 </script>
 
 </body>
