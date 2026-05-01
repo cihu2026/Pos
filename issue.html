@@ -4,113 +4,90 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>🎟️ 後慈湖售票機 PRO</title>
+<title>🎟️ 後慈湖售票系統</title>
 
 <style>
 body{
 margin:0;
 font-family:"Microsoft JhengHei";
-background:linear-gradient(180deg,#0d1b2a,#1b263b);
-color:#fff;
+background:#1c2623;
+color:#e4ebe7;
 }
 
-/* 標題 */
+.container{
+max-width:420px;
+margin:auto;
+padding:15px;
+}
+
 header{
 text-align:center;
-font-size:26px;
-padding:18px;
-color:#d8f3dc;
-font-weight:900;
-}
-
-/* 顯示區 */
-#display{
-width:90%;
-margin:15px auto;
-font-size:85px;
-text-align:center;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
-color:#a8ffcc;
-border-radius:25px;
-padding:20px;
-border:1px solid rgba(255,255,255,0.15);
-font-weight:bold;
-}
-
-/* focus效果 */
-#display:focus{
-box-shadow:0 0 15px rgba(0,255,200,0.2);
-background:rgba(255,255,255,0.12);
-}
-
-/* 按鈕區 */
-.grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-padding:12px;
-width:90%;
-margin:auto;
-}
-
-/* 按鈕 */
-button{
-height:68px;
 font-size:20px;
+color:#cfd8d3;
+margin-bottom:10px;
+}
+
+/* 顯示 */
+.display-card{
+background:#24322e;
+border-radius:18px;
+padding:20px;
+margin-bottom:12px;
+}
+
+#display{
+width:100%;
+font-size:70px;
+text-align:center;
+background:transparent;
 border:none;
-border-radius:20px;
-color:#fff;
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
-transition:0.12s;
-}
-
-button:active{
-transform:scale(0.95);
-filter:brightness(1.2);
-}
-
-/* 顏色 */
-.cash{background:linear-gradient(135deg,#2d6a4f,#40916c);}
-.card{background:linear-gradient(135deg,#1d3557,#457b9d);}
-.free{background:linear-gradient(135deg,#6a1b9a,#9d4edd);}
-
-/* 結帳 */
-.pay{
-background:linear-gradient(135deg,#ff5a1f,#ff9a36);
-font-size:24px;
-font-weight:900;
-}
-
-.clear{background:#6c757d;}
-.reset{
-background:linear-gradient(135deg,#d00000,#ff595e);
-font-size:22px;
+color:#f0f5f2;
+outline:none;
 }
 
 /* 明細 */
-#detail{
-width:90%;
-margin:15px auto;
-font-size:18px;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
-border-radius:20px;
+.detail-card{
+background:#24322e;
+border-radius:18px;
 padding:15px;
-line-height:1.7;
-max-height:220px;
-overflow:auto;
+margin-bottom:12px;
+font-size:15px;
+line-height:1.8;
 }
 
-/* ⭐ 金額（已取消發光） */
-#total{
-font-size:58px;
+/* 按鈕 */
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+button{
+height:60px;
+border:none;
+border-radius:14px;
+font-size:16px;
+color:#fff;
+background:#2f403b;
+}
+
+button:active{
+transform:scale(0.96);
+}
+
+/* 顏色 */
+.cash{background:#3d5a52;}
+.card{background:#3b4f63;}
+.free{background:#564061;}
+.pay{background:#6b5532;font-weight:600;}
+.clear{background:#4f5a57;}
+.reset{background:#5a3d3d;}
+
+.total{
 text-align:center;
-margin:10px;
-color:#ffffff;
-font-weight:900;
-letter-spacing:2px;
-border-top:1px solid rgba(255,255,255,0.2);
+font-size:42px;
+margin-top:10px;
+border-top:1px solid rgba(255,255,255,0.1);
 padding-top:10px;
 }
 </style>
@@ -118,17 +95,15 @@ padding-top:10px;
 
 <body>
 
+<div class="container">
+
 <header>🌿 後慈湖售票系統</header>
 
-<input id="display"
-type="text"
-inputmode="numeric"
-placeholder="0"
-autocomplete="off"
-oninput="handleInput(this.value)">
+<div class="display-card">
+<input id="display" type="text" inputmode="numeric" placeholder="0">
+</div>
 
 <div class="grid">
-
 <button class="cash" onclick="add(100,'full')">🎫 全票 (Q)</button>
 <button class="cash" onclick="add(80,'group')">👥 團體 (W)</button>
 <button class="cash" onclick="add(50,'discount')">👦 優待 (E)</button>
@@ -141,12 +116,14 @@ oninput="handleInput(this.value)">
 
 <button class="pay" onclick="checkout()">💰 結帳 (Z)</button>
 <button class="clear" onclick="clearInput()">✖ 清除</button>
-<button class="reset" onclick="resetAll()">❌ 全部重設</button>
-
+<button class="reset" onclick="resetAll()">❌ 重設</button>
 </div>
 
-<div id="detail"></div>
-<div id="total">0</div>
+<div class="detail-card" id="detail"></div>
+
+<div class="total" id="total">0</div>
+
+</div>
 
 <script>
 
@@ -164,16 +141,16 @@ card_discount:0,
 free:0
 };
 
-function handleInput(val){
-input = val.replace(/\D/g,'').slice(0,4);
+/* 輸入 */
+document.getElementById("display").addEventListener("input",e=>{
+input = e.target.value.replace(/\D/g,'').slice(0,4);
 update();
-}
+});
 
+/* 更新 */
 function update(){
-
-document.getElementById("display").value = input || "";
-
-document.getElementById("total").innerText = total.toLocaleString();
+document.getElementById("display").value=input||"";
+document.getElementById("total").innerText=total.toLocaleString();
 
 document.getElementById("detail").innerHTML=`
 📄 交易明細<br><br>
@@ -187,30 +164,28 @@ document.getElementById("detail").innerHTML=`
 `;
 }
 
+/* 加票 */
 function add(price,type){
 
-navigator.vibrate && navigator.vibrate(20);
+navigator.vibrate && navigator.vibrate(15);
 
-let qty = input ? Number(input) : 1;
-if(isNaN(qty)) qty = 1;
+let qty=input?Number(input):1;
+if(isNaN(qty)) qty=1;
 
-total += qty * price;
-
-if(type) data[type] += qty;
+total+=qty*price;
+if(type) data[type]+=qty;
 
 input="";
 update();
-
-let el=document.getElementById("display");
-el.focus();
-el.select();
 }
 
+/* 清除 */
 function clearInput(){
 input="";
 update();
 }
 
+/* 重設 */
 function resetAll(){
 total=0;
 input="";
@@ -218,6 +193,7 @@ for(let k in data){data[k]=0;}
 update();
 }
 
+/* 結帳 */
 function checkout(){
 
 if(isSubmitting) return;
@@ -229,40 +205,23 @@ return;
 
 isSubmitting=true;
 
-let order={
-  total:total,
-  detail:data
-};
-
-fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec",{
-  method:"POST",
-  headers:{
-    "Content-Type":"application/json"
-  },
-  body:JSON.stringify(order)
+fetch("你的API",{
+method:"POST",
+body:JSON.stringify({total,data})
 })
-.then(res=>res.json())
-.then(res=>{
-
-  if(!res.id) throw new Error("沒有票號");
-
-  let url="https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=ticket&id="+res.id;
-
-  window.open(url,"_blank");
-
-  resetAll();
-
-})
-.catch(err=>{
-  alert("❌ 結帳失敗："+err.message);
-})
-.finally(()=>{
-  isSubmitting=false;
-});
+.then(()=>resetAll())
+.catch(()=>alert("❌ 結帳失敗"))
+.finally(()=>isSubmitting=false);
 }
 
+/* ⭐ 鍵盤修正（含ASD） */
 document.addEventListener("keydown",e=>{
+
 const key=e.key.toLowerCase();
+
+if(["q","w","e","a","s","d","f","z"].includes(key)){
+e.preventDefault();
+}
 
 if(key==="q"){add(100,'full');return;}
 if(key==="w"){add(80,'group');return;}
@@ -274,13 +233,12 @@ if(key==="d"){add(50,'card_discount');return;}
 
 if(key==="f"){add(0,'free');return;}
 if(key==="z"){checkout();return;}
+
 });
 
-window.onload=function(){
-let el=document.getElementById("display");
-el.focus();
-el.select();
-}
+window.onload=()=>{
+document.getElementById("display").focus();
+};
 
 update();
 
