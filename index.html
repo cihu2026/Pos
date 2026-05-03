@@ -8,9 +8,8 @@
 
 <style>
 :root {
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --shadow: 0 15px 35px rgba(0,0,0,0.4);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
 }
 
 *{
@@ -24,54 +23,48 @@ body{
     font-family:"Microsoft JhengHei","PingFang TC",sans-serif;
     min-height:100vh;
     background: 
-        radial-gradient(circle at 10% 10%, rgba(31, 163, 91, 0.15), transparent 40%),
-        linear-gradient(rgba(8,18,34,0.7),rgba(8,18,34,0.9)),
+        radial-gradient(circle at 10% 10%, rgba(31, 163, 91, 0.1), transparent 40%),
+        linear-gradient(rgba(8,18,34,0.75),rgba(8,18,34,0.9)),
         url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
     color:#fff;
     display:flex;
     flex-direction:column;
     align-items:center;
-    overflow-x:hidden;
 }
 
-/* 🌿 Header */
 header{
     width:100%;
     text-align:center;
-    padding:60px 18px 30px;
+    padding:50px 18px 25px;
 }
 
 .logo{
-    font-size:58px;
-    margin-bottom:12px;
-    display: inline-block;
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+    font-size:52px;
+    margin-bottom:10px;
     animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float{
-    0%,100%{transform:translateY(0) scale(1)}
-    50%{transform:translateY(-10px) scale(1.05)}
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
 }
 
 .title{
-    font-size:36px;
+    font-size:34px;
     font-weight:900;
-    letter-spacing:3px;
+    letter-spacing:2px;
     background: linear-gradient(135deg, #fff, #ffd89b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
 .sub{
-    margin-top:10px;
-    font-size:14px;
-    letter-spacing:5px;
-    color:rgba(255,255,255,0.5);
+    margin-top:8px;
+    font-size:13px;
+    letter-spacing:4px;
+    color:rgba(255,255,255,.4);
 }
 
-/* 🧊 面板容器 */
 .panel{
     width:100%;
     max-width:420px;
@@ -82,26 +75,25 @@ header{
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius:32px;
-    padding:28px;
-    box-shadow: var(--shadow);
+    border-radius:30px;
+    padding:24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     border: 1px solid var(--glass-border);
 }
 
-/* 🔘 按鈕優化 */
 .nav-btn{
     display:flex;
     align-items:center;
     justify-content:space-between;
     width:100%;
-    padding:22px 24px;
-    margin-bottom:18px;
-    border-radius:24px;
+    padding:20px 22px;
+    margin-bottom:15px;
+    border-radius:20px;
     text-decoration:none;
     color:#fff;
-    font-size:22px;
+    font-size:21px;
     font-weight:800;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.2s ease;
     position:relative;
     overflow:hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -110,96 +102,71 @@ header{
 .nav-btn:last-child { margin-bottom: 0; }
 
 .nav-btn:active{
-    transform: scale(0.95);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transform: scale(0.96);
 }
 
-/* 🎨 色彩漸層增強 */
+/* 🎨 四色明確區分 */
 .main{
-    background: linear-gradient(135deg, #1fa35b, #38d996);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: linear-gradient(135deg, #1fa35b, #38d996); /* 綠 */
 }
 
-.verify{
-    background: linear-gradient(135deg, #1b6ed8, #4fa3ff);
-    border: 1px solid rgba(255,255,255,0.2);
+.verify-b{
+    background: linear-gradient(135deg, #1b6ed8, #4fa3ff); /* 藍 */
+}
+
+.verify-a{
+    background: linear-gradient(135deg, #6d28d9, #a855f7); /* 紫 - 明確區分 */
 }
 
 .stats{
-    background: linear-gradient(135deg, #c58a00, #ffd34d);
+    background: linear-gradient(135deg, #c58a00, #ffd34d); /* 黃 */
     color:#2b1c00;
-    border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* Icon 與裝飾 */
 .left{
     display:flex;
     align-items:center;
 }
 
 .icon{
-    font-size:28px;
-    margin-right:16px;
-    transition: transform 0.3s ease;
-}
-
-.nav-btn:hover .icon{
-    transform: rotate(-10deg) scale(1.2);
+    font-size:26px;
+    margin-right:14px;
 }
 
 .arrow{
-    font-size:24px;
+    font-size:22px;
     opacity:.5;
-    transition: transform 0.3s ease;
 }
 
-.nav-btn:hover .arrow {
-    transform: translateX(5px);
-    opacity: 1;
-}
-
-/* 底部資訊區 */
 .quick{
-    margin-top:24px;
+    margin-top:20px;
     text-align:center;
-    font-size:15px;
-    color:rgba(255,255,255,0.6);
-    line-height:1.8;
+    font-size:14px;
+    color:rgba(255,255,255,.5);
+    line-height:1.7;
 }
 
 .badges{
-    margin-top:20px;
+    margin-top:18px;
     display:flex;
     justify-content:center;
-    gap:10px;
-    flex-wrap:wrap;
+    gap:8px;
 }
 
 .badge{
-    padding:8px 16px;
-    border-radius:12px;
-    background: rgba(255,255,255,0.08);
-    font-size:12px;
-    backdrop-filter:blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.8);
+    padding:6px 12px;
+    border-radius:10px;
+    background: rgba(255,255,255,.08);
+    font-size:11px;
+    border: 1px solid rgba(255,255,255,.1);
 }
 
-/* footer */
 footer{
     margin-top:auto;
-    padding:30px;
-    font-size:12px;
-    color:rgba(255,255,255,0.3);
-    letter-spacing:2.5px;
-    text-transform: uppercase;
-}
-
-/* 📱 響應式微調 */
-@media(max-width:480px){
-    .title{font-size:30px;}
-    .nav-btn{font-size:20px; padding:18px 20px;}
-    .logo{font-size:52px;}
+    padding:25px;
+    font-size:11px;
+    color:rgba(255,255,255,.3);
+    letter-spacing:2px;
 }
 </style>
 </head>
@@ -213,7 +180,6 @@ footer{
 </header>
 
 <div class="panel">
-
     <div class="menu">
 
         <a href="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec" class="nav-btn main">
@@ -224,10 +190,18 @@ footer{
             <span class="arrow">›</span>
         </a>
 
-        <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn verify">
+        <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn verify-b">
             <div class="left">
                 <span class="icon">📱</span>
                 驗票入口 B 點
+            </div>
+            <span class="arrow">›</span>
+        </a>
+
+        <a href="https://cihu2026.github.io/Out/" class="nav-btn verify-a">
+            <div class="left">
+                <span class="icon">🚪</span>
+                出園 / A 點
             </div>
             <span class="arrow">›</span>
         </a>
@@ -236,14 +210,6 @@ footer{
             <div class="left">
                 <span class="icon">📊</span>
                 今日統計
-            </div>
-            <span class="arrow">›</span>
-        </a>
-
-        <a href="https://cihu2026.github.io/Out/" class="nav-btn verify">
-            <div class="left">
-                <span class="icon">🚪</span>
-                出園 / A 點
             </div>
             <span class="arrow">›</span>
         </a>
@@ -258,9 +224,7 @@ footer{
             <div class="badge">POS 系統</div>
             <div class="badge">Realtime</div>
         </div>
-
     </div>
-
 </div>
 
 <footer>
