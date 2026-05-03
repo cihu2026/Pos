@@ -1,136 +1,196 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>📊 後慈湖統計</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <style>
-body{
-margin:0;
-font-family:"Microsoft JhengHei";
-background:#1c2623;
-color:#e4ebe7;
-}
+  body {
+    font-family: "Noto Sans TC", sans-serif;
+    background: #0d1b2a;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
 
-.container{
-max-width:420px;
-margin:auto;
-padding:15px;
-}
+  .card {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 30px 20px;
+    background: #1b263b;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
 
-header{
-text-align:center;
-font-size:20px;
-color:#cfd8d3;
-margin-bottom:10px;
-}
+  .title { font-size: 26px; font-weight: bold; color: #a2d2ff; margin-bottom: 10px; }
+  .big { font-size: 22px; color: #e0e1dd; margin: 15px 0; letter-spacing: 1px; font-family: 'Courier New', Courier, monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; }
+  
+  .info-group {
+    text-align: left;
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+  }
 
-/* 卡片 */
-.card{
-background:#24322e;
-border-radius:18px;
-padding:18px;
-margin-bottom:12px;
-}
+  .info { font-size: 18px; margin: 12px 0; color: #b0bec5; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+  .info b { color: #fff; }
+  
+  .detail-box { 
+    font-size: 16px; 
+    color: #e0e1dd; 
+    line-height: 2; 
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+  }
 
-/* 標題 */
-.title{
-font-size:16px;
-color:#cfd8d3;
-margin-bottom:10px;
-}
+  #status {
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 20px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+  }
+  
+  .ok { background: rgba(0, 230, 118, 0.1); color: #00e676; border-color: #00e676 !important; }
+  .fail { background: rgba(255, 82, 82, 0.1); color: #ff5252; border-color: #ff5252 !important; }
+  .loading { color: #ffa000; animation: blink 1.5s infinite; background: rgba(255,160,0,0.05); }
 
-/* 大數字 */
-.big{
-font-size:40px;
-text-align:center;
-margin-top:5px;
-}
+  @keyframes blink { 50% { opacity: 0.5; } }
 
-/* 明細 */
-.list{
-font-size:15px;
-line-height:1.8;
-color:#c9d3ce;
-}
-
-/* 重新整理 */
-.refresh{
-text-align:center;
-margin-top:10px;
-}
-
-button{
-padding:10px 20px;
-border:none;
-border-radius:12px;
-background:#3d5a52;
-color:#fff;
-font-size:14px;
-}
+  .action-btn {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 25px;
+    padding: 18px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    transition: 0.2s;
+  }
+  
+  .action-btn:active { transform: scale(0.96); opacity: 0.9; }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<header>📊 今日統計</header>
-
 <div class="card">
-<div class="title">💰 今日總金額</div>
-<div id="money" class="big">0</div>
-</div>
+  <div class="title">🌿 後慈湖門票明細</div>
+  
+  <div id="ticketId" class="big">載入中...</div>
+  
+  <div class="info-group">
+    <div class="info">類型 <b id="type">-</b></div>
+    <div class="info">總人數 <b id="people">-</b></div>
+    <div class="info">總金額 <b id="money">-</b></div>
+    <div id="detail" class="detail-box">📡 正在從雲端抓取資料...</div>
+  </div>
 
-<div class="card">
-<div class="title">👥 今日總人數</div>
-<div id="people" class="big">0</div>
-</div>
+  <div id="status" class="loading">查詢中...</div>
 
-<div class="card">
-<div class="title">📄 票種明細</div>
-<div id="detail" class="list">讀取中...</div>
-</div>
-
-<div class="refresh">
-<button onclick="load()">🔄 重新整理</button>
-</div>
-
+  <button id="verifyLink" class="action-btn" onclick="startVerify()">✅ 確定核銷這張票</button>
 </div>
 
 <script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+const statusEl = document.getElementById("status");
+const verifyBtn = document.getElementById("verifyLink");
 
-function load(){
-
-fetch("https://script.google.com/macros/s/AKfycbwc0oR7OiMUIc3k785S_UMiUsTTGDUsgUjOEularvE4FhrZclEfWTyuq3IUKmQx-ZaA/exec?page=stats")
-.then(res=>res.json())
-.then(res=>{
-
-document.getElementById("money").innerText = res.totalMoney.toLocaleString();
-
-document.getElementById("people").innerText = res.totalPeople;
-
-document.getElementById("detail").innerHTML = `
-🎫 全票：${res.full}<br>
-👥 團體：${res.group}<br>
-👦 優待：${res.discount}<br>
-💳 悠遊全票：${res.card_full}<br>
-💳 悠遊團體：${res.card_group}<br>
-💳 悠遊優待：${res.card_discount}<br>
-🆓 免費：${res.free}
-`;
-
-})
-.catch(()=>{
-document.getElementById("detail").innerText="❌ 無法讀取資料";
-});
-
+// 1. 初始化頁面
+if (!id) {
+  document.getElementById("ticketId").innerText = "⚠️ 錯誤";
+  document.getElementById("detail").innerText = "網址中缺少票號 ID";
+  statusEl.innerText = "無效的連結";
+  statusEl.className = "fail";
+} else {
+  document.getElementById("ticketId").innerText = id;
+  // 呼叫 Code.gs 中的 getTicketInfo 函數
+  google.script.run
+    .withSuccessHandler(onSuccess)
+    .withFailureHandler(onFailure)
+    .getTicketInfo(id);
 }
 
-load();
+// 2. 成功抓取資料後的動作
+function onSuccess(res) {
+  if (!res) {
+    onFailure({message: "找不到此票券資料"});
+    return;
+  }
 
+  // 渲染基礎資訊
+  document.getElementById("type").innerText = res.type || "一般";
+  document.getElementById("money").innerText = "$" + (res.money ? res.money.toLocaleString() : "0");
+  document.getElementById("people").innerText = (res.people || "0") + " 人";
+
+  // 渲染細項 (過濾掉 0 的項目)
+  let detailHtml = "";
+  const items = [
+    { label: "🎫 現金全票", count: res.cash_full },
+    { label: "👥 現金團體", count: res.cash_group },
+    { label: "🧓 現金優待", count: res.cash_discount },
+    { label: "💳 悠遊全票", count: res.card_full },
+    { label: "💳 悠遊團體", count: res.card_group },
+    { label: "💳 悠遊優待", count: res.card_discount },
+    { label: "🆓 免費", count: res.free }
+  ];
+
+  items.forEach(item => {
+    if (item.count > 0) {
+      detailHtml += `<div style="display:flex; justify-content:space-between;"><span>${item.label}</span> <b>${item.count}</b></div>`;
+    }
+  });
+
+  document.getElementById("detail").innerHTML = detailHtml || "無詳細內容";
+
+  // 3. 狀態判定與按鈕顯示
+  statusEl.innerText = res.status;
+  statusEl.classList.remove("loading");
+
+  if (res.status === "尚未使用") {
+    statusEl.className = "ok";
+    verifyBtn.style.display = "block"; // 只有尚未使用才能看到核銷按鈕
+  } else {
+    statusEl.className = "fail";
+    verifyBtn.style.display = "none";
+    // 如果已使用，額外提示時間（如果 res 有提供的話）
+    if (res.status === "已使用") {
+       statusEl.innerText = "❌ 票券已核銷";
+    }
+  }
+}
+
+// 4. 失敗處理
+function onFailure(err) {
+  statusEl.innerText = "❌ 查詢失敗";
+  statusEl.className = "fail";
+  document.getElementById("detail").innerText = (err.message || "連線超時，請重新掃描 QR Code");
+}
+
+// 5. 執行跳轉核銷
+function startVerify() {
+  if (confirm("⚠️ 注意：按點擊「確定」後票券將失效。\n確定要將票號 " + id + " 進行核銷嗎？")) {
+    // 取得當前的 Web App URL 並加上參數
+    google.script.run.withSuccessHandler(function(url) {
+      // 跳轉到 verify 頁面進行實質寫入
+      window.location.href = url + "?page=verify&id=" + id;
+    }).getAppUrl();
+  }
+}
 </script>
 
 </body>
