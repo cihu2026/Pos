@@ -7,6 +7,12 @@
 <title>🎟️ 後慈湖售票系統 PRO</title>
 
 <style>
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
 *{
     margin:0;
     padding:0;
@@ -17,53 +23,55 @@
 body{
     font-family:"Microsoft JhengHei","PingFang TC",sans-serif;
     min-height:100vh;
-    background:
-    radial-gradient(circle at 20% 20%, rgba(0,255,180,.12), transparent 40%),
-    linear-gradient(rgba(8,18,34,.6),rgba(8,18,34,.85)),
-    url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
-    center/cover no-repeat fixed;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(31, 163, 91, 0.15), transparent 40%),
+        linear-gradient(rgba(8,18,34,0.7),rgba(8,18,34,0.9)),
+        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
     color:#fff;
     display:flex;
     flex-direction:column;
     align-items:center;
-    overflow:hidden;
+    overflow-x:hidden;
 }
 
 /* 🌿 Header */
 header{
     width:100%;
     text-align:center;
-    padding:50px 18px 24px;
+    padding:60px 18px 30px;
 }
 
 .logo{
-    font-size:52px;
-    margin-bottom:10px;
-    animation:float 3s ease-in-out infinite;
+    font-size:58px;
+    margin-bottom:12px;
+    display: inline-block;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+    animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-6px)}
+    0%,100%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-10px) scale(1.05)}
 }
 
 .title{
-    font-size:34px;
+    font-size:36px;
     font-weight:900;
-    letter-spacing:2px;
-    background:linear-gradient(90deg,#ffd89b,#ffb347);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    letter-spacing:3px;
+    background: linear-gradient(135deg, #fff, #ffd89b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
 .sub{
-    margin-top:8px;
+    margin-top:10px;
     font-size:14px;
-    letter-spacing:4px;
-    color:rgba(255,255,255,.6);
+    letter-spacing:5px;
+    color:rgba(255,255,255,0.5);
 }
 
-/* 🧊 面板 */
+/* 🧊 面板容器 */
 .panel{
     width:100%;
     max-width:420px;
@@ -71,67 +79,59 @@ header{
 }
 
 .menu{
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(18px);
-    border-radius:30px;
-    padding:24px;
-    box-shadow:0 20px 40px rgba(0,0,0,.45);
-    border:1px solid rgba(255,255,255,.1);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius:32px;
+    padding:28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--glass-border);
 }
 
-/* 🔘 按鈕 */
+/* 🔘 按鈕優化 */
 .nav-btn{
     display:flex;
     align-items:center;
     justify-content:space-between;
     width:100%;
-    padding:20px;
-    margin-bottom:16px;
-    border-radius:20px;
+    padding:22px 24px;
+    margin-bottom:18px;
+    border-radius:24px;
     text-decoration:none;
     color:#fff;
     font-size:22px;
     font-weight:800;
-    transition:.2s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position:relative;
     overflow:hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.nav-btn::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(120deg,transparent,rgba(255,255,255,.2),transparent);
-    opacity:0;
-    transition:.4s;
-}
+.nav-btn:last-child { margin-bottom: 0; }
 
 .nav-btn:active{
-    transform:scale(.96);
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-.nav-btn:hover::after{
-    opacity:1;
-}
-
-/* 🎨 顏色升級 */
+/* 🎨 色彩漸層增強 */
 .main{
-    background:linear-gradient(135deg,#1fa35b,#38d996);
-    box-shadow:0 10px 20px rgba(0,255,150,.25);
+    background: linear-gradient(135deg, #1fa35b, #38d996);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .verify{
-    background:linear-gradient(135deg,#1b6ed8,#4fa3ff);
-    box-shadow:0 10px 20px rgba(0,120,255,.25);
+    background: linear-gradient(135deg, #1b6ed8, #4fa3ff);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .stats{
-    background:linear-gradient(135deg,#c58a00,#ffd34d);
+    background: linear-gradient(135deg, #c58a00, #ffd34d);
     color:#2b1c00;
-    box-shadow:0 10px 20px rgba(255,200,0,.35);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* icon */
+/* Icon 與裝飾 */
 .left{
     display:flex;
     align-items:center;
@@ -139,30 +139,36 @@ header{
 
 .icon{
     font-size:28px;
-    margin-right:14px;
-    transition:.2s;
+    margin-right:16px;
+    transition: transform 0.3s ease;
 }
 
 .nav-btn:hover .icon{
-    transform:scale(1.2);
+    transform: rotate(-10deg) scale(1.2);
 }
 
 .arrow{
-    font-size:22px;
-    opacity:.6;
+    font-size:24px;
+    opacity:.5;
+    transition: transform 0.3s ease;
 }
 
-/* 底部 */
+.nav-btn:hover .arrow {
+    transform: translateX(5px);
+    opacity: 1;
+}
+
+/* 底部資訊區 */
 .quick{
-    margin-top:20px;
+    margin-top:24px;
     text-align:center;
-    font-size:14px;
-    color:rgba(255,255,255,.6);
-    line-height:1.7;
+    font-size:15px;
+    color:rgba(255,255,255,0.6);
+    line-height:1.8;
 }
 
 .badges{
-    margin-top:18px;
+    margin-top:20px;
     display:flex;
     justify-content:center;
     gap:10px;
@@ -170,26 +176,30 @@ header{
 }
 
 .badge{
-    padding:8px 14px;
-    border-radius:999px;
-    background:rgba(255,255,255,.1);
+    padding:8px 16px;
+    border-radius:12px;
+    background: rgba(255,255,255,0.08);
     font-size:12px;
-    backdrop-filter:blur(8px);
+    backdrop-filter:blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
 }
 
 /* footer */
 footer{
     margin-top:auto;
-    padding:24px;
+    padding:30px;
     font-size:12px;
-    color:rgba(255,255,255,.35);
-    letter-spacing:2px;
+    color:rgba(255,255,255,0.3);
+    letter-spacing:2.5px;
+    text-transform: uppercase;
 }
 
-/* 📱 */
+/* 📱 響應式微調 */
 @media(max-width:480px){
-    .title{font-size:28px;}
-    .nav-btn{font-size:20px;}
+    .title{font-size:30px;}
+    .nav-btn{font-size:20px; padding:18px 20px;}
+    .logo{font-size:52px;}
 }
 </style>
 </head>
