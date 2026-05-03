@@ -1,209 +1,277 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>🎫 後慈湖門票</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>後慈湖售票系統 - 58mm 明細強化版</title>
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  font-family:"Microsoft JhengHei",sans-serif;
-  background:
-  linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.70)),
-  url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
-  center/cover no-repeat fixed;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-/* 🌿 AL-2026 hidden signature */
-
-.card{
-  width:100%;
-  max-width:520px;
-  background:rgba(255,255,255,.10);
-  backdrop-filter:blur(10px);
-  border-radius:28px;
-  padding:28px;
-  box-shadow:0 10px 30px rgba(0,0,0,.45);
-  text-align:center;
-}
-
-.title{
-  font-size:34px;
-  font-weight:900;
-  color:#ffb15a;
-  margin-bottom:18px;
-}
-
-.ticketNo{
-  font-size:30px;
-  font-weight:800;
-  color:#7effd7;
-  margin-bottom:20px;
-  word-break:break-all;
-}
-
-.row{
-  font-size:24px;
-  margin:12px 0;
-}
-
-.status{
-  margin-top:26px;
-  font-size:30px;
-  font-weight:900;
-}
-
-.ok{
-  color:#7CFF7C;
-}
-
-.fail{
-  color:#ff6b6b;
-}
-
-.qr{
-  margin-top:22px;
-}
-
-.qr img{
-  width:220px;
-  height:220px;
-  background:#fff;
-  padding:10px;
-  border-radius:16px;
-}
-
-.footer{
-  margin-top:18px;
-  color:#ddd;
-  font-size:16px;
-}
-
-@media(max-width:768px){
-
-  .title{
-    font-size:28px;
+  html, body { margin:0; height:100%; overflow:hidden; font-family:"Noto Sans TC", "Microsoft JhengHei", Arial; }
+  body {
+    background: linear-gradient(rgba(0,40,20,0.5), rgba(0,0,0,0.6)),
+    url("https://images.unsplash.com/photo-1501785888041-af3ef285b470") center/cover;
   }
-
-  .ticketNo{
-    font-size:24px;
+  .container { display:grid; grid-template-columns: 2fr 1.2fr; height:100vh; gap:12px; padding:12px; box-sizing: border-box; }
+  .panel {
+    backdrop-filter: blur(12px); background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2); border-radius:20px;
+    padding:15px; color:white; display: flex; flex-direction: column;
   }
+  .left { display:grid; grid-template-rows: 1fr 2.5fr 0.8fr; gap:12px; }
+  #inputQty { width: 100%; border: none; background: transparent; font-size: 80px; font-weight: bold; text-align: center; color: #a5d6a7; outline: none; }
+  #inputQty::placeholder { color: rgba(165, 214, 167, 0.3); }
+  #currentType { text-align:center; font-size:22px; margin-bottom: 5px; color: #e0e0e0; }
+  .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; flex-grow: 1; }
+  button { width:100%; height:100%; font-size:20px; font-weight: bold; border:none; border-radius:18px; color:white; cursor:pointer; transition: 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+  button:active { transform: scale(0.95); filter: brightness(1.2); }
+  .cash { background:#2e7d32; }
+  .card { background:#0277bd; }
+  .free { background:#6a1b9a; }
+  .checkout { background:#ff7043; }
+  .clear { background:#546e7a; }
+  .clear-all { background:#c62828; }
+  #list { font-size:20px; line-height:1.8; margin-top: 10px; flex-grow: 1; }
+  .total-label { font-size: 18px; color: #b0bec5; text-align: right; }
+  .total { font-size:64px; text-align:right; color:#80cbc4; font-weight: bold; }
+  #warn { color:#ffd54f; font-size:16px; min-height: 40px; }
+  #lastTicket { margin-top: auto; font-size:18px; color:#ffe082; text-align:right; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; font-weight: bold; }
 
-  .row{
-    font-size:20px;
-  }
-
-  .status{
-    font-size:26px;
-  }
-
-  .qr img{
-    width:180px;
-    height:180px;
-  }
+@media (max-width: 768px) {
+  body { overflow: auto; }
+  .container { display: flex; flex-direction: column; height: auto; }
+  .left { grid-template-rows: auto; }
+  #inputQty { font-size: 42px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .total { font-size: 36px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
+  <div class="left">
+    <div class="panel">
+      <div id="currentType">🌿 後慈湖售票系統</div>
+      <input id="inputQty" type="text" inputmode="numeric" maxlength="3" placeholder="0" oninput="syncInput()"/>
+    </div>
 
-  <div class="title">🎫 後慈湖門票</div>
+    <div class="panel grid">
+      <button class="cash" onclick="add('現金全票','cash_full')">🎫全票(Q)</button>
+      <button class="cash" onclick="add('現金團體','cash_group')">👥團體(W)</button>
+      <button class="cash" onclick="add('現金優待','cash_discount')">🧓優待(E)</button>
+      <button class="card" onclick="add('悠遊全票','card_full')">💳悠遊全票(A)</button>
+      <button class="card" onclick="add('悠遊團體','card_group')">💳悠遊團體(S)</button>
+      <button class="card" onclick="add('悠遊優待','card_discount')">💳悠遊優待(D)</button>
+      <button class="free" onclick="add('免費項目','free')">🆓免費(F)</button>
+      <button class="clear" onclick="clearInput()">⌫清除(Esc)</button>
+      <button class="checkout" onclick="checkout()">💰結帳(Enter)</button>
+    </div>
 
-  <div class="ticketNo" id="ticketId">票號：讀取中...</div>
-
-  <div class="row" id="type">票種：--</div>
-  <div class="row" id="money">💰 金額：0</div>
-  <div class="row" id="people">👥 人數：0 人</div>
-
-  <div class="status ok" id="status">🟢 有效票券</div>
-
-  <div class="qr" id="qrBox"></div>
-
-  <div class="footer">
-    後慈湖售票系統 v2.0 PRO
+    <div class="panel" style="justify-content: center;">
+      <button class="clear-all" onclick="reset()">❌ 全部重設 (Delete)</button>
+    </div>
   </div>
 
+  <div class="panel">
+    <h2 style="margin-top:0">🧾 當前明細</h2>
+    <div id="list">
+      🎫 現金全票: 0<br>
+      👥 現金團體: 0<br>
+      🧓 現金優待: 0<br>
+      💳 悠遊全票: 0<br>
+      💳 悠遊團體: 0<br>
+      💳 悠遊優待: 0<br>
+      🆓 免費項目: 0
+    </div>
+    <div id="warn"></div>
+    <div class="total-label">應收總計</div>
+    <div class="total" id="total">0</div>
+    <div id="lastTicket">最後票號：---</div>
+  </div>
 </div>
 
 <script>
+let input = "";
+let data = { cash_full:0, cash_group:0, cash_discount:0, card_full:0, card_group:0, card_discount:0, free:0 };
+let printing = false;
 
-/* 讀網址參數 */
-function getParam(name){
-  const url = new URL(window.location.href);
-  return url.searchParams.get(name);
+function syncInput() { input = document.getElementById("inputQty").value.replace(/\D/g, ""); }
+function updateDisplay(){ document.getElementById("inputQty").value = input; }
+
+function add(name, type){
+  let qty = (input === "" || input === "0") ? 1 : parseInt(input);
+  data[type] += qty;
+  document.getElementById("currentType").innerText = "👉 已加入 " + name + " x" + qty;
+  input = "";
+  updateDisplay();
+  calc();
 }
 
-const id = getParam("id") || ("T" + Date.now());
+function clearInput(){ input = ""; updateDisplay(); }
 
-document.getElementById("ticketId").innerText = "票號：" + id;
+function reset(){
+  if(!confirm("確定要清空目前所有項目嗎？")) return;
+  for(let k in data) data[k]=0;
+  input = "";
+  document.getElementById("currentType").innerText = "🌿 後慈湖售票系統";
+  updateDisplay();
+  calc();
+}
 
-/* 顯示資料 */
-function showTicket(res){
+function calc(){
+  let total = 0;
+  total += data.cash_full * 100;
+  total += (data.cash_group >= 40 ? 80 : 100) * data.cash_group;
+  total += data.cash_discount * 50;
+  total += data.card_full * 100;
+  total += (data.card_group >= 40 ? 80 : 100) * data.card_group;
+  total += data.card_discount * 50;
 
-  document.getElementById("type").innerText =
-    "票種：" + (res.type || "--");
+  document.getElementById("total").innerText = total.toLocaleString();
+  document.getElementById("list").innerHTML = `
+    🎫 現金全票: ${data.cash_full}<br>
+    👥 現金團體: ${data.cash_group}<br>
+    🧓 現金優待: ${data.cash_discount}<br>
+    💳 悠遊全票: ${data.card_full}<br>
+    💳 悠遊團體: ${data.card_group}<br>
+    💳 悠遊優待: ${data.card_discount}<br>
+    🆓 免費項目: ${data.free}
+  `;
 
-  document.getElementById("money").innerText =
-    "💰 金額：" + Number(res.money || 0).toLocaleString("zh-TW");
+  let warn = "";
+  if(data.cash_group > 0 && data.cash_group < 40) warn += "⚠️ 現金團體未滿40人 (原價計算)<br>";
+  if(data.card_group > 0 && data.card_group < 40) warn += "⚠️ 悠遊團體未滿40人 (原價計算)";
+  document.getElementById("warn").innerHTML = warn;
+}
 
-  document.getElementById("people").innerText =
-    "👥 人數：" + (res.people || 0) + " 人";
+function checkout(){
+  if (printing) return;
+  let total = parseInt(document.getElementById("total").innerText.replace(/,/g, ""));
+  if(total === 0 && data.free === 0){ alert("⚠️ 請先選擇票種"); return; }
+  if(!confirm("確認結帳？\n總金額：$" + total)) return;
 
-  const status = document.getElementById("status");
+  printing = true;
+  document.getElementById("currentType").innerText = "⏳ 正在存檔中...";
 
-  status.innerText = res.status || "🟢 有效票券";
+  let ticketId = "HCH" + Date.now().toString().slice(-8) + Math.floor(Math.random() * 90 + 10);
+  let totalPeople = Object.values(data).reduce((a, b) => a + b, 0);
+  let order = { ticketId: ticketId, ...data, total: total, type: "後慈湖門票", people: totalPeople };
 
-  if((res.status || "").includes("成功") ||
-     (res.status || "").includes("有效")){
-      status.className = "status ok";
-  }else{
-      status.className = "status fail";
+  // --- 動態建立明細清單 (只列出大於 0 的) ---
+  let detailHtml = "";
+  const typeNames = {
+    cash_full: "現金全票", cash_group: "現金團體", cash_discount: "現金優待",
+    card_full: "悠遊全票", card_group: "悠遊團體", card_discount: "悠遊優待",
+    free: "免費項目"
+  };
+  for (let key in typeNames) {
+    if (data[key] > 0) {
+      detailHtml += `<div class="row"><span>${typeNames[key]}</span><span>x ${data[key]}</span></div>`;
+    }
   }
 
-  /* QR Code */
-  const url = window.location.href.split("?")[0] + "?id=" + id;
+  google.script.run
+    .withSuccessHandler(function(){
+      let appUrl = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
+      let ticketUrl = appUrl + "?page=status&id=" + ticketId; 
+      let qrApi = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(ticketUrl);
+      
+      let pwin = window.open("about:blank", "_blank");
+      if (!pwin) { alert("⚠️ 請允許彈出式視窗"); printing = false; return; }
 
-  document.getElementById("qrBox").innerHTML =
-    '<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='
-    + encodeURIComponent(url) + '">';
+      pwin.document.write(`
+        <html>
+        <head>
+          <style>
+            @page { size: 58mm auto; margin: 0; }
+            body { 
+              width: 46mm; margin: 0 auto; padding: 4mm 0;
+              font-family: "Microsoft JhengHei", sans-serif; color: #000; 
+            }
+            .center { text-align: center; }
+            .brand { font-size: 18px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 2px; }
+            .ticket-name { font-size: 15px; margin: 4px 0; font-weight: bold; }
+            .qr-area { text-align: center; margin: 6px 0; }
+            .qr-img { width: 38mm; height: 38mm; }
+            .info-section { 
+              font-size: 12px; line-height: 1.6; 
+              margin-top: 4px; padding-top: 4px;
+              border-top: 1px dashed #000; 
+            }
+            .row { display: flex; justify-content: space-between; }
+            .bold { font-weight: bold; }
+            .id-text { font-size: 10px; margin-top: 4px; color: #333; text-align:center; }
+            .footer { 
+              font-size: 13px; font-weight: bold; margin-top: 8px; 
+              border-top: 1px solid #000; padding-top: 2px; 
+            }
+          </style>
+        </head>
+        <body>
+          <div class="center">
+            <div class="brand">🌿 後慈湖</div>
+            <div class="ticket-name">入園憑證 (Ticket)</div>
+          </div>
+          <div class="qr-area"><img src="${qrApi}" class="qr-img"></div>
+          <div class="info-section">
+            <div class="bold">票種明細：</div>
+            ${detailHtml}
+            <div class="row" style="border-top: 1px solid #eee; margin-top:2px;">
+              <span class="bold">總計人數</span><span class="bold">${totalPeople} 人</span>
+            </div>
+            <div class="row">
+              <span class="bold">總計金額</span><span class="bold">NT$ ${total}</span>
+            </div>
+          </div>
+          <div class="id-text">票號：${ticketId}</div>
+          <div class="id-text">時間：${new Date().toLocaleString('zh-TW')}</div>
+          <div class="center footer">限當日有效 / 概不退費</div>
+          <script>
+            window.onload = function() { 
+              window.print(); 
+              setTimeout(function() { window.close(); }, 800); 
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      pwin.document.close();
+      finishCheckout(ticketId);
+    })
+    .withFailureHandler(function(err){
+      alert("❌ 存檔失敗：" + err.message);
+      printing = false;
+    })
+    .saveOrder(order);
 }
 
-/* Apps Script 模式 */
-if(typeof google !== "undefined" &&
-   google.script &&
-   google.script.run){
-
-    google.script.run
-      .withSuccessHandler(showTicket)
-      .getTicketInfo(id);
-
-}else{
-
-  /* GitHub 示範模式 */
-  showTicket({
-    type:"現金團體",
-    money:200,
-    people:2,
-    status:"🟢 有效票券"
-  });
+function finishCheckout(id) {
+  document.getElementById("lastTicket").innerText = "最後票號：" + id;
+  for(let k in data) data[k]=0;
+  input = "";
+  printing = false;
+  document.getElementById("currentType").innerText = "✅ 結帳成功";
+  updateDisplay();
+  calc();
 }
+
+document.addEventListener("keydown", function(e){
+  if (e.target.id === "inputQty") return;
+  let key = e.key.toLowerCase();
+  if (!isNaN(e.key)) { if (input.length < 3) { input += e.key; updateDisplay(); } }
+  if (e.key === "Backspace") { input = input.slice(0, -1); updateDisplay(); }
+  if (key === "q") add('現金全票','cash_full');
+  if (key === "w") add('現金團體','cash_group');
+  if (key === "e") add('現金優待','cash_discount');
+  if (key === "a") add('悠遊全票','card_full');
+  if (key === "s") add('悠遊團體','card_group');
+  if (key === "d") add('悠遊優待','card_discount');
+  if (key === "f") add('免費項目','free');
+  if (e.key === "Enter") checkout();
+  if (e.key === "Escape") clearInput();
+  if (e.key === "Delete") reset();
+});
 
 </script>
-
 </body>
 </html>
