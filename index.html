@@ -8,9 +8,14 @@
 
 <style>
 :root {
-    --bg-color: #060b13;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --border-light: rgba(255, 255, 255, 0.12);
+    --bg: #020617;
+    --card: rgba(15, 23, 42, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    /* 高級配色：森林綠、星空藍、皇家紫、琥珀金 */
+    --clr-main: #10b981;
+    --clr-b: #3b82f6;
+    --clr-a: #8b5cf6;
+    --clr-stats: #f59e0b;
 }
 
 *{
@@ -21,61 +26,57 @@
 }
 
 body{
-    font-family: "PingFang TC", "Hiragino Sans GB", "Microsoft JhengHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
     min-height: 100vh;
     background: 
-        radial-gradient(circle at 50% -20%, #1e3a8a, transparent 50%),
-        radial-gradient(circle at 0% 100%, #064e3b, transparent 50%),
-        var(--bg-color) url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
-    background-blend-mode: overlay;
-    color: #fff;
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.08), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08), transparent 40%),
+        var(--bg);
+    color: #f8fafc;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* 🌿 高級感 Header */
+/* 🌿 頂級 Header */
 header{
     width: 100%;
     text-align: center;
-    padding: 70px 20px 40px;
+    padding: 80px 20px 40px;
 }
 
-.logo-wrap {
+.logo-glow{
     position: relative;
-    display: inline-block;
+    font-size: 64px;
     margin-bottom: 20px;
+    filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.3));
+    animation: pulse 4s ease-in-out infinite;
 }
 
-.logo{
-    font-size: 60px;
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
-    animation: float 5s ease-in-out infinite;
-}
-
-@keyframes float{
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(5deg); }
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
 }
 
 .title{
-    font-size: 38px;
-    font-weight: 800;
-    letter-spacing: 6px;
-    background: linear-gradient(to bottom, #ffffff 0%, #a5b4fc 100%);
+    font-size: 40px;
+    font-weight: 200; /* 極細或極粗才是高級感 */
+    letter-spacing: 12px;
+    background: linear-gradient(to bottom, #ffffff 0%, #94a3b8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
-}
-
-.sub{
-    font-size: 12px;
-    letter-spacing: 8px;
-    color: rgba(255,255,255,0.4);
+    margin-bottom: 15px;
     text-transform: uppercase;
 }
 
-/* 🧊 面板 */
+.sub{
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* 🧊 主容器 */
 .panel{
     width: 100%;
     max-width: 440px;
@@ -83,117 +84,127 @@ header{
 }
 
 .menu{
-    background: var(--card-bg);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    background: var(--card);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border-radius: 40px;
-    padding: 30px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px var(--border-light);
+    padding: 35px 25px;
+    box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
+    border: 1px solid var(--border);
 }
 
-/* 🔘 按鈕設計 */
+/* 🔘 旗艦按鈕 */
 .nav-btn{
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 18px 20px;
+    padding: 22px;
     margin-bottom: 20px;
-    border-radius: 24px;
+    border-radius: 28px;
     text-decoration: none;
     color: #fff;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.3s ease;
     position: relative;
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
-.nav-btn:last-child { margin-bottom: 0; }
+.nav-btn:active { transform: scale(0.97); }
 
-.nav-btn:active{
-    transform: scale(0.94);
+/* 發光特效 */
+.nav-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    padding: 1.5px; 
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent, transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
 }
 
-/* 🎨 顏色與發光 */
-.btn-main { background: linear-gradient(135deg, #065f46, #10b981); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2); }
-.btn-b { background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
-.btn-a { background: linear-gradient(135deg, #5b21b6, #8b5cf6); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2); }
-.btn-stats { background: linear-gradient(135deg, #92400e, #f59e0b); color: #fff; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2); }
+/* 個別色調 */
+.btn-main:hover { background: rgba(16, 185, 129, 0.1); border-color: var(--clr-main); box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+.btn-b:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--clr-b); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+.btn-a:hover { background: rgba(139, 92, 246, 0.1); border-color: var(--clr-a); box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); }
+.btn-stats:hover { background: rgba(245, 158, 11, 0.1); border-color: var(--clr-stats); box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
 
 .left{
     display: flex;
     align-items: center;
 }
 
-.icon-box {
-    width: 48px;
-    height: 48px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin-right: 18px;
-    box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
-}
-
-.btn-text {
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-}
-
-.arrow{
-    width: 32px;
-    height: 32px;
-    background: rgba(255,255,255,0.1);
+.icon-circle {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    opacity: 0.8;
+    font-size: 20px;
+    margin-right: 18px;
+    background: rgba(255,255,255,0.05);
 }
+
+.btn-main .icon-circle { color: var(--clr-main); border: 1px solid rgba(16, 185, 129, 0.3); }
+.btn-b .icon-circle { color: var(--clr-b); border: 1px solid rgba(59, 130, 246, 0.3); }
+.btn-a .icon-circle { color: var(--clr-a); border: 1px solid rgba(139, 92, 246, 0.3); }
+.btn-stats .icon-circle { color: var(--clr-stats); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+.btn-text {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.arrow{
+    font-size: 14px;
+    color: #475569;
+    transition: 0.3s;
+}
+
+.nav-btn:hover .arrow { color: #fff; transform: translateX(5px); }
 
 /* 底部裝飾 */
 .quick{
-    margin-top: 30px;
+    margin-top: 35px;
     text-align: center;
-    font-size: 13px;
-    color: rgba(255,255,255,0.3);
-    line-height: 1.8;
-    letter-spacing: 1px;
+    font-size: 11px;
+    color: #475569;
+    letter-spacing: 2px;
+    line-height: 2;
 }
 
 .badges{
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 .badge{
-    padding: 6px 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.03);
-    font-size: 11px;
-    border: 1px solid var(--border-light);
-    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+    color: #64748b;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 4px;
+    letter-spacing: 1px;
 }
 
 footer{
     margin-top: auto;
     padding: 40px;
-    font-size: 10px;
-    color: rgba(255,255,255,0.2);
-    letter-spacing: 4px;
-    text-transform: uppercase;
+    font-size: 9px;
+    color: #334155;
+    letter-spacing: 5px;
 }
 
-/* 📱 最佳化 */
+/* 📱 手機優化 */
 @media(max-width:480px){
-    .title { font-size: 32px; }
-    .btn-text { font-size: 19px; }
+    .title { font-size: 32px; letter-spacing: 8px; }
+    .btn-text { font-size: 18px; }
 }
 </style>
 </head>
@@ -201,11 +212,9 @@ footer{
 <body>
 
 <header>
-    <div class="logo-wrap">
-        <div class="logo">🏞️</div>
-    </div>
+    <div class="logo-glow">🏞️</div>
     <div class="title">後慈湖售票系統</div>
-    <div class="sub">Executive Cloud Management</div>
+    <div class="sub">TICKET MANAGEMENT UNIT</div>
 </header>
 
 <div class="panel">
@@ -213,51 +222,51 @@ footer{
 
         <a href="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec" class="nav-btn btn-main">
             <div class="left">
-                <div class="icon-box">🎟️</div>
+                <div class="icon-circle">🎟️</div>
                 <span class="btn-text">開始售票</span>
             </div>
-            <div class="arrow">▶</div>
+            <span class="arrow">SHIPPING ❯</span>
         </a>
 
         <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn btn-b">
             <div class="left">
-                <div class="icon-box">📱</div>
+                <div class="icon-circle">📱</div>
                 <span class="btn-text">驗票入口 B 點</span>
             </div>
-            <div class="arrow">▶</div>
+            <span class="arrow">VERIFY ❯</span>
         </a>
 
         <a href="https://cihu2026.github.io/Out/" class="nav-btn btn-a">
             <div class="left">
-                <div class="icon-box">🚪</div>
+                <div class="icon-circle">🚪</div>
                 <span class="btn-text">出園 / A 點</span>
             </div>
-            <div class="arrow">▶</div>
+            <span class="arrow">EXIT ❯</span>
         </a>
 
         <a href="https://cihu2026.github.io/Monitor/" class="nav-btn btn-stats">
             <div class="left">
-                <div class="icon-box">📊</div>
+                <div class="icon-circle">📊</div>
                 <span class="btn-text">今日統計</span>
             </div>
-            <div class="arrow">▶</div>
+            <span class="arrow">REPORT ❯</span>
         </a>
 
         <div class="quick">
-            NETWORK STATUS: SECURED<br>
-            REAL-TIME DATA SYNCHRONIZATION
+            SYSTEM VERSION 3.0.4-PRO<br>
+            STABLE CONNECTION // ENCRYPTED
         </div>
 
         <div class="badges">
-            <div class="badge">V3.0 PRO</div>
-            <div class="badge">ENCRYPTED</div>
-            <div class="badge">CLOUD</div>
+            <div class="badge">SECURITY</div>
+            <div class="badge">OFFICIAL</div>
+            <div class="badge">STABLE</div>
         </div>
     </div>
 </div>
 
 <footer>
-    Houcihu Management System © 2026
+    HOUCIHU CLOUD SERVICES © 2026
 </footer>
 
 </body>
