@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>🎟️ 後慈湖售票系統 v1.2 </title>
+<title>🎟️ 後慈湖售票系統 PRO</title>
 
 <style>
 *{
@@ -18,7 +18,8 @@ body{
     font-family:"Microsoft JhengHei","PingFang TC",sans-serif;
     min-height:100vh;
     background:
-    linear-gradient(rgba(8,18,34,.55),rgba(8,18,34,.78)),
+    radial-gradient(circle at 20% 20%, rgba(0,255,180,.12), transparent 40%),
+    linear-gradient(rgba(8,18,34,.6),rgba(8,18,34,.85)),
     url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80")
     center/cover no-repeat fixed;
     color:#fff;
@@ -28,35 +29,41 @@ body{
     overflow:hidden;
 }
 
-/* 🌿 hidden signature AL-2026 */
-
+/* 🌿 Header */
 header{
     width:100%;
     text-align:center;
-    padding:42px 18px 22px;
+    padding:50px 18px 24px;
 }
 
 .logo{
-    font-size:46px;
-    margin-bottom:8px;
-    filter:drop-shadow(0 6px 12px rgba(0,0,0,.45));
+    font-size:52px;
+    margin-bottom:10px;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-6px)}
 }
 
 .title{
     font-size:34px;
     font-weight:900;
-    color:#ffb15a;
     letter-spacing:2px;
-    text-shadow:0 4px 12px rgba(0,0,0,.55);
+    background:linear-gradient(90deg,#ffd89b,#ffb347);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
 .sub{
     margin-top:8px;
-    font-size:16px;
-    letter-spacing:3px;
-    color:rgba(255,255,255,.78);
+    font-size:14px;
+    letter-spacing:4px;
+    color:rgba(255,255,255,.6);
 }
 
+/* 🧊 面板 */
 .panel{
     width:100%;
     max-width:420px;
@@ -64,71 +71,94 @@ header{
 }
 
 .menu{
-    background:rgba(255,255,255,.10);
-    backdrop-filter:blur(12px);
-    border-radius:28px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border-radius:30px;
     padding:24px;
-    box-shadow:0 14px 28px rgba(0,0,0,.32);
-    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 20px 40px rgba(0,0,0,.45);
+    border:1px solid rgba(255,255,255,.1);
 }
 
+/* 🔘 按鈕 */
 .nav-btn{
     display:flex;
     align-items:center;
     justify-content:space-between;
     width:100%;
-    padding:20px 22px;
+    padding:20px;
     margin-bottom:16px;
-    border-radius:22px;
+    border-radius:20px;
     text-decoration:none;
     color:#fff;
-    font-size:24px;
+    font-size:22px;
     font-weight:800;
-    transition:.15s ease;
-    box-shadow:0 8px 16px rgba(0,0,0,.25);
+    transition:.2s ease;
+    position:relative;
+    overflow:hidden;
 }
 
-.nav-btn:last-child{
-    margin-bottom:0;
+.nav-btn::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,.2),transparent);
+    opacity:0;
+    transition:.4s;
 }
 
 .nav-btn:active{
-    transform:scale(.97);
+    transform:scale(.96);
 }
 
+.nav-btn:hover::after{
+    opacity:1;
+}
+
+/* 🎨 顏色升級 */
+.main{
+    background:linear-gradient(135deg,#1fa35b,#38d996);
+    box-shadow:0 10px 20px rgba(0,255,150,.25);
+}
+
+.verify{
+    background:linear-gradient(135deg,#1b6ed8,#4fa3ff);
+    box-shadow:0 10px 20px rgba(0,120,255,.25);
+}
+
+.stats{
+    background:linear-gradient(135deg,#c58a00,#ffd34d);
+    color:#2b1c00;
+    box-shadow:0 10px 20px rgba(255,200,0,.35);
+}
+
+/* icon */
 .left{
     display:flex;
     align-items:center;
 }
 
 .icon{
-    font-size:30px;
+    font-size:28px;
     margin-right:14px;
+    transition:.2s;
+}
+
+.nav-btn:hover .icon{
+    transform:scale(1.2);
 }
 
 .arrow{
-    font-size:24px;
-    opacity:.75;
+    font-size:22px;
+    opacity:.6;
 }
 
-.main{
-    background:linear-gradient(135deg,#1d7f29,#2ea043);
-}
-
-.verify{
-    background:linear-gradient(135deg,#0a63b7,#2b7cd3);
-}
-
-.stats{
-    background:linear-gradient(135deg,#7a4b00,#c17d11);
-}
-
+/* 底部 */
 .quick{
-    margin-top:18px;
+    margin-top:20px;
     text-align:center;
-    font-size:15px;
-    color:rgba(255,255,255,.72);
-    line-height:1.8;
+    font-size:14px;
+    color:rgba(255,255,255,.6);
+    line-height:1.7;
 }
 
 .badges{
@@ -142,38 +172,24 @@ header{
 .badge{
     padding:8px 14px;
     border-radius:999px;
-    background:rgba(255,255,255,.12);
-    font-size:13px;
-    color:#fff;
+    background:rgba(255,255,255,.1);
+    font-size:12px;
+    backdrop-filter:blur(8px);
 }
 
+/* footer */
 footer{
     margin-top:auto;
-    padding:26px;
-    font-size:13px;
-    color:rgba(255,255,255,.42);
+    padding:24px;
+    font-size:12px;
+    color:rgba(255,255,255,.35);
     letter-spacing:2px;
 }
 
 /* 📱 */
 @media(max-width:480px){
-
-    .logo{
-        font-size:38px;
-    }
-
-    .title{
-        font-size:28px;
-    }
-
-    .nav-btn{
-        font-size:21px;
-        padding:18px;
-    }
-
-    .icon{
-        font-size:26px;
-    }
+    .title{font-size:28px;}
+    .nav-btn{font-size:20px;}
 }
 </style>
 </head>
@@ -181,13 +197,9 @@ footer{
 <body>
 
 <header>
-
     <div class="logo">🏞️</div>
-
     <div class="title">後慈湖售票系統</div>
-
-    <div class="sub">V1.2 🌿</div>
-
+    <div class="sub">PRO SYSTEM</div>
 </header>
 
 <div class="panel">
@@ -205,7 +217,7 @@ footer{
         <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn verify">
             <div class="left">
                 <span class="icon">📱</span>
-                驗票入口B點
+                驗票入口 B 點
             </div>
             <span class="arrow">›</span>
         </a>
@@ -218,23 +230,23 @@ footer{
             <span class="arrow">›</span>
         </a>
 
-         <a href="https://cihu2026.github.io/Out/" class="nav-btn stats">
+        <a href="https://cihu2026.github.io/Out/" class="nav-btn verify">
             <div class="left">
-                <span class="icon">📊</span>
-                志工老師A點
+                <span class="icon">🚪</span>
+                出園 / A 點
             </div>
             <span class="arrow">›</span>
         </a>
 
         <div class="quick">
-            ⚡ 正式營運版<br>
-            支援手機 / 平板 / 電腦
+            ⚡ 即時營運系統<br>
+            支援多設備同步
         </div>
 
         <div class="badges">
             <div class="badge">QR 驗票</div>
             <div class="badge">POS 系統</div>
-            <div class="badge">即時統計</div>
+            <div class="badge">Realtime</div>
         </div>
 
     </div>
@@ -242,7 +254,7 @@ footer{
 </div>
 
 <footer>
-Houcihu Scenic Ticketing System
+Houcihu Scenic Area Ticket System
 </footer>
 
 </body>
