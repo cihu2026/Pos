@@ -8,8 +8,9 @@
 
 <style>
 :root {
-    --glass-bg: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.15);
+    --bg-color: #060b13;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --border-light: rgba(255, 255, 255, 0.12);
 }
 
 *{
@@ -20,153 +21,179 @@
 }
 
 body{
-    font-family:"Microsoft JhengHei","PingFang TC",sans-serif;
-    min-height:100vh;
+    font-family: "PingFang TC", "Hiragino Sans GB", "Microsoft JhengHei", sans-serif;
+    min-height: 100vh;
     background: 
-        radial-gradient(circle at 10% 10%, rgba(31, 163, 91, 0.1), transparent 40%),
-        linear-gradient(rgba(8,18,34,0.75),rgba(8,18,34,0.9)),
-        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
-    color:#fff;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+        radial-gradient(circle at 50% -20%, #1e3a8a, transparent 50%),
+        radial-gradient(circle at 0% 100%, #064e3b, transparent 50%),
+        var(--bg-color) url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
+    background-blend-mode: overlay;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* 🌿 高級感 Header */
 header{
-    width:100%;
-    text-align:center;
-    padding:50px 18px 25px;
+    width: 100%;
+    text-align: center;
+    padding: 70px 20px 40px;
+}
+
+.logo-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
 }
 
 .logo{
-    font-size:52px;
-    margin-bottom:10px;
-    animation: float 4s ease-in-out infinite;
+    font-size: 60px;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+    animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-8px)}
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
 }
 
 .title{
-    font-size:34px;
-    font-weight:900;
-    letter-spacing:2px;
-    background: linear-gradient(135deg, #fff, #ffd89b);
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    background: linear-gradient(to bottom, #ffffff 0%, #a5b4fc 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
 }
 
 .sub{
-    margin-top:8px;
-    font-size:13px;
-    letter-spacing:4px;
-    color:rgba(255,255,255,.4);
+    font-size: 12px;
+    letter-spacing: 8px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
 }
 
+/* 🧊 面板 */
 .panel{
-    width:100%;
-    max-width:420px;
-    padding:0 22px;
+    width: 100%;
+    max-width: 440px;
+    padding: 0 24px;
 }
 
 .menu{
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius:30px;
-    padding:24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    border: 1px solid var(--glass-border);
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 40px;
+    padding: 30px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px var(--border-light);
 }
 
+/* 🔘 按鈕設計 */
 .nav-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    width:100%;
-    padding:20px 22px;
-    margin-bottom:15px;
-    border-radius:20px;
-    text-decoration:none;
-    color:#fff;
-    font-size:21px;
-    font-weight:800;
-    transition: all 0.2s ease;
-    position:relative;
-    overflow:hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    border-radius: 24px;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .nav-btn:last-child { margin-bottom: 0; }
 
 .nav-btn:active{
-    transform: scale(0.96);
+    transform: scale(0.94);
 }
 
-/* 🎨 四色明確區分 */
-.main{
-    background: linear-gradient(135deg, #1fa35b, #38d996); /* 綠 */
-}
-
-.verify-b{
-    background: linear-gradient(135deg, #1b6ed8, #4fa3ff); /* 藍 */
-}
-
-.verify-a{
-    background: linear-gradient(135deg, #6d28d9, #a855f7); /* 紫 - 明確區分 */
-}
-
-.stats{
-    background: linear-gradient(135deg, #c58a00, #ffd34d); /* 黃 */
-    color:#2b1c00;
-}
+/* 🎨 顏色與發光 */
+.btn-main { background: linear-gradient(135deg, #065f46, #10b981); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2); }
+.btn-b { background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
+.btn-a { background: linear-gradient(135deg, #5b21b6, #8b5cf6); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2); }
+.btn-stats { background: linear-gradient(135deg, #92400e, #f59e0b); color: #fff; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2); }
 
 .left{
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
 }
 
-.icon{
-    font-size:26px;
-    margin-right:14px;
+.icon-box {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-right: 18px;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+}
+
+.btn-text {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
 }
 
 .arrow{
-    font-size:22px;
-    opacity:.5;
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.8;
 }
 
+/* 底部裝飾 */
 .quick{
-    margin-top:20px;
-    text-align:center;
-    font-size:14px;
-    color:rgba(255,255,255,.5);
-    line-height:1.7;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.8;
+    letter-spacing: 1px;
 }
 
 .badges{
-    margin-top:18px;
-    display:flex;
-    justify-content:center;
-    gap:8px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 }
 
 .badge{
-    padding:6px 12px;
-    border-radius:10px;
-    background: rgba(255,255,255,.08);
-    font-size:11px;
-    border: 1px solid rgba(255,255,255,.1);
+    padding: 6px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    font-size: 11px;
+    border: 1px solid var(--border-light);
+    color: rgba(255,255,255,0.5);
 }
 
 footer{
-    margin-top:auto;
-    padding:25px;
-    font-size:11px;
-    color:rgba(255,255,255,.3);
-    letter-spacing:2px;
+    margin-top: auto;
+    padding: 40px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* 📱 最佳化 */
+@media(max-width:480px){
+    .title { font-size: 32px; }
+    .btn-text { font-size: 19px; }
 }
 </style>
 </head>
@@ -174,61 +201,63 @@ footer{
 <body>
 
 <header>
-    <div class="logo">🏞️</div>
+    <div class="logo-wrap">
+        <div class="logo">🏞️</div>
+    </div>
     <div class="title">後慈湖售票系統</div>
-    <div class="sub">PRO SYSTEM</div>
+    <div class="sub">Executive Cloud Management</div>
 </header>
 
 <div class="panel">
     <div class="menu">
 
-        <a href="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec" class="nav-btn main">
+        <a href="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec" class="nav-btn btn-main">
             <div class="left">
-                <span class="icon">🎟️</span>
-                開始售票
+                <div class="icon-box">🎟️</div>
+                <span class="btn-text">開始售票</span>
             </div>
-            <span class="arrow">›</span>
+            <div class="arrow">▶</div>
         </a>
 
-        <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn verify-b">
+        <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn btn-b">
             <div class="left">
-                <span class="icon">📱</span>
-                驗票入口 B 點
+                <div class="icon-box">📱</div>
+                <span class="btn-text">驗票入口 B 點</span>
             </div>
-            <span class="arrow">›</span>
+            <div class="arrow">▶</div>
         </a>
 
-        <a href="https://cihu2026.github.io/Out/" class="nav-btn verify-a">
+        <a href="https://cihu2026.github.io/Out/" class="nav-btn btn-a">
             <div class="left">
-                <span class="icon">🚪</span>
-                出園 / A 點
+                <div class="icon-box">🚪</div>
+                <span class="btn-text">出園 / A 點</span>
             </div>
-            <span class="arrow">›</span>
+            <div class="arrow">▶</div>
         </a>
 
-        <a href="https://cihu2026.github.io/Monitor/" class="nav-btn stats">
+        <a href="https://cihu2026.github.io/Monitor/" class="nav-btn btn-stats">
             <div class="left">
-                <span class="icon">📊</span>
-                今日統計
+                <div class="icon-box">📊</div>
+                <span class="btn-text">今日統計</span>
             </div>
-            <span class="arrow">›</span>
+            <div class="arrow">▶</div>
         </a>
 
         <div class="quick">
-            ⚡ 即時營運系統<br>
-            支援多設備同步
+            NETWORK STATUS: SECURED<br>
+            REAL-TIME DATA SYNCHRONIZATION
         </div>
 
         <div class="badges">
-            <div class="badge">QR 驗票</div>
-            <div class="badge">POS 系統</div>
-            <div class="badge">Realtime</div>
+            <div class="badge">V3.0 PRO</div>
+            <div class="badge">ENCRYPTED</div>
+            <div class="badge">CLOUD</div>
         </div>
     </div>
 </div>
 
 <footer>
-Houcihu Scenic Area Ticket System
+    Houcihu Management System © 2026
 </footer>
 
 </body>
