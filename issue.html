@@ -201,13 +201,13 @@ function checkout(){
   if(!confirm("確認結帳？\n總金額：$" + total)) return;
 
   printing = true;
-  document.getElementById("currentType").innerText = "⏳ 正在存檔中...";
+  document.getElementById("currentType").innerText = "⏳ 處理中...";
 
   let ticketId = "HCH" + Date.now().toString().slice(-8) + Math.floor(Math.random() * 90 + 10);
   let totalPeople = Object.values(data).reduce((a, b) => a + b, 0);
   let order = { ticketId: ticketId, ...data, total: total, type: "後慈湖門票", people: totalPeople };
 
-  // --- ✨ 新增：建立列印詳細票種清單 ---
+  // --- 你保留的票種明細邏輯 ---
   let detailHtml = "";
   const typeNames = {
     cash_full: "🎫 現金全票", cash_group: "👥 現金團體", cash_discount: "🧓 現金優待",
@@ -223,51 +223,65 @@ function checkout(){
     }
   }
 
-  google.script.run
-    .withSuccessHandler(function(){
-      // 🚀 請確保這裡的網址與您部署的網址一致
-      let appUrl = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
-      let ticketUrl = appUrl + "?page=status&id=" + ticketId; 
-      let qrApi = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(ticketUrl);
-      
-      let pwin = window.open("about:blank", "_blank");
-      if (!pwin) {
-        alert("⚠️ 請允許彈出式視窗，才能列印票券");
-        printing = false;
-        return;
-        }
-      pwin.document.write(`
-        <html>
-        <head>
-          <style>
-            body { font-family: sans-serif; padding: 15px; text-align: center; color: #000; width: 250px; }
-            .line { border-top: 1px dashed #000; margin: 10px 0; }
-            .details { text-align: left; font-size: 14px; margin: 10px 0; }
-          </style>
-        </head>
-        <body>
-          <h2 style="margin:10px 0;">🌿後慈湖入園券</h2>
-          <p style="font-size: 28px;">票號：${ticketId}</p>
-          <div class="line"></div>
-          <div class="details">${detailHtml}</div>
-          <div class="line"></div>
-          <p style="font-size: 25px; font-weight: bold;">總人數：${totalPeople} 位<br>總金額：$${total}</p>
-          <img src="${qrApi}" style="width:180px; margin: 15px 0;">
-          <p style="font-size: 20px;">請出示此券核銷入場<br>${new Date().toLocaleString()}</p>
-          <script>
-            window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 500); };
-          <\/script>
-        </body>
-        </html>
-      `);
-      pwin.document.close();
-      finishCheckout(ticketId);
-    })
-    .withFailureHandler(function(err){
-      alert("❌ 存檔失敗：" + err.message);
+  // 定義列印動作
+  const doPrint = () => {
+    let appUrl = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
+    let ticketUrl = appUrl + "?page=status&id=" + ticketId; 
+    let qrApi = "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" + encodeURIComponent(ticketUrl);
+    
+    let pwin = window.open("about:blank", "_blank");
+    if (!pwin) {
+      alert("⚠️ 請允許彈出式視窗，才能列印票券");
       printing = false;
-    })
-    .saveOrder(order);
+      return;
+    }
+
+    pwin.document.write(`
+      <html>
+      <head>
+        <style>
+          body { font-family: sans-serif; padding: 10px; text-align: center; color: #000; width: 48mm; margin: 0 auto; }
+          .line { border-top: 1px dashed #000; margin: 8px 0; }
+          .details { text-align: left; font-size: 13px; margin: 8px 0; }
+          h2 { margin: 5px 0; font-size: 18px; }
+          p { margin: 3px 0; }
+        </style>
+      </head>
+      <body>
+        <h2>🌿後慈湖入園券</h2>
+        <p style="font-size: 14px;">票號：${ticketId}</p>
+        <div class="line"></div>
+        <div class="details">${detailHtml}</div>
+        <div class="line"></div>
+        <p style="font-size: 16px; font-weight: bold;">總人數：${totalPeople} 位<br>總金額：$${total}</p>
+        <img src="${qrApi}" style="width:35mm; margin: 10px 0;">
+        <p style="font-size: 12px;">※限當日有效※<br>請出示此券核銷入場<br>${new Date().toLocaleString()}</p>
+        <script>
+          window.onload = function() { 
+            window.print(); 
+            setTimeout(function() { window.close(); }, 1000); 
+          };
+        <\/script>
+      </body>
+      </html>
+    `);
+    pwin.document.close();
+    finishCheckout(ticketId); // 清空介面
+  };
+
+  // 執行存檔並列印
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run
+      .withSuccessHandler(doPrint)
+      .withFailureHandler(function(err){
+        alert("❌ 存檔失敗，但仍將開啟列印：\n" + err.message);
+        doPrint(); // 存檔失敗也要能列印，才不會卡住生意
+      })
+      .saveOrder(order);
+  } else {
+    // 預覽環境下直接列印
+    doPrint();
+  }
 }
 
 function finishCheckout(id) {
