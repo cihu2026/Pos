@@ -16,7 +16,7 @@ function getSheet() {
 // ===============================
 function doGet(e) {
   if (e.parameter.action === "getCount") {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = SpreadsheetApp.openById(SHEET_ID);
     const logSheet = ss.getSheetByName("RealTimeStatus");
     const counts = getCounts(logSheet);
     return ContentService.createTextOutput(JSON.stringify(counts))
@@ -25,7 +25,7 @@ function doGet(e) {
 
   const page = e?.parameter?.page || "index";
   if (page === "status") {
-    return HtmlService.createHtmlOutputFromFile("Status").addMetaTag("viewport", "width=device-width, initial-scale=1");
+    return HtmlService.createHtmlOutputFromFile("stats").addMetaTag("viewport", "width=device-width, initial-scale=1");
   }
   return HtmlService.createHtmlOutputFromFile("index").addMetaTag("viewport", "width=device-width, initial-scale=1");
 }
