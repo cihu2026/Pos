@@ -3,14 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>🎟️ 後慈湖售票系統 PRO</title>
+<meta name="theme-color" content="#0f2f28">
+<title>後慈湖售票系統｜POS Portal</title>
 
 <style>
-:root {
-    --bg-color: #060b13;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --border-light: rgba(255, 255, 255, 0.12);
+:root{
+    --bg:#07130f;
+    --card:rgba(255,255,255,.12);
+    --card-strong:rgba(255,255,255,.18);
+    --line:rgba(255,255,255,.18);
+    --text:#f8fafc;
+    --muted:rgba(248,250,252,.68);
+    --green:#22c55e;
+    --blue:#38bdf8;
+    --violet:#a78bfa;
+    --amber:#fbbf24;
+    --shadow:0 24px 80px rgba(0,0,0,.42);
 }
 
 *{
@@ -20,245 +28,420 @@
     -webkit-tap-highlight-color:transparent;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-    font-family: "PingFang TC", "Hiragino Sans GB", "Microsoft JhengHei", sans-serif;
-    min-height: 100vh;
-    background: 
-        radial-gradient(circle at 50% -20%, #1e3a8a, transparent 50%),
-        radial-gradient(circle at 0% 100%, #064e3b, transparent 50%),
-        var(--bg-color) url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
-    background-blend-mode: overlay;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    min-height:100vh;
+    font-family:"PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+    color:var(--text);
+    display:flex;
+    justify-content:center;
+    background:
+        linear-gradient(180deg,rgba(6,78,59,.72),rgba(7,19,15,.94)),
+        radial-gradient(circle at 18% 14%,rgba(34,197,94,.35),transparent 32%),
+        radial-gradient(circle at 82% 10%,rgba(56,189,248,.22),transparent 28%),
+        radial-gradient(circle at 50% 105%,rgba(251,191,36,.16),transparent 34%),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85") center/cover fixed;
+    overflow-x:hidden;
 }
 
-/* 🌿 高級感 Header */
-header{
-    width: 100%;
-    text-align: center;
-    padding: 70px 20px 40px;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 70%);
 }
 
-.logo-wrap {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
+.app{
+    width:100%;
+    max-width:520px;
+    min-height:100vh;
+    padding:22px 18px 34px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    z-index:1;
 }
 
-.logo{
-    font-size: 60px;
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
-    animation: float 5s ease-in-out infinite;
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 12px 35px rgba(0,0,0,.18);
+}
+
+.brand-mini{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.06em;
+}
+
+.dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 6px rgba(34,197,94,.14),0 0 18px rgba(34,197,94,.85);
+}
+
+.pill{
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+    color:#dcfce7;
+    background:rgba(34,197,94,.16);
+    border:1px solid rgba(34,197,94,.28);
+}
+
+.hero{
+    text-align:center;
+    padding:48px 10px 28px;
+}
+
+.emblem{
+    width:92px;
+    height:92px;
+    margin:0 auto 18px;
+    display:grid;
+    place-items:center;
+    border-radius:30px;
+    font-size:46px;
+    background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.08));
+    border:1px solid rgba(255,255,255,.24);
+    box-shadow:0 24px 55px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.35);
+    animation:float 5s ease-in-out infinite;
 }
 
 @keyframes float{
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(5deg); }
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
 }
 
-.title{
-    font-size: 38px;
-    font-weight: 800;
-    letter-spacing: 6px;
-    background: linear-gradient(to bottom, #ffffff 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
+.kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+    padding:7px 12px;
+    border-radius:999px;
+    color:#bbf7d0;
+    background:rgba(21,128,61,.24);
+    border:1px solid rgba(187,247,208,.24);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.12em;
 }
 
-.sub{
-    font-size: 12px;
-    letter-spacing: 8px;
-    color: rgba(255,255,255,0.4);
-    text-transform: uppercase;
+h1{
+    font-size:clamp(32px,8vw,46px);
+    line-height:1.12;
+    letter-spacing:.08em;
+    font-weight:950;
+    text-shadow:0 10px 35px rgba(0,0,0,.45);
 }
 
-/* 🧊 面板 */
-.panel{
-    width: 100%;
-    max-width: 440px;
-    padding: 0 24px;
+.subtitle{
+    margin-top:12px;
+    color:var(--muted);
+    font-size:14px;
+    letter-spacing:.08em;
+    line-height:1.7;
 }
 
-.menu{
-    background: var(--card-bg);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-radius: 40px;
-    padding: 30px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px var(--border-light);
+.menu-card{
+    padding:20px;
+    border-radius:34px;
+    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));
+    border:1px solid var(--line);
+    backdrop-filter:blur(28px);
+    -webkit-backdrop-filter:blur(28px);
+    box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.2);
 }
 
-/* 🔘 按鈕設計 */
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+    padding:0 4px;
+}
+
+.section-title strong{
+    font-size:15px;
+    letter-spacing:.08em;
+}
+
+.section-title span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.nav-grid{
+    display:grid;
+    gap:14px;
+}
+
 .nav-btn{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 18px 20px;
-    margin-bottom: 20px;
-    border-radius: 24px;
-    text-decoration: none;
-    color: #fff;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.1);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:82px;
+    padding:16px;
+    border-radius:26px;
+    color:#fff;
+    text-decoration:none;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 16px 38px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.18);
+    transition:transform .22s ease, filter .22s ease, box-shadow .22s ease;
 }
 
-.nav-btn:last-child { margin-bottom: 0; }
+.nav-btn::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg,rgba(255,255,255,.22),transparent 38%,rgba(255,255,255,.12));
+    opacity:.9;
+}
+
+.nav-btn::after{
+    content:"";
+    position:absolute;
+    width:110px;
+    height:110px;
+    right:-36px;
+    bottom:-52px;
+    border-radius:50%;
+    background:rgba(255,255,255,.16);
+}
 
 .nav-btn:active{
-    transform: scale(0.94);
+    transform:scale(.975);
+    filter:brightness(1.08);
 }
 
-/* 🎨 顏色與發光 */
-.btn-main { background: linear-gradient(135deg, #065f46, #10b981); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2); }
-.btn-b { background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
-.btn-a { background: linear-gradient(135deg, #5b21b6, #8b5cf6); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2); }
-.btn-stats { background: linear-gradient(135deg, #92400e, #f59e0b); color: #fff; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2); }
+.btn-ticket{background:linear-gradient(135deg,#047857,#22c55e)}
+.btn-scan{background:linear-gradient(135deg,#075985,#38bdf8)}
+.btn-out{background:linear-gradient(135deg,#5b21b6,#a78bfa)}
+.btn-stats{background:linear-gradient(135deg,#92400e,#fbbf24)}
+
+.left,
+.go{
+    position:relative;
+    z-index:1;
+}
 
 .left{
-    display: flex;
-    align-items: center;
+    display:flex;
+    align-items:center;
+    gap:14px;
 }
 
-.icon-box {
-    width: 48px;
-    height: 48px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin-right: 18px;
-    box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+.icon{
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+    border-radius:18px;
+    background:rgba(255,255,255,.2);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.28);
+    font-size:25px;
 }
 
-.btn-text {
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
+.text strong{
+    display:block;
+    font-size:20px;
+    line-height:1.25;
+    letter-spacing:.04em;
 }
 
-.arrow{
-    width: 32px;
-    height: 32px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    opacity: 0.8;
+.text small{
+    display:block;
+    margin-top:5px;
+    color:rgba(255,255,255,.72);
+    font-size:12px;
+    letter-spacing:.08em;
 }
 
-/* 底部裝飾 */
-.quick{
-    margin-top: 30px;
-    text-align: center;
-    font-size: 13px;
-    color: rgba(255,255,255,0.3);
-    line-height: 1.8;
-    letter-spacing: 1px;
+.go{
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:rgba(255,255,255,.18);
+    font-weight:900;
+    font-size:18px;
 }
 
-.badges{
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
+.info-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:16px;
 }
 
-.badge{
-    padding: 6px 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.03);
-    font-size: 11px;
-    border: 1px solid var(--border-light);
-    color: rgba(255,255,255,0.5);
+.info{
+    padding:11px 8px;
+    text-align:center;
+    border-radius:18px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+.info b{
+    display:block;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.info span{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:.08em;
+}
+
+.notice{
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:22px;
+    color:rgba(255,255,255,.72);
+    font-size:12px;
+    line-height:1.7;
+    background:rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.12);
 }
 
 footer{
-    margin-top: auto;
-    padding: 40px;
-    font-size: 10px;
-    color: rgba(255,255,255,0.2);
-    letter-spacing: 4px;
-    text-transform: uppercase;
+    margin-top:auto;
+    padding-top:26px;
+    text-align:center;
+    color:rgba(255,255,255,.42);
+    font-size:11px;
+    letter-spacing:.12em;
+    line-height:1.8;
 }
 
-/* 📱 最佳化 */
-@media(max-width:480px){
-    .title { font-size: 32px; }
-    .btn-text { font-size: 19px; }
+@media (hover:hover){
+    .nav-btn:hover{
+        transform:translateY(-3px);
+        box-shadow:0 22px 48px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.24);
+    }
+}
+
+@media (max-width:420px){
+    .app{padding:16px 13px 28px}
+    .hero{padding-top:38px}
+    .menu-card{padding:15px;border-radius:30px}
+    .nav-btn{min-height:78px;padding:14px;border-radius:23px}
+    .text strong{font-size:18px}
+    .icon{width:48px;height:48px}
+    .info-row{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
+<main class="app">
+    <nav class="topbar" aria-label="系統狀態">
+        <div class="brand-mini"><span class="dot"></span> HOUCIHU POS</div>
+        <div class="pill">ONLINE</div>
+    </nav>
 
-<header>
-    <div class="logo-wrap">
-        <div class="logo">🏞️</div>
-    </div>
-    <div class="title">後慈湖售票系統</div>
-    <div class="sub">Executive Cloud Management</div>
-</header>
+    <header class="hero">
+        <div class="emblem">🏞️</div>
+        <div class="kicker">SECURE TICKETING PORTAL</div>
+        <h1>後慈湖<br>售票系統</h1>
+        <p class="subtitle">售票、驗票、出園與統計入口整合平台</p>
+    </header>
 
-<div class="panel">
-    <div class="menu">
-
-        <a href="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec" class="nav-btn btn-main">
-            <div class="left">
-                <div class="icon-box">🎟️</div>
-                <span class="btn-text">開始售票</span>
-            </div>
-            <div class="arrow">💚</div>
-        </a>
-
-        <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn btn-b">
-            <div class="left">
-                <div class="icon-box">📱</div>
-                <span class="btn-text">驗票入口 B 點</span>
-            </div>
-            <div class="arrow">🩵</div>
-        </a>
-
-        <a href="https://cihu2026.github.io/Out/" class="nav-btn btn-a">
-            <div class="left">
-                <div class="icon-box">🚪</div>
-                <span class="btn-text">出園 / A 點</span>
-            </div>
-            <div class="arrow">💜</div>
-        </a>
-
-        <a href="https://cihu2026.github.io/Monitor/" class="nav-btn btn-stats">
-            <div class="left">
-                <div class="icon-box">📊</div>
-                <span class="btn-text">今日統計</span>
-            </div>
-            <div class="arrow">🧡</div>
-        </a>
-
-        <div class="quick">
-            NETWORK STATUS: SECURED<br>
-            REAL-TIME DATA SYNCHRONIZATION
+    <section class="menu-card" aria-label="功能選單">
+        <div class="section-title">
+            <strong>功能入口</strong>
+            <span>請選擇作業項目</span>
         </div>
 
-        <div class="badges">
-            <div class="badge">V3.0 PRO</div>
-            <div class="badge">ENCRYPTED</div>
-            <div class="badge">CLOUD</div>
+        <div class="nav-grid">
+            <a href="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec" class="nav-btn btn-ticket">
+                <div class="left">
+                    <div class="icon">🎟️</div>
+                    <div class="text">
+                        <strong>開始售票</strong>
+                        <small>Ticket POS</small>
+                    </div>
+                </div>
+                <div class="go">›</div>
+            </a>
+
+            <a href="https://cihu2026.github.io/ticket-scan/" class="nav-btn btn-scan">
+                <div class="left">
+                    <div class="icon">📱</div>
+                    <div class="text">
+                        <strong>驗票入口 B 點</strong>
+                        <small>Check-in Gate B</small>
+                    </div>
+                </div>
+                <div class="go">›</div>
+            </a>
+
+            <a href="https://cihu2026.github.io/Out/" class="nav-btn btn-out">
+                <div class="left">
+                    <div class="icon">🚪</div>
+                    <div class="text">
+                        <strong>出園 / A 點</strong>
+                        <small>Exit Gate A</small>
+                    </div>
+                </div>
+                <div class="go">›</div>
+            </a>
+
+            <a href="https://cihu2026.github.io/Monitor/" class="nav-btn btn-stats">
+                <div class="left">
+                    <div class="icon">📊</div>
+                    <div class="text">
+                        <strong>今日統計</strong>
+                        <small>Live Dashboard</small>
+                    </div>
+                </div>
+                <div class="go">›</div>
+            </a>
         </div>
-    </div>
-</div>
 
-<footer>
-    Houcihu Management System © 2026
-</footer>
+        <div class="info-row">
+            <div class="info"><b>雲端同步</b><span>CLOUD</span></div>
+            <div class="info"><b>即時統計</b><span>LIVE DATA</span></div>
+            <div class="info"><b>行動優化</b><span>MOBILE</span></div>
+        </div>
 
+        <div class="notice">
+            ✅ 建議使用手機或平板操作。請確認網路正常後，再進行售票、驗票與出園登錄。
+        </div>
+    </section>
+
+    <footer>
+        HOUCIHU MANAGEMENT SYSTEM © 2026<br>
+        POS PORTAL V4.0
+    </footer>
+</main>
 </body>
 </html>
