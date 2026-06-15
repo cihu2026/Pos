@@ -1,6 +1,6 @@
 // ========================================
-// 後慈湖 POS Apps Script v4.2 PRO
-// GitHub Pages 售票前台專用後端
+// 後慈湖 POS Apps Script v4.3 PRO
+// GitHub Pages 售票前台專用後端｜免 POS_KEY 版
 // Designed & Developed by Abby Luo
 // ========================================
 
@@ -9,17 +9,10 @@ const LOG_SHEET = "log";
 const TZ = "Asia/Taipei";
 
 function props_(){ return PropertiesService.getScriptProperties(); }
-function posKey_(){ return String(props_().getProperty("POS_KEY") || "").trim(); }
 function sheetId_(){ return String(props_().getProperty("POS_SHEET_ID") || "").trim(); }
 function now_(){ return Utilities.formatDate(new Date(), TZ, "yyyy/MM/dd HH:mm:ss"); }
 function dayKey_(){ return Utilities.formatDate(new Date(), TZ, "yyyyMMdd"); }
 function json_(obj){ return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON); }
-
-function isAdmin_(e){
-  const key = String((e && e.parameter && e.parameter.key) || "").trim();
-  const saved = posKey_();
-  return saved !== "" && key !== "" && key === saved;
-}
 
 function db_(){
   const id = sheetId_();
@@ -57,21 +50,13 @@ function log_(action, msg){
 }
 
 function doGet(e){
-  return json_({success:true, ok:true, service:"Houcihu POS API", message:"POST only for sale actions"});
+  return json_({success:true, ok:true, service:"Houcihu POS API", mode:"no-key", message:"POST only for sale actions"});
 }
 
 function doPost(e){
   const action = String((e.parameter.action || "")).toLowerCase();
 
-  if(action === "verify"){
-    if(!isAdmin_(e)) return json_({success:false, ok:false, message:"unauthorized"});
-    return json_({success:true, ok:true, message:"verified", time:now_()});
-  }
-
-  if(["sale","summary"].indexOf(action) >= 0 && !isAdmin_(e)){
-    return json_({success:false, ok:false, message:"unauthorized"});
-  }
-
+  if(action === "verify") return json_({success:true, ok:true, message:"no key required", time:now_()});
   if(action === "sale") return saveSale_(e);
   if(action === "summary") return summary_();
 
