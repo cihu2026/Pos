@@ -256,6 +256,8 @@ button:active {
 </div>
 
 <script>
+var GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
+
 var input = "";
 
 var data = {
@@ -315,15 +317,39 @@ function reset() {
   calc();
 }
 
-function calc() {
+function getTotalPeople(source) {
+  var totalPeople = 0;
+  for (var k in source) {
+    totalPeople += Number(source[k]) || 0;
+  }
+  return totalPeople;
+}
+
+function getGroupTotal(source) {
+  return Number(source.cash_group || 0) + Number(source.card_group || 0);
+}
+
+function getGroupPrice(source) {
+  return getGroupTotal(source) >= 40 ? 80 : 100;
+}
+
+function calcTotal(source) {
+  var groupPrice = getGroupPrice(source);
   var total = 0;
 
-  total += data.cash_full * 100;
-  total += (data.cash_group >= 40 ? 80 : 100) * data.cash_group;
-  total += data.cash_discount * 50;
-  total += data.card_full * 100;
-  total += (data.card_group >= 40 ? 80 : 100) * data.card_group;
-  total += data.card_discount * 50;
+  total += Number(source.cash_full || 0) * 100;
+  total += Number(source.cash_group || 0) * groupPrice;
+  total += Number(source.cash_discount || 0) * 50;
+  total += Number(source.card_full || 0) * 100;
+  total += Number(source.card_group || 0) * groupPrice;
+  total += Number(source.card_discount || 0) * 50;
+
+  return total;
+}
+
+function calc() {
+  var total = calcTotal(data);
+  var groupTotal = getGroupTotal(data);
 
   document.getElementById("total").innerText = total.toLocaleString();
 
@@ -338,12 +364,12 @@ function calc() {
 
   var warn = "";
 
-  if (data.cash_group > 0 && data.cash_group < 40) {
-    warn += "⚠️ 現金團體未滿40人 (原價計算)<br>";
+  if (groupTotal > 0 && groupTotal < 40) {
+    warn += "⚠️ 團體票合計 " + groupTotal + " 人，未滿40人，目前以全票100元計算";
   }
 
-  if (data.card_group > 0 && data.card_group < 40) {
-    warn += "⚠️ 悠遊團體未滿40人 (原價計算)";
+  if (groupTotal >= 40) {
+    warn += "✅ 團體票合計 " + groupTotal + " 人，已套用團體價80元";
   }
 
   document.getElementById("warn").innerHTML = warn;
@@ -353,13 +379,10 @@ function checkout() {
   if (printing) return;
 
   var snapshot = JSON.parse(JSON.stringify(data));
+  var totalPeople = getTotalPeople(snapshot);
+  var total = calcTotal(snapshot);
 
-  var total = parseInt(
-    document.getElementById("total").innerText.replace(/,/g, ""),
-    10
-  ) || 0;
-
-  if (total === 0 && data.free === 0) {
+  if (total === 0 && snapshot.free === 0) {
     alert("⚠️ 請先選擇票種");
     return;
   }
@@ -367,20 +390,16 @@ function checkout() {
   printing = true;
   document.getElementById("currentType").innerText = "⏳ 處理中...";
 
-  // 🕒 產生精簡票號：HCH + YYMMDD + 3位隨機數 (總長度 12 碼，極省空間)
+  // 票號：HCH + YYMMDD + 4位隨機數
   var now = new Date();
   var yy = String(now.getFullYear()).slice(-2);
-  var mm = String(now.getMonth() + 1).padStart(2, '0');
-  var dd = String(now.getDate()).padStart(2, '0');
-  var randomNum =String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+  var mm = String(now.getMonth() + 1).padStart(2, "0");
+  var dd = String(now.getDate()).padStart(2, "0");
+  var randomNum = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
   var ticketId = "HCH" + yy + mm + dd + randomNum;
 
-  var totalPeople = 0;
-  for (var k in snapshot) {
-    totalPeople += Number(snapshot[k]) || 0;
-  }
-
   var order = {
+    action: "saveOrder",
     ticketId: ticketId,
     cash_full: snapshot.cash_full,
     cash_group: snapshot.cash_group,
@@ -390,7 +409,7 @@ function checkout() {
     card_discount: snapshot.card_discount,
     free: snapshot.free,
     total: total,
-    type: "後慈湖門票",
+    type: getGroupTotal(snapshot) > 0 ? "團體" : "散客",
     people: totalPeople
   };
 
@@ -407,19 +426,22 @@ function checkout() {
   pwin.document.write("<html><body style='font-family:sans-serif;text-align:center;padding:40px;'>票券產生中...</body></html>");
   pwin.document.close();
 
-  if (typeof google !== "undefined" && google.script && google.script.run) {
-    google.script.run
-      .withSuccessHandler(function() {
-        printTicket(ticketId, total, totalPeople, snapshot, pwin);
-      })
-      .withFailureHandler(function(err) {
-        alert("❌ 存檔失敗，但仍將列印\n" + err.message);
-        printTicket(ticketId, total, totalPeople, snapshot, pwin);
-      })
-      .saveOrder(order);
-  } else {
-    printTicket(ticketId, total, totalPeople, snapshot, pwin); 
-  }
+  fetch(GAS_WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(order)
+  })
+  .then(function() {
+    printTicket(ticketId, total, totalPeople, snapshot, pwin);
+  })
+  .catch(function(err) {
+    console.error(err);
+    alert("❌ 交易送出失敗，但仍將列印。請稍後確認 Google Sheet 是否有紀錄。");
+    printTicket(ticketId, total, totalPeople, snapshot, pwin);
+  });
 }
 
 function printTicket(ticketId, total, totalPeople, snapshot, pwin) {
@@ -455,7 +477,6 @@ function printTicket(ticketId, total, totalPeople, snapshot, pwin) {
 
   var style = ticketStyles[Math.floor(Math.random() * ticketStyles.length)];
   var ticketUrl = "https://cihu2026.github.io/ticket-scan/?id=" + encodeURIComponent(ticketId);
-
   var qrApi = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&ecc=M&margin=8&data=" + encodeURIComponent(ticketUrl);
 
   var html =
@@ -470,17 +491,11 @@ function printTicket(ticketId, total, totalPeople, snapshot, pwin) {
     "body{font-family:sans-serif;color:#000;}" +
     ".ticket{position:relative;overflow:hidden;background:#fff;padding:0 0 8px;margin-top:0;}" +
     ".ticket::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,0.025) 1px,transparent 1px);background-size:4px 4px;opacity:0.18;pointer-events:none;}" +
-    
-    /* 🖼️ 優化圖片區塊：高度加高到 100px，並移除灰階濾鏡，保持原本清晰度 */
     ".ticket-top-image{width:100%;height:100px;overflow:hidden;position:relative;background:#fff;}" +
     ".ticket-top-image img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.2) brightness(1.05);}" +
-    
     ".header{text-align:center;padding:8px 10px 0;}" +
     ".header h2{margin:2px 0;font-size:24px;font-weight:bold;}" +
-    
-    /* 📋 票號不換行設定 */
     ".header p{font-size:16px;margin:4px 0;white-space:nowrap;}" +
-    
     ".line{border-top:1px dashed #000;margin:8px 10px;}" +
     ".details{text-align:left;font-size:16px;margin:8px 12px;line-height:1.8;}" +
     ".qr-wrap{text-align:center;margin:12px 0;}" +
@@ -528,7 +543,7 @@ function finishCheckout(id) {
   input = "";
   printing = false;
 
-  document.getElementById("currentType").innerHTML ="<span style='color:#81c784'>✅ 結帳成功</span>";
+  document.getElementById("currentType").innerHTML = "<span style='color:#81c784'>✅ 結帳成功</span>";
 
   updateDisplay();
   calc();
