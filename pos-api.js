@@ -1,42 +1,31 @@
 /*
-Houcihu POS Portal v4.2
-GitHub Pages frontend API helper
+Houcihu POS Portal v4.3
+GitHub Pages frontend API helper - no login key
 Designed & Developed by Abby Luo
 */
 
 const POS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
-const POS_TOKEN_KEY = "houcihu_pos_token";
-const POS_API_KEY = "houcihu_pos_api_key";
 const POS_TIMEOUT = 10000;
 
-function posNow(){ return Date.now(); }
-
-function getPosKey(){
-  try{
-    const raw = localStorage.getItem(POS_TOKEN_KEY);
-    const token = raw ? JSON.parse(raw) : null;
-    if(token && token.auth && token.apiKey && posNow() < token.expire) return token.apiKey;
-  }catch(_){ }
-  return localStorage.getItem(POS_API_KEY) || "";
+function operatorName(){
+  return localStorage.getItem("houcihu_pos_operator") || "staff";
 }
 
-function savePosToken(apiKey, userName="staff"){
-  const now = posNow();
-  const token = { auth:true, apiKey, userName, time:now, expire:now + 12 * 60 * 60 * 1000 };
-  localStorage.setItem(POS_TOKEN_KEY, JSON.stringify(token));
-  localStorage.setItem(POS_API_KEY, apiKey);
-  return token;
+function setOperatorName(name="staff"){
+  localStorage.setItem("houcihu_pos_operator", String(name || "staff"));
 }
 
 function clearPosToken(){
-  localStorage.removeItem(POS_TOKEN_KEY);
-  localStorage.removeItem(POS_API_KEY);
+  localStorage.removeItem("houcihu_pos_token");
+  localStorage.removeItem("houcihu_pos_api_key");
 }
 
-function requirePosKey(){
-  const key = getPosKey();
-  if(!key) throw new Error("missing pos key");
-  return key;
+function getPosKey(){
+  return "";
+}
+
+function savePosToken(){
+  return { auth:true };
 }
 
 async function posApiPost(data={}, retry=1){
@@ -60,16 +49,14 @@ async function posApiPost(data={}, retry=1){
   }
 }
 
-async function verifyPosKey(apiKey){
-  const res = await posApiPost({ action:"verify", key:apiKey }, 0);
-  return !!(res && (res.success === true || res.ok === true));
+async function verifyPosKey(){
+  return true;
 }
 
 async function submitSale(payload){
   return posApiPost({
     action:"sale",
-    key:requirePosKey(),
-    operator:payload.operator || "staff",
+    operator:payload.operator || operatorName() || "staff",
     totalQty:payload.totalQty || 0,
     totalAmount:payload.totalAmount || 0,
     cashAmount:payload.cashAmount || 0,
@@ -81,5 +68,5 @@ async function submitSale(payload){
 }
 
 async function getTodaySummary(){
-  return posApiPost({ action:"summary", key:requirePosKey() }, 1);
+  return posApiPost({ action:"summary" }, 1);
 }
