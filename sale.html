@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#06251e">
+<title>後慈湖｜售票作業</title>
+<link rel="stylesheet" href="print.css?v=4.2">
+<style>
+:root{--bg:#06130f;--panel:rgba(255,255,255,.1);--panel2:rgba(255,255,255,.16);--line:rgba(255,255,255,.16);--text:#f8fafc;--muted:rgba(248,250,252,.68);--green:#22c55e;--blue:#38bdf8;--amber:#f59e0b;--red:#fb7185;--purple:#a78bfa;--shadow:0 24px 70px rgba(0,0,0,.32)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body{min-height:100svh;font-family:"PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 12% 6%,rgba(34,197,94,.28),transparent 28%),radial-gradient(circle at 90% 10%,rgba(56,189,248,.2),transparent 26%),linear-gradient(145deg,#04110d,#0b3b2f 46%,#06130f);padding:12px}.app{width:min(1180px,100%);margin:0 auto}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;padding:12px 14px;border-radius:24px;background:rgba(255,255,255,.1);border:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:0 12px 34px rgba(0,0,0,.18)}.brand{font-weight:1000;letter-spacing:.08em}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chip,.top a,.top button{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:9px 11px;font-size:12px;font-weight:950;text-decoration:none}.top button{cursor:pointer}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.panel{border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.07));border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(24px);padding:16px}.title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.title h1,.title h2{font-size:20px;letter-spacing:.08em}.title span{color:var(--muted);font-size:12px;font-weight:850}.ticket-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ticket{min-height:112px;border:0;border-radius:24px;color:#fff;text-align:left;padding:14px;box-shadow:0 15px 34px rgba(0,0,0,.24);position:relative;overflow:hidden;cursor:pointer}.ticket::after{content:"";position:absolute;width:92px;height:92px;right:-34px;bottom:-42px;border-radius:50%;background:rgba(255,255,255,.18)}.ticket strong{display:block;font-size:20px;line-height:1.25}.ticket small{display:block;margin-top:6px;color:rgba(255,255,255,.78);font-weight:850}.ticket b{display:block;margin-top:12px;font-size:24px}.cash{background:linear-gradient(135deg,#047857,#22c55e)}.easy{background:linear-gradient(135deg,#075985,#38bdf8)}.free{background:linear-gradient(135deg,#6d28d9,#a78bfa)}.section{margin-top:14px}.cart{display:grid;gap:8px}.cart-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:11px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12)}.cart-row strong{font-size:15px}.cart-row small{display:block;color:var(--muted);margin-top:3px}.qty{display:flex;align-items:center;gap:6px}.qty button{width:34px;height:34px;border:0;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;font-size:20px;font-weight:1000}.money{font-weight:1000}.empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed rgba(255,255,255,.22);border-radius:20px}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.box{padding:13px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);text-align:center}.box span{display:block;color:var(--muted);font-size:11px;font-weight:900}.box b{display:block;margin-top:4px;font-size:22px}.total{margin-top:10px;padding:18px;border-radius:24px;background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.24);display:flex;align-items:center;justify-content:space-between}.total span{color:#bbf7d0;font-weight:900}.total b{font-size:36px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.mainbtn{min-height:58px;border:0;border-radius:20px;color:#fff;font-size:18px;font-weight:1000;letter-spacing:.08em;background:linear-gradient(135deg,#047857,#22c55e);box-shadow:0 16px 36px rgba(0,0,0,.24)}.mainbtn:disabled{opacity:.55}.danger{background:linear-gradient(135deg,#be123c,#fb7185)}.gray{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);box-shadow:none}.note{margin-top:12px;padding:13px;border-radius:18px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.1);color:var(--muted);font-size:12px;line-height:1.7}.toast{min-height:24px;margin-top:10px;font-weight:950;text-align:center}.greenText{color:#bbf7d0}.redText{color:#fecdd3}.kbd{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.kbd span{padding:8px 4px;border-radius:12px;background:rgba(255,255,255,.09);color:var(--muted);font-size:11px;text-align:center;font-weight:850}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.ticket-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){body{padding:8px}.top{border-radius:20px;align-items:flex-start}.actions{max-width:46%}.chip,.top a,.top button{font-size:11px;padding:8px}.panel{padding:12px;border-radius:24px}.ticket-grid{grid-template-columns:1fr}.ticket{min-height:92px}.summary{grid-template-columns:1fr 1fr}.box:last-child{grid-column:1/-1}.total b{font-size:30px}.buttons{grid-template-columns:1fr}.kbd{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<main class="app no-print">
+  <nav class="top">
+    <div class="brand">後慈湖 POS<small id="op">售票作業中</small></div>
+    <div class="actions"><span class="chip" id="clock">--:--</span><a href="index.html">入口</a><button onclick="logout()">登出</button></div>
+  </nav>
+
+  <section class="grid">
+    <div class="panel">
+      <div class="title"><h1>票種選擇</h1><span>點一下加入購物車</span></div>
+      <div class="ticket-grid">
+        <button class="ticket cash" onclick="addItem('cashFull')"><strong>現金全票</strong><small>Q 快捷鍵</small><b>$100</b></button>
+        <button class="ticket cash" onclick="addItem('cashGroup')"><strong>現金團體</strong><small>W｜滿 40 人</small><b>$80</b></button>
+        <button class="ticket cash" onclick="addItem('cashHalf')"><strong>現金優待</strong><small>E｜半票</small><b>$50</b></button>
+        <button class="ticket easy" onclick="addItem('easyFull')"><strong>悠遊全票</strong><small>A 快捷鍵</small><b>$100</b></button>
+        <button class="ticket easy" onclick="addItem('easyGroup')"><strong>悠遊團體</strong><small>S｜滿 40 人</small><b>$80</b></button>
+        <button class="ticket easy" onclick="addItem('easyHalf')"><strong>悠遊優待</strong><small>D｜半票</small><b>$50</b></button>
+        <button class="ticket free" onclick="addItem('free')"><strong>免費票</strong><small>F｜仍需開票</small><b>$0</b></button>
+      </div>
+      <div class="kbd"><span>Q 現金全票</span><span>W 團體</span><span>E 優待</span><span>F 免費</span><span>A 悠遊全票</span><span>S 悠遊團體</span><span>D 悠遊優待</span><span>Enter 結帳</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="title"><h2>本筆交易</h2><span id="status">尚未結帳</span></div>
+      <div class="summary"><div class="box"><span>總張數</span><b id="sumQty">0</b></div><div class="box"><span>現金</span><b id="sumCash">0</b></div><div class="box"><span>悠遊卡</span><b id="sumEasy">0</b></div></div>
+      <div class="total"><span>應收總額</span><b id="sumAmount">$0</b></div>
+      <div class="section"><div id="cart" class="cart"><div class="empty">尚未選擇票種</div></div></div>
+      <div class="buttons"><button id="checkoutBtn" class="mainbtn" onclick="checkout()">Enter 結帳列印</button><button class="mainbtn danger" onclick="clearCart()">Esc 清除</button></div>
+      <div class="buttons"><button class="mainbtn gray" onclick="window.print()">重新列印</button><button class="mainbtn gray" onclick="loadSummary()">今日摘要</button></div>
+      <div id="msg" class="toast"></div>
+      <div class="note">售票資料送出後會寫入 Google Sheets。票券售出後如需作廢，請以後台紀錄與現場規定處理。</div>
+    </div>
+  </section>
+</main>
+<div id="receipt" class="receipt"></div>
+<script src="pos-api.js?v=4.2"></script>
+<script>
+const TICKETS={cashFull:{name:'現金全票',price:100,pay:'cash'},cashGroup:{name:'現金團體票',price:80,pay:'cash'},cashHalf:{name:'現金優待票',price:50,pay:'cash'},easyFull:{name:'悠遊全票',price:100,pay:'easycard'},easyGroup:{name:'悠遊團體票',price:80,pay:'easycard'},easyHalf:{name:'悠遊優待票',price:50,pay:'easycard'},free:{name:'免費票',price:0,pay:'free'}};
+let cart={}; let lastReceipt=null; let busy=false;
+function operatorName(){ try{const t=JSON.parse(localStorage.getItem(POS_TOKEN_KEY)||'{}');return t.userName||'staff';}catch(_){return 'staff';}}
+function guard(){ if(!getPosKey()) location.href='pos-login.html'; document.getElementById('op').textContent='操作人員：'+operatorName(); }
+function money(n){return '$'+Number(n||0).toLocaleString('zh-TW');}
+function totals(){let totalQty=0,totalAmount=0,cashAmount=0,easycardAmount=0,freeQty=0;Object.entries(cart).forEach(([id,qty])=>{const t=TICKETS[id];totalQty+=qty;totalAmount+=t.price*qty;if(t.pay==='cash')cashAmount+=t.price*qty;if(t.pay==='easycard')easycardAmount+=t.price*qty;if(t.pay==='free')freeQty+=qty;});return{totalQty,totalAmount,cashAmount,easycardAmount,freeQty};}
+function addItem(id){cart[id]=(cart[id]||0)+1;render();}
+function changeItem(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];render();}
+function clearCart(){cart={};render();show('已清除本筆交易',true);}
+function render(){const c=document.getElementById('cart');const entries=Object.entries(cart);if(!entries.length)c.innerHTML='<div class="empty">尚未選擇票種</div>';else c.innerHTML=entries.map(([id,qty])=>{const t=TICKETS[id];return `<div class="cart-row"><div><strong>${t.name}</strong><small>${money(t.price)} × ${qty}</small></div><div class="qty"><button onclick="changeItem('${id}',-1)">−</button><b>${qty}</b><button onclick="changeItem('${id}',1)">＋</button></div><div class="money">${money(t.price*qty)}</div></div>`}).join('');const s=totals();document.getElementById('sumQty').textContent=s.totalQty;document.getElementById('sumCash').textContent=s.cashAmount;document.getElementById('sumEasy').textContent=s.easycardAmount;document.getElementById('sumAmount').textContent=money(s.totalAmount);document.getElementById('checkoutBtn').disabled=s.totalQty===0||busy;}
+function show(text,ok){const m=document.getElementById('msg');m.textContent=text;m.className='toast '+(ok?'greenText':'redText');}
+function receiptHtml(ticketNo,s){const rows=Object.entries(cart).map(([id,qty])=>{const t=TICKETS[id];return `<tr><td>${t.name}×${qty}</td><td class="right">${money(t.price*qty)}</td></tr>`}).join('');return `<div class="center"><h2>後慈湖入園票券</h2><div>${ticketNo}</div><div>${new Date().toLocaleString('zh-TW')}</div></div><div class="line"></div><table>${rows}</table><div class="line"></div><table><tr><td>總張數</td><td class="right">${s.totalQty}</td></tr><tr class="total"><td>合計</td><td class="right">${money(s.totalAmount)}</td></tr></table><div class="line"></div><div class="center">驗票：${ticketNo}</div><small>請於當日指定梯次與現場規定使用</small>`;}
+async function checkout(){const s=totals();if(!s.totalQty||busy)return;busy=true;render();show('交易寫入中...',true);document.getElementById('status').textContent='寫入中';const items=Object.entries(cart).map(([id,qty])=>({id,name:TICKETS[id].name,price:TICKETS[id].price,pay:TICKETS[id].pay,qty,amount:TICKETS[id].price*qty}));const res=await submitSale({...s,items,operator:operatorName()});if(!res.success&&!res.ok){busy=false;render();document.getElementById('status').textContent='寫入失敗';show('寫入失敗：'+(res.message||'請檢查後端部署'),false);return;}const ticketNo=res.ticketNo||res.number||('HCH'+Date.now());lastReceipt=receiptHtml(ticketNo,s);document.getElementById('receipt').innerHTML=lastReceipt;document.getElementById('receipt').classList.add('show');document.getElementById('status').textContent='交易完成';show('交易完成：'+ticketNo,true);setTimeout(()=>window.print(),250);cart={};busy=false;render();}
+async function loadSummary(){show('讀取今日摘要中...',true);const res=await getTodaySummary();if(!res.success&&!res.ok){show('摘要讀取失敗：'+(res.message||''),false);return;}show(`今日 ${res.count||0} 筆｜${res.qty||0} 張｜${money(res.amount||0)}`,true);}
+function logout(){clearPosToken();location.href='pos-login.html';}
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});} 
+document.addEventListener('keydown',e=>{if(e.target&&['INPUT','TEXTAREA'].includes(e.target.tagName))return;const k=e.key.toLowerCase();if(k==='q')addItem('cashFull');if(k==='w')addItem('cashGroup');if(k==='e')addItem('cashHalf');if(k==='a')addItem('easyFull');if(k==='s')addItem('easyGroup');if(k==='d')addItem('easyHalf');if(k==='f')addItem('free');if(e.key==='Enter')checkout();if(e.key==='Escape')clearCart();if(e.key==='Delete')clearCart();});
+guard();tick();setInterval(tick,30000);render();
+</script>
+</body>
+</html>
