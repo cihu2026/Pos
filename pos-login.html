@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b3b2f">
+<title>後慈湖｜售票登入</title>
+<style>
+:root{--bg:#07130f;--green:#22c55e;--mint:#31d17d;--line:rgba(255,255,255,.18);--text:#f8fafc;--muted:rgba(248,250,252,.7);--red:#fb7185;--shadow:0 26px 75px rgba(0,0,0,.38)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body{min-height:100svh;font-family:"PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 12% 8%,rgba(49,209,125,.35),transparent 30%),radial-gradient(circle at 88% 12%,rgba(56,189,248,.2),transparent 28%),linear-gradient(145deg,#05120e,#0b3b2f 48%,#07130f);display:grid;place-items:center;padding:18px}.card{width:min(460px,100%);padding:24px;border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.08));border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(24px)}.logo{width:82px;height:82px;border-radius:28px;display:grid;place-items:center;font-size:42px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.2);margin:0 auto 18px}h1{text-align:center;font-size:34px;letter-spacing:.08em;margin-bottom:8px}p{text-align:center;color:var(--muted);line-height:1.7;font-size:14px}.notice{margin:18px 0;padding:14px 15px;border-radius:22px;background:rgba(49,209,125,.12);border:1px solid rgba(49,209,125,.22);color:#dcfce7;font-size:13px;font-weight:800;line-height:1.7}label{display:block;margin:14px 0 7px;font-weight:950;letter-spacing:.05em}input{width:100%;min-height:52px;border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:0 14px;background:rgba(255,255,255,.1);color:#fff;font-size:18px;font-weight:850;outline:none}input:focus{border-color:rgba(49,209,125,.65);box-shadow:0 0 0 4px rgba(49,209,125,.13)}button,.btn{width:100%;min-height:56px;border:0;border-radius:19px;margin-top:16px;background:linear-gradient(135deg,#047857,#22c55e);color:#fff;font-size:18px;font-weight:1000;letter-spacing:.08em;box-shadow:0 18px 36px rgba(0,0,0,.22);text-decoration:none;display:grid;place-items:center}button:disabled{opacity:.62}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ghost{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);box-shadow:none}.msg{min-height:28px;margin-top:12px;text-align:center;font-weight:950}.red{color:#fecdd3}.green{color:#bbf7d0}footer{text-align:center;margin-top:20px;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.1em;line-height:1.7}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo">🎟️</div>
+  <h1>售票登入</h1>
+  <p>後慈湖 POS GitHub 前台｜僅限授權工作人員使用</p>
+  <div class="notice">登入時會先驗證 POS_KEY。金鑰錯誤不會進入售票頁。</div>
+  <form id="form" novalidate>
+    <label for="user">操作人員</label>
+    <input id="user" autocomplete="username" placeholder="例：admin / 櫃台A" required>
+    <label for="pass">售票金鑰</label>
+    <input id="pass" type="password" autocomplete="current-password" placeholder="請輸入 POS_KEY" required>
+    <button id="loginBtn" type="submit">登入售票</button>
+  </form>
+  <div id="msg" class="msg"></div>
+  <div class="row"><a class="btn ghost" href="index.html">返回入口</a><button class="ghost" type="button" onclick="clearBox()">清除</button></div>
+  <footer>POS Portal v4.2 PRO｜Designed & Developed by Abby Luo</footer>
+</main>
+<script src="pos-api.js?v=4.2"></script>
+<script>
+const form=document.getElementById('form'), msg=document.getElementById('msg'), btn=document.getElementById('loginBtn');
+(function auto(){ try{ if(getPosKey()) location.href='sale.html'; }catch(_){} })();
+function show(text,ok){ msg.textContent=text; msg.className='msg '+(ok?'green':'red'); }
+function clearBox(){ document.getElementById('user').value=''; document.getElementById('pass').value=''; show('',true); }
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const user=document.getElementById('user').value.trim()||'staff';
+  const pass=document.getElementById('pass').value.trim();
+  if(!pass){ show('請輸入售票金鑰',false); return; }
+  clearPosToken(); btn.disabled=true; btn.textContent='驗證中...'; show('正在驗證 POS_KEY...',true);
+  const ok=await verifyPosKey(pass);
+  if(!ok){ btn.disabled=false; btn.textContent='登入售票'; show('售票金鑰錯誤或後端尚未部署新版',false); return; }
+  savePosToken(pass,user); show('驗證成功，進入售票頁...',true); btn.textContent='登入成功';
+  setTimeout(()=>location.href='sale.html',350);
+});
+</script>
+</body>
+</html>
