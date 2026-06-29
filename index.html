@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#08143f">
-<title>後慈湖整合系統｜POS Quick</title>
+<title>後慈湖整合系統｜POS V8 Cute</title>
 <style>
 :root{--ink:#18343a;--muted:#6f8588;--paper:#fffdf8;--mist:#eef6f3;--a:#0D6E73;--b:#0B4D57;--c:#1A7F5A;--gold:#B58A45;--rose:#C94B63;--line:#d9e8e4;--shadow:0 18px 48px rgba(15,79,95,.14);--icon:"湖"}
 body[data-theme=stitch]{--ink:#f7fbff;--muted:#cbd9ff;--paper:rgba(255,255,255,.13);--mist:#07133a;--a:#4fdcff;--b:#123783;--c:#72efb1;--gold:#ffe66d;--rose:#ff6fa6;--line:rgba(139,214,255,.34);--shadow:0 22px 58px rgba(5,10,38,.32);--icon:"💙"}
@@ -16,8 +16,8 @@ body[data-theme=disney]{--ink:#fff;--muted:#efe5ff;--paper:rgba(255,255,255,.14)
 </head>
 <body data-theme="stitch">
 <main class="app">
-  <nav class="top"><div class="brand">HOUCIHU POS</div><div class="themes"><button class="theme" data-theme="stitch">💙史迪奇</button><button class="theme" data-theme="labubu">👾拉布布</button><button class="theme" data-theme="usagi">🐰烏薩奇</button><button class="theme" data-theme="snoopy">🐶史努比</button><button class="theme" data-theme="disney">✨迪士尼</button><button class="theme" data-theme="formal">湖畔</button></div></nav>
-  <section class="hero"><div class="hero-row"><div class="titlebox"><div class="emblem" id="themeIcon">💙</div><div><div class="kicker" id="themeKicker">STITCH DEEP BLUE</div><h1>後慈湖整合系統</h1><p class="subtitle">現場作業快速入口</p></div></div><div class="tag" id="themeName">史迪奇深藍</div></div></section>
+  <nav class="top"><div class="brand">HOUCIHU POS V8</div><div class="themes"><button class="theme" data-theme="stitch">💙史迪奇</button><button class="theme" data-theme="labubu">👾拉布布</button><button class="theme" data-theme="usagi">🐰烏薩奇</button><button class="theme" data-theme="snoopy">🐶史努比</button><button class="theme" data-theme="disney">✨迪士尼</button><button class="theme" data-theme="formal">湖畔</button></div></nav>
+  <section class="hero"><div class="hero-row"><div class="titlebox"><div class="emblem" id="themeIcon">💙</div><div><div class="kicker" id="themeKicker">STITCH V8</div><h1>後慈湖整合系統</h1><p class="subtitle">V8 可愛主題・現場快速入口</p></div></div><div class="tag" id="themeName">史迪奇深藍</div></div></section>
   <section class="grid">
     <a class="nav ticket" href="https://cihu2026.github.io/Pos/issue.html"><div class="ico">🎟️</div><div class="txt"><strong>售票</strong><small>POS 櫃台</small></div></a>
     <a class="nav scan" href="https://cihu2026.github.io/ticket-scan/"><div class="ico">📱</div><div class="txt"><strong>驗票</strong><small>B 點 QR</small></div></a>
@@ -27,10 +27,10 @@ body[data-theme=disney]{--ink:#fff;--muted:#efe5ff;--paper:rgba(255,255,255,.14)
     <a class="nav vip" href="https://cihu2026.github.io/VIP/"><div class="ico">🏛️</div><div class="txt"><strong>公務團</strong><small>接待行程</small></div></a>
   </section>
   <section class="subrow"><a class="mini" href="https://cihu2026.github.io/houcihu-onsite-waitlist-system/admin-login.html">候補後台</a><a class="mini" href="https://cihu2026.github.io/Monitor/">即時人流</a></section>
-  <footer>POS QUICK PORTAL｜Designed & Developed by Abby Luo</footer>
+  <footer>POS V8 CUTE PORTAL｜Designed & Developed by Abby Luo</footer>
 </main>
 <script>
-var THEME_INFO={formal:{icon:'湖',name:'湖畔霧青',kicker:'PREMIUM LAKE'},stitch:{icon:'💙',name:'史迪奇深藍',kicker:'STITCH DEEP BLUE'},labubu:{icon:'👾',name:'Labubu 奶咖',kicker:'LABUBU CREAM'},usagi:{icon:'🐰',name:'烏薩奇米粉',kicker:'USAGI CREAM'},snoopy:{icon:'🐶',name:'史努比石墨',kicker:'SNOOPY GRAPHITE'},disney:{icon:'✨',name:'迪士尼紫金',kicker:'MAGIC GOLD'}};
+var THEME_INFO={formal:{icon:'湖',name:'湖畔霧青',kicker:'PREMIUM V8'},stitch:{icon:'💙',name:'史迪奇深藍',kicker:'STITCH V8'},labubu:{icon:'👾',name:'Labubu 奶咖',kicker:'LABUBU V8'},usagi:{icon:'🐰',name:'烏薩奇米粉',kicker:'USAGI V8'},snoopy:{icon:'🐶',name:'史努比石墨',kicker:'SNOOPY V8'},disney:{icon:'✨',name:'迪士尼紫金',kicker:'MAGIC V8'}};
 function normalizeTheme(t){return t==='doraemon'||t==='chiikawa'?'usagi':(t==='lake'?'stitch':(THEME_INFO[t]?t:'stitch'))}
 function setTheme(t){var next=normalizeTheme(t);document.body.dataset.theme=next;try{localStorage.setItem('houcihu_pos_theme',next)}catch(e){}document.querySelectorAll('.theme').forEach(function(b){b.classList.toggle('on',b.dataset.theme===next)});document.getElementById('themeIcon').textContent=THEME_INFO[next].icon;document.getElementById('themeName').textContent=THEME_INFO[next].name;document.getElementById('themeKicker').textContent=THEME_INFO[next].kicker;document.querySelector('meta[name="theme-color"]').setAttribute('content',next==='formal'?'#0D6E73':'#08143f')}
 document.querySelectorAll('.theme').forEach(function(b){b.onclick=function(){setTheme(b.dataset.theme)}});try{setTheme(localStorage.getItem('houcihu_pos_theme')||'stitch')}catch(e){setTheme('stitch')}
