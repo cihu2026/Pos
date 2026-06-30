@@ -26,8 +26,8 @@ body[data-theme=disney]{--bg1:#f2dcff;--bg2:#b895ff;--bg3:#6240b8;--a:#b088ff;--
 </main>
 <script>
 const info={stitch:['💙','史迪奇'],labubu:['👾','Labubu'],usagi:['🐰','烏薩奇'],snoopy:['🐶','史努比'],disney:['✨','迪士尼']};
-function setTheme(t){if(!info[t])t='stitch';document.body.dataset.theme=t;document.getElementById('themeIcon').textContent=info[t][0];document.getElementById('themeName').textContent=info[t][1];document.querySelectorAll('.theme').forEach(b=>b.classList.toggle('on',b.dataset.theme===t));try{localStorage.setItem('houcihu_portal_old_theme',t)}catch(e){}}
-document.querySelectorAll('.theme').forEach(b=>b.onclick=()=>setTheme(b.dataset.theme));setTheme(localStorage.getItem('houcihu_portal_old_theme')||'stitch');
+function setTheme(t){if(!info[t])t='stitch';document.body.dataset.theme=t;document.getElementById('themeIcon').textContent=info[t][0];document.getElementById('themeName').textContent=info[t][1];document.querySelectorAll('.theme').forEach(b=>b.classList.toggle('on',b.dataset.theme===t));try{localStorage.setItem('houcihu_portal_mobile_cute_theme',t)}catch(e){}}
+document.querySelectorAll('.theme').forEach(b=>b.onclick=()=>setTheme(b.dataset.theme));setTheme(localStorage.getItem('houcihu_portal_mobile_cute_theme')||'stitch');
 </script>
 </body>
 </html>
