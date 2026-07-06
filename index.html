@@ -5,490 +5,164 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#f6a8d8">
 <title>後慈湖整合系統</title>
-
 <style>
-:root {
+:root{
   --bg1:#ffd6ee;
   --bg2:#b9a7ff;
-  --bg3:#7860d7;
+  --bg3:#6f5bd6;
+  --card:rgba(255,255,255,.23);
+  --line:rgba(255,255,255,.38);
+  --text:#fff;
+  --muted:rgba(255,255,255,.82);
   --a:#72caff;
   --b:#ff91d6;
   --icon:"💙";
 }
-
-body[data-theme=stitch] {
-  --bg1:#ffd6ee;
-  --bg2:#b9a7ff;
-  --bg3:#7860d7;
-  --a:#72caff;
-  --b:#ff91d6;
-  --icon:"💙";
-}
-
-body[data-theme=labubu] {
-  --bg1:#ffe2bd;
-  --bg2:#e8ad78;
-  --bg3:#9a6949;
-  --a:#ffc96f;
-  --b:#ff9ab8;
-  --icon:"👾";
-}
-
-body[data-theme=usagi] {
-  --bg1:#ffe1f3;
-  --bg2:#f4a5d0;
-  --bg3:#a45d97;
-  --a:#ff91d6;
-  --b:#ffd9f1;
-  --icon:"🐰";
-}
-
-body[data-theme=snoopy] {
-  --bg1:#f8fbff;
-  --bg2:#d7e0ee;
-  --bg3:#7b879a;
-  --a:#9fb1c8;
-  --b:#ffe57a;
-  --icon:"🐶";
-}
-
-body[data-theme=disney] {
-  --bg1:#f5dcff;
-  --bg2:#b99cff;
-  --bg3:#684bc1;
-  --a:#b18cff;
-  --b:#ffd96d;
-  --icon:"✨";
-}
-
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html {
-  width:100%;
-  min-height:100%;
-  overflow-x:hidden;
-}
-
-body {
+body[data-theme=stitch]{--bg1:#ffd6ee;--bg2:#b9a7ff;--bg3:#6f5bd6;--a:#72caff;--b:#ff91d6;--icon:"💙"}
+body[data-theme=labubu]{--bg1:#ffe2bd;--bg2:#e8ad78;--bg3:#8d6045;--a:#ffc96f;--b:#ff9ab8;--icon:"👾"}
+body[data-theme=usagi]{--bg1:#ffe1f3;--bg2:#f4a5d0;--bg3:#96518d;--a:#ff91d6;--b:#ffd9f1;--icon:"🐰"}
+body[data-theme=snoopy]{--bg1:#f8fbff;--bg2:#d7e0ee;--bg3:#707b8f;--a:#9fb1c8;--b:#ffe57a;--icon:"🐶"}
+body[data-theme=disney]{--bg1:#f5dcff;--bg2:#b99cff;--bg3:#5f45b6;--a:#b18cff;--b:#ffd96d;--icon:"✨"}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{width:100%;min-height:100%;overflow-x:hidden;background:var(--bg3)}
+body{
   width:100%;
   min-height:100svh;
-  padding:
-    max(12px, env(safe-area-inset-top))
-    12px
-    calc(32px + env(safe-area-inset-bottom));
-  font-family:-apple-system,BlinkMacSystemFont,'Noto Sans TC','Microsoft JhengHei',sans-serif;
-  color:#fff;
-  background:linear-gradient(180deg,var(--bg1),var(--bg2) 45%,var(--bg3));
+  padding:max(12px,env(safe-area-inset-top)) 12px calc(22px + env(safe-area-inset-bottom));
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 20% 8%,rgba(255,255,255,.55),transparent 24%),
+    radial-gradient(circle at 92% 22%,rgba(255,255,255,.25),transparent 26%),
+    linear-gradient(180deg,var(--bg1),var(--bg2) 42%,var(--bg3));
   overflow-x:hidden;
 }
-
-body::before {
+body::before{
   content:"";
   position:fixed;
   inset:0;
-  background-image:
-    radial-gradient(2px 2px at 30px 40px,rgba(255,255,255,.65),transparent),
-    radial-gradient(1.5px 1.5px at 130px 100px,rgba(255,255,255,.45),transparent),
-    radial-gradient(2px 2px at 260px 150px,rgba(255,255,255,.5),transparent);
-  background-size:430px 210px;
   pointer-events:none;
+  background-image:
+    radial-gradient(2px 2px at 30px 40px,rgba(255,255,255,.55),transparent),
+    radial-gradient(1.5px 1.5px at 130px 100px,rgba(255,255,255,.42),transparent),
+    radial-gradient(2px 2px at 260px 150px,rgba(255,255,255,.48),transparent);
+  background-size:430px 210px;
 }
-
-.app {
-  position:relative;
-  z-index:1;
-  width:100%;
-  max-width:520px;
-  margin:0 auto;
-  display:grid;
-  gap:12px;
-}
-
-.panel,
-.nav,
-.mini {
-  border-radius:28px;
-  background:rgba(255,255,255,.23);
-  border:1px solid rgba(255,255,255,.36);
-  box-shadow:0 14px 30px rgba(86,44,126,.15);
+.app{position:relative;z-index:1;width:100%;max-width:480px;margin:0 auto;display:grid;gap:12px}
+.card,.chip,.tile,.mini{
+  background:var(--card);
+  border:1px solid var(--line);
+  box-shadow:0 14px 30px rgba(68,36,116,.15);
   -webkit-backdrop-filter:blur(18px);
   backdrop-filter:blur(18px);
 }
-
-.top {
-  padding:15px;
-}
-
-.brand {
-  font-size:13px;
-  font-weight:900;
-  letter-spacing:.16em;
-}
-
-.themes {
-  display:flex;
-  gap:9px;
-  margin-top:13px;
-  overflow-x:auto;
-  padding-bottom:2px;
-  scrollbar-width:none;
-}
-
-.themes::-webkit-scrollbar {
-  display:none;
-}
-
-.theme {
-  flex:0 0 auto;
-  border:0;
-  border-radius:999px;
-  padding:10px 15px;
-  background:rgba(255,255,255,.25);
-  color:#fff;
-  font-size:14px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.theme.on {
-  background:linear-gradient(135deg,var(--a),var(--b));
-  box-shadow:0 8px 18px rgba(0,0,0,.12);
-}
-
-.hero {
-  position:relative;
-  padding:24px 22px 23px;
-  min-height:300px;
-  overflow:hidden;
-}
-
-.hero::after {
-  content:var(--icon);
-  position:absolute;
-  right:22px;
-  top:24px;
-  font-size:44px;
-}
-
-.hero::before {
-  content:"♡ ✦ ✧";
-  position:absolute;
-  right:20px;
-  bottom:18px;
-  font-size:18px;
-  letter-spacing:6px;
-  opacity:.68;
-}
-
-.mark {
-  width:72px;
-  height:72px;
-  border-radius:24px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.24);
-  font-size:36px;
-  margin-bottom:20px;
-}
-
-.kicker {
-  display:inline-block;
-  padding:8px 14px;
-  border-radius:999px;
-  background:rgba(255,255,255,.18);
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.12em;
-  margin-bottom:17px;
-}
-
-.hero h1 {
-  font-size:36px;
-  line-height:1.16;
-  font-weight:900;
-}
-
-.desc {
-  font-size:15px;
-  line-height:1.6;
-  margin-top:16px;
-  font-weight:750;
-  max-width:92%;
-}
-
-.info-row {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.info {
-  padding:17px 18px;
-}
-
-.label {
-  font-size:13px;
-  font-weight:900;
-  opacity:.82;
-  margin-bottom:7px;
-}
-
-.value {
-  font-size:18px;
-  font-weight:900;
-}
-
-.grid {
-  display:grid;
-  gap:10px;
-}
-
-.nav {
-  min-height:78px;
-  padding:14px 17px;
-  text-decoration:none;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  gap:15px;
-  transition:transform .12s ease, background .12s ease;
-}
-
-.nav:active,
-.mini:active,
-.theme:active {
-  transform:scale(.98);
-}
-
-.ico {
-  width:48px;
-  height:48px;
-  flex:0 0 48px;
-  border-radius:17px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.22);
-  font-size:25px;
-}
-
-.txt strong {
-  display:block;
-  font-size:20px;
-  line-height:1.2;
-}
-
-.txt small {
-  display:block;
-  margin-top:5px;
-  font-size:13px;
-  font-weight:800;
-  opacity:.84;
-}
-
-.sub {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.mini {
-  min-height:54px;
-  padding:15px 10px;
-  text-align:center;
-  text-decoration:none;
-  color:#fff;
-  font-size:15px;
-  font-weight:900;
-  display:grid;
-  place-items:center;
-}
-
-footer {
-  text-align:center;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.12em;
-  padding:6px 0 10px;
-  opacity:.78;
-}
-
-/* 小手機再壓縮一點 */
-@media (max-width:380px) {
-  body {
-    padding-left:10px;
-    padding-right:10px;
-  }
-
-  .hero {
-    min-height:280px;
-    padding:22px 20px;
-  }
-
-  .hero h1 {
-    font-size:33px;
-  }
-
-  .desc {
-    font-size:14px;
-  }
-
-  .txt strong {
-    font-size:19px;
-  }
-
-  .theme {
-    font-size:13px;
-    padding:9px 13px;
-  }
-}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 15px;border-radius:26px}
+.brand small{display:block;font-size:10px;font-weight:900;letter-spacing:.18em;opacity:.75}
+.brand strong{display:block;margin-top:3px;font-size:19px;line-height:1.1;font-weight:950;letter-spacing:.02em}
+.badge{width:48px;height:48px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));font-size:26px;box-shadow:0 10px 18px rgba(0,0,0,.12)}
+.themes{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:none}.themes::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border-radius:999px;border:0;color:#fff;padding:10px 13px;font-size:13px;font-weight:900;white-space:nowrap}.chip.on{background:linear-gradient(135deg,var(--a),var(--b));border:1px solid rgba(255,255,255,.5)}
+.hero{position:relative;border-radius:30px;padding:20px 18px 18px;overflow:hidden;min-height:156px}
+.hero::after{content:var(--icon);position:absolute;right:18px;top:17px;font-size:44px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.12))}
+.hero .tag{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.17);font-size:11px;font-weight:950;letter-spacing:.08em}
+.hero h1{margin-top:15px;font-size:32px;line-height:1.08;font-weight:950;letter-spacing:.02em}
+.hero p{margin-top:10px;font-size:14px;line-height:1.55;font-weight:800;color:var(--muted);max-width:76%}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{border-radius:24px;padding:13px 14px}.stat span{display:block;font-size:12px;font-weight:900;color:var(--muted)}.stat b{display:block;margin-top:5px;font-size:17px;line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{min-height:118px;border-radius:28px;padding:15px;text-decoration:none;color:#fff;display:flex;flex-direction:column;justify-content:space-between;transition:transform .12s ease,background .12s ease}.tile:active,.mini:active,.chip:active{transform:scale(.98)}
+.ico{width:46px;height:46px;border-radius:17px;display:grid;place-items:center;background:rgba(255,255,255,.22);font-size:25px}.tile strong{display:block;font-size:20px;line-height:1.1;font-weight:950}.tile small{display:block;margin-top:5px;font-size:12px;line-height:1.25;font-weight:850;color:var(--muted)}
+.tile.primary{background:linear-gradient(135deg,rgba(114,202,255,.42),rgba(255,145,214,.34));border-color:rgba(255,255,255,.52)}
+.sub{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{border-radius:22px;min-height:52px;padding:14px 10px;display:grid;place-items:center;text-align:center;text-decoration:none;color:#fff;font-size:14px;font-weight:950}
+footer{text-align:center;font-size:11px;font-weight:850;letter-spacing:.12em;opacity:.72;padding:4px 0 8px}
+@media(max-width:370px){body{padding-left:10px;padding-right:10px}.hero h1{font-size:29px}.hero p{font-size:13px;max-width:78%}.tile{min-height:110px;padding:14px}.tile strong{font-size:19px}.chip{font-size:12px;padding:9px 11px}}
 </style>
 </head>
-
 <body data-theme="stitch">
-
 <main class="app">
-
-  <section class="panel top">
-    <div class="brand">HOUCIHU PORTAL</div>
-
-    <div class="themes">
-      <button class="theme" data-theme="stitch">💙 史迪奇</button>
-      <button class="theme" data-theme="labubu">👾 Labubu</button>
-      <button class="theme" data-theme="usagi">🐰 烏薩奇</button>
-      <button class="theme" data-theme="snoopy">🐶 史努比</button>
-      <button class="theme" data-theme="disney">✨ 迪士尼</button>
+  <section class="card header">
+    <div class="brand">
+      <small>HOUCIHU PORTAL</small>
+      <strong>後慈湖整合系統</strong>
     </div>
+    <div class="badge" id="themeIcon">💙</div>
   </section>
 
-  <section class="panel hero">
-    <div class="mark" id="themeIcon">💙</div>
-    <div class="kicker">ROLE THEME FIELD SYSTEM</div>
-
-    <h1>後慈湖<br>整合系統</h1>
-
-    <p class="desc">
-      售票、驗票、候補、出園與人流整合入口。<br>
-      現場手機快速進入各功能。
-    </p>
+  <section class="themes" aria-label="主題切換">
+    <button class="chip" data-theme="stitch">💙 史迪奇</button>
+    <button class="chip" data-theme="labubu">👾 Labubu</button>
+    <button class="chip" data-theme="usagi">🐰 烏薩奇</button>
+    <button class="chip" data-theme="snoopy">🐶 史努比</button>
+    <button class="chip" data-theme="disney">✨ 迪士尼</button>
   </section>
 
-  <section class="info-row">
-    <div class="panel info">
-      <div class="label">入口模式</div>
-      <div class="value">一站式</div>
-    </div>
+  <section class="card hero">
+    <div class="tag">FIELD SYSTEM</div>
+    <h1>現場入口<br>快速作業</h1>
+    <p>售票、驗票、候補、出園、人流與公務團，手機一鍵進入。</p>
+  </section>
 
-    <div class="panel info">
-      <div class="label">色系模式</div>
-      <div class="value" id="themeName">史迪奇</div>
-    </div>
+  <section class="status">
+    <div class="card stat"><span>入口模式</span><b>手機版</b></div>
+    <div class="card stat"><span>目前色系</span><b id="themeName">史迪奇</b></div>
   </section>
 
   <section class="grid">
-    <a class="nav" href="https://cihu2026.github.io/Pos/issue.html">
+    <a class="tile primary" href="https://cihu2026.github.io/Pos/issue.html">
       <div class="ico">🎟️</div>
-      <div class="txt">
-        <strong>售票</strong>
-        <small>POS 櫃台出票</small>
-      </div>
+      <div><strong>售票</strong><small>POS 櫃台出票</small></div>
     </a>
-
-    <a class="nav" href="https://cihu2026.github.io/ticket-scan/">
+    <a class="tile" href="https://cihu2026.github.io/ticket-scan/">
       <div class="ico">📱</div>
-      <div class="txt">
-        <strong>驗票</strong>
-        <small>B 點 QR 掃描</small>
-      </div>
+      <div><strong>驗票</strong><small>B 點 QR 掃描</small></div>
     </a>
-
-    <a class="nav" href="https://cihu2026.github.io/houcihu-onsite-waitlist-system/">
+    <a class="tile" href="https://cihu2026.github.io/houcihu-onsite-waitlist-system/">
       <div class="ico">📝</div>
-      <div class="txt">
-        <strong>候補</strong>
-        <small>現場登記叫號</small>
-      </div>
+      <div><strong>候補</strong><small>現場登記叫號</small></div>
     </a>
-
-    <a class="nav" href="https://cihu2026.github.io/Out/">
+    <a class="tile" href="https://cihu2026.github.io/Out/">
       <div class="ico">🚪</div>
-      <div class="txt">
-        <strong>出園</strong>
-        <small>A 點離園紀錄</small>
-      </div>
+      <div><strong>出園</strong><small>A 點離園紀錄</small></div>
     </a>
-
-    <a class="nav" href="https://cihu2026.github.io/Monitor/">
+    <a class="tile" href="https://cihu2026.github.io/Monitor/">
       <div class="ico">📊</div>
-      <div class="txt">
-        <strong>人流</strong>
-        <small>即時容量看板</small>
-      </div>
+      <div><strong>人流</strong><small>即時容量看板</small></div>
     </a>
-
-    <a class="nav" href="https://cihu2026.github.io/VIP/">
+    <a class="tile" href="https://cihu2026.github.io/VIP/">
       <div class="ico">🏛️</div>
-      <div class="txt">
-        <strong>公務團</strong>
-        <small>接待行程入口</small>
-      </div>
+      <div><strong>公務團</strong><small>接待行程入口</small></div>
     </a>
   </section>
 
   <section class="sub">
-    <a class="mini" href="https://cihu2026.github.io/houcihu-onsite-waitlist-system/admin-login.html">
-      候補後台
-    </a>
-
-    <a class="mini" href="https://cihu2026.github.io/Monitor/">
-      即時人流
-    </a>
+    <a class="mini" href="https://cihu2026.github.io/houcihu-onsite-waitlist-system/admin-login.html">候補後台</a>
+    <a class="mini" href="https://cihu2026.github.io/Monitor/">即時人流</a>
   </section>
 
   <footer>Designed & Developed by Abby Luo</footer>
-
 </main>
-
 <script>
-const themes = {
-  stitch: ['💙', '史迪奇'],
-  labubu: ['👾', 'Labubu'],
-  usagi: ['🐰', '烏薩奇'],
-  snoopy: ['🐶', '史努比'],
-  disney: ['✨', '迪士尼']
+const themes={
+  stitch:["💙","史迪奇"],
+  labubu:["👾","Labubu"],
+  usagi:["🐰","烏薩奇"],
+  snoopy:["🐶","史努比"],
+  disney:["✨","迪士尼"]
 };
-
-const themeIcon = document.getElementById('themeIcon');
-const themeName = document.getElementById('themeName');
-const buttons = document.querySelectorAll('.theme');
-
-function setTheme(theme) {
-  if (!themes[theme]) theme = 'stitch';
-
-  document.body.dataset.theme = theme;
-  themeIcon.textContent = themes[theme][0];
-  themeName.textContent = themes[theme][1];
-
-  buttons.forEach(button => {
-    button.classList.toggle('on', button.dataset.theme === theme);
-  });
-
-  localStorage.setItem('houcihu-theme', theme);
+const themeIcon=document.getElementById("themeIcon");
+const themeName=document.getElementById("themeName");
+const buttons=document.querySelectorAll(".chip");
+function setTheme(theme){
+  if(!themes[theme]) theme="stitch";
+  document.body.dataset.theme=theme;
+  themeIcon.textContent=themes[theme][0];
+  themeName.textContent=themes[theme][1];
+  buttons.forEach(btn=>btn.classList.toggle("on",btn.dataset.theme===theme));
+  localStorage.setItem("houcihu-theme",theme);
 }
-
-buttons.forEach(button => {
-  button.type = 'button';
-  button.addEventListener('click', () => {
-    setTheme(button.dataset.theme);
-  });
+buttons.forEach(btn=>{
+  btn.type="button";
+  btn.addEventListener("click",()=>setTheme(btn.dataset.theme));
 });
-
-setTheme(localStorage.getItem('houcihu-theme') || 'stitch');
+setTheme(localStorage.getItem("houcihu-theme")||"stitch");
 </script>
-
 </body>
 </html>
