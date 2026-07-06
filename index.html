@@ -59,6 +59,7 @@ body::before{
 .title small{display:block;font-size:11px;font-weight:900;letter-spacing:.18em;color:var(--muted)}
 .title h1{margin-top:5px;font-size:25px;line-height:1.15;font-weight:950;letter-spacing:.02em}
 .logo{width:58px;height:58px;flex:0 0 58px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));font-size:31px;box-shadow:0 10px 20px rgba(0,0,0,.13)}
+.themeTitle{font-size:12px;font-weight:900;letter-spacing:.12em;opacity:.82;padding:0 2px;margin-top:2px}
 .themes{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:none}.themes::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;border-radius:999px;border-color:rgba(255,255,255,.3);color:#fff;padding:9px 12px;font-size:13px;font-weight:900;white-space:nowrap}.chip.on{background:linear-gradient(135deg,var(--a),var(--b));border-color:rgba(255,255,255,.55)}
 .notice{border-radius:26px;padding:15px 16px;display:flex;gap:12px;align-items:flex-start}.notice .dot{width:10px;height:10px;margin-top:6px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 0 0 6px rgba(255,255,255,.12)}.notice strong{display:block;font-size:16px;line-height:1.25}.notice p{margin-top:5px;font-size:13px;line-height:1.5;font-weight:800;color:var(--muted)}
@@ -80,6 +81,7 @@ footer{text-align:center;font-size:11px;font-weight:850;letter-spacing:.12em;opa
     <div class="logo" id="themeIcon">💙</div>
   </section>
 
+  <div class="themeTitle">主題切換</div>
   <section class="themes" aria-label="主題切換">
     <button class="chip" data-theme="stitch">💙 史迪奇</button>
     <button class="chip" data-theme="labubu">👾 Labubu</button>
@@ -98,7 +100,7 @@ footer{text-align:center;font-size:11px;font-weight:850;letter-spacing:.12em;opa
 
   <section class="status">
     <div class="card stat"><span>入口模式</span><b>手機版</b></div>
-    <div class="card stat"><span>目前色系</span><b id="themeName">史迪奇</b></div>
+    <div class="card stat"><span>目前主題</span><b id="themeName">史迪奇</b></div>
   </section>
 
   <section class="list">
