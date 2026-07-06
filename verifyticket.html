@@ -4,373 +4,63 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#08143f">
-<title>後慈湖電子驗票系統</title>
+<title>後慈湖電子驗票系統｜Verify Gate</title>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
-:root{
-  --bg:#07133a;
-  --bg2:#123783;
-  --text:#fff;
-  --muted:#cbd9ff;
-  --line:rgba(139,214,255,.34);
-  --primary:#4fdcff;
-  --accent:#7c7bff;
-  --green:#5df0a2;
-  --green2:#1db96b;
-  --red:#d93476;
-  --orange:#ffae5f;
-  --blush:#ff65ae;
-  --warn:#ffe66d;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif}
-body{
-  margin:0;
-  padding:10px 10px calc(120px + env(safe-area-inset-bottom));
-  color:var(--text);
-  text-align:center;
-  background:
-    radial-gradient(circle at 10% 6%,rgba(79,220,255,.34),transparent 28%),
-    radial-gradient(circle at 88% 4%,rgba(124,123,255,.3),transparent 30%),
-    linear-gradient(145deg,var(--bg),var(--bg2) 56%,#050817);
-  overflow-x:hidden;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.32;
-  background-image:
-    radial-gradient(circle,rgba(255,255,255,.84) 1px,transparent 1.8px),
-    radial-gradient(circle,rgba(255,230,109,.7) 1px,transparent 1.9px);
-  background-size:38px 38px,76px 76px;
-  background-position:0 0,22px 18px;
-}
-.app{
-  position:relative;
-  z-index:1;
-  width:min(620px,100%);
-  margin:auto;
-  display:grid;
-  gap:14px;
-  padding-bottom:calc(80px + env(safe-area-inset-bottom));
-}
-.card,.status-box{
-  border:1px solid var(--line);
-  border-radius:30px;
-  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.08));
-  -webkit-backdrop-filter:blur(22px);
-  backdrop-filter:blur(22px);
-  box-shadow:0 22px 62px rgba(5,10,38,.28);
-  overflow:hidden;
-}
-.hero{padding:20px 16px;border-radius:34px}
-.eyebrow{margin:0 0 6px;color:var(--green);font-size:12px;font-weight:1000;letter-spacing:2px}
-h1{margin:0;font-size:28px;font-weight:1000;letter-spacing:.03em}
-.subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;font-weight:850;line-height:1.55}
-.verify-card{padding:18px 16px 20px}
-.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;text-align:left}
-.title{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:1000}
-.ico{display:grid;place-items:center;width:42px;height:42px;border-radius:18px;background:rgba(255,255,255,.14);border:1px solid var(--line)}
-.note{font-size:12px;color:var(--muted);font-weight:900}
-button,input{font:inherit}
-button{border:0;cursor:pointer;touch-action:manipulation}
-button:active{transform:scale(.97)}
-.start{
-  display:block;
-  width:100%;
-  min-height:70px;
-  border-radius:25px;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  color:#fff;
-  font-size:20px;
-  font-weight:1000;
-}
-#reader{
-  display:none;
-  width:100%;
-  min-height:260px;
-  max-height:330px;
-  aspect-ratio:1.2/1;
-  margin:16px 0 18px;
-  border-radius:27px;
-  overflow:hidden;
-  background:#000;
-  border:1px solid var(--line);
-}
-body.scanner-on #reader{display:block}
-#reader video{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:27px!important}
-.form-grid{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:10px;margin-top:12px;align-items:stretch}
-input{
-  display:block;
-  width:100%;
-  min-height:64px;
-  padding:0 14px;
-  border-radius:24px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.14);
-  color:var(--text);
-  text-align:center;
-  font-size:19px;
-  font-weight:1000;
-  outline:none;
-}
-input::placeholder{color:rgba(203,217,255,.72)}
-.send{
-  min-height:64px;
-  border-radius:24px;
-  background:linear-gradient(135deg,var(--orange),var(--blush));
-  color:#fff;
-  font-size:17px;
-  font-weight:1000;
-  white-space:nowrap;
-}
-.status-box{
-  padding:18px 16px;
-  min-height:106px;
-  display:grid;
-  place-items:center;
-  font-size:20px;
-  font-weight:1000;
-  line-height:1.55;
-  white-space:pre-line;
-}
-.success{border-color:rgba(93,240,162,.55);background:linear-gradient(180deg,rgba(93,240,162,.28),rgba(255,255,255,.08))}
-.error{border-color:rgba(255,101,174,.62);background:linear-gradient(180deg,rgba(217,52,118,.32),rgba(255,255,255,.08))}
-.warning{border-color:rgba(255,230,109,.62);background:linear-gradient(180deg,rgba(255,230,109,.28),rgba(255,255,255,.08));color:#fff}
-.hint{padding:12px;color:var(--muted);font-size:13px;font-weight:800;line-height:1.65}
-@media(max-width:390px){
-  body{padding:8px 8px calc(125px + env(safe-area-inset-bottom))}
-  h1{font-size:24px}
-  .hero,.verify-card{padding:16px 14px 18px;border-radius:28px}
-  #reader{min-height:238px;max-height:300px;border-radius:25px}
-  .form-grid{grid-template-columns:minmax(0,1fr) 98px;gap:8px}
-  input,.send{min-height:60px;border-radius:22px}
-  input{font-size:17px;padding:0 10px}
-  .send{font-size:16px}
-}
+:root{--bg:#07133a;--bg2:#123783;--text:#fff;--muted:#cbd9ff;--line:rgba(139,214,255,.34);--primary:#4fdcff;--accent:#7c7bff;--star:#ffe66d;--blush:#ff65ae;--green:#5df0a2;--green2:#1db96b;--red:#d93476;--orange:#ffae5f;--warn:#ffe66d;--icon:"💙";--mark:"✦"}
+body[data-theme=labubu]{--bg:#2f211a;--bg2:#8a5b3a;--text:#fff7ea;--muted:#ffe0bd;--line:rgba(255,232,199,.42);--primary:#f7dba8;--accent:#ff9bb8;--star:#ffe58a;--blush:#ff8eaa;--green:#a8ffbf;--green2:#32b874;--red:#c43a5a;--orange:#d99a5f;--warn:#ffe58a;--icon:"👾";--mark:"◆"}
+body[data-theme=usagi]{--bg:#fff8ed;--bg2:#ffd8ec;--text:#553041;--muted:#976778;--line:rgba(255,155,196,.55);--primary:#ff8fbd;--accent:#8fd9ff;--star:#ffe38a;--blush:#ffaccf;--green:#caffe0;--green2:#47c985;--red:#dc5d7b;--orange:#ffe17a;--warn:#9a6300;--icon:"🐰";--mark:"✧"}
+body[data-theme=snoopy]{--bg:#101827;--bg2:#f8fafc;--text:#111827;--muted:#475569;--line:rgba(15,23,42,.2);--primary:#111827;--accent:#ffd166;--star:#ffd166;--blush:#ef4444;--green:#dcfce7;--green2:#22c55e;--red:#991b1b;--orange:#ffd166;--warn:#92400e;--icon:"🐶";--mark:"•"}
+body[data-theme=disney]{--bg:#130b3f;--bg2:#6d28d9;--text:#fff;--muted:#efe5ff;--line:rgba(251,191,36,.38);--primary:#8bd9ff;--accent:#fbbf24;--star:#ffd76a;--blush:#f9a8d4;--green:#a7f3d0;--green2:#10b981;--red:#be185d;--orange:#fbbf24;--warn:#ffd76a;--icon:"✨";--mark:"✦"}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",sans-serif}body{margin:0;padding:10px 10px calc(128px + env(safe-area-inset-bottom));color:var(--text);text-align:center;background:radial-gradient(circle at 10% 6%,color-mix(in srgb,var(--primary) 35%,transparent),transparent 28%),radial-gradient(circle at 88% 4%,color-mix(in srgb,var(--accent) 32%,transparent),transparent 30%),radial-gradient(circle at 14% 90%,color-mix(in srgb,var(--blush) 20%,transparent),transparent 26%),linear-gradient(145deg,var(--bg),var(--bg2) 56%,#050817);overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(circle,rgba(255,255,255,.84) 1px,transparent 1.8px),radial-gradient(circle,color-mix(in srgb,var(--star) 88%,transparent) 1px,transparent 1.9px),radial-gradient(circle,color-mix(in srgb,var(--primary) 70%,transparent) 1px,transparent 1.9px);background-size:38px 38px,76px 76px,116px 116px;background-position:0 0,22px 18px,55px 33px}.app{position:relative;z-index:1;width:min(620px,100%);margin:auto;display:grid;gap:14px;padding-bottom:calc(92px + env(safe-area-inset-bottom))}.hero,.card,.status,.hint,.netbar{position:relative;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.08));-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);box-shadow:0 22px 62px rgba(5,10,38,.28);overflow:hidden}.hero{padding:18px 16px;border-radius:34px}.hero:after{content:var(--icon);position:absolute;right:18px;top:13px;font-size:30px;opacity:.78}.eyebrow{margin:0 0 6px;color:var(--green);font-size:12px;font-weight:1000;letter-spacing:2px}h1{margin:0;font-size:27px;font-weight:1000;letter-spacing:.03em;text-shadow:0 12px 30px rgba(0,0,0,.18)}.subtitle{margin:8px 0 0;color:var(--muted);font-size:13px;font-weight:850;line-height:1.55}.themes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}.theme{min-height:32px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.15);color:var(--text);font-size:9px;font-weight:1000;white-space:nowrap}.theme.on{background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 9px 20px color-mix(in srgb,var(--primary) 26%,transparent)}.netbar{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-radius:999px;color:var(--muted);font-size:13px;font-weight:1000}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);margin-right:6px}.offline .dot{background:var(--warn);box-shadow:0 0 12px var(--warn)}.card{border-radius:31px;padding:18px 16px 20px}.head{position:relative;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;text-align:left}.title{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:1000}.ico{display:grid;place-items:center;width:40px;height:40px;border-radius:18px;background:rgba(255,255,255,.14);border:1px solid var(--line);box-shadow:0 8px 18px rgba(0,0,0,.12)}.note{font-size:12px;color:var(--muted);font-weight:900}button,input{font:inherit}button{border:0;cursor:pointer;touch-action:manipulation}button:active{transform:scale(.97)}input{display:block;width:100%;min-height:64px;padding:0 14px;border-radius:24px;border:1px solid var(--line);background:rgba(255,255,255,.14);color:var(--text);text-align:center;font-size:19px;font-weight:1000;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}input::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}.start{display:block;width:100%;min-height:68px;border-radius:25px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:20px;font-weight:1000;box-shadow:0 14px 30px color-mix(in srgb,var(--primary) 26%,transparent)}#reader{display:none;width:100%;min-height:260px;max-height:330px;aspect-ratio:1.2/1;margin:16px 0 18px;border-radius:27px;overflow:hidden;background:#000;border:1px solid var(--line)}body.scanner-on #reader{display:block}#reader video{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:27px!important}.row{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:10px;align-items:stretch;margin-top:12px}.send{min-height:64px;border-radius:24px;background:linear-gradient(135deg,var(--orange),var(--blush));color:#fff;font-size:17px;font-weight:1000;white-space:nowrap}.direct .send{background:linear-gradient(135deg,var(--green),var(--green2));color:#062b19}.signrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}.signbtn{min-height:64px;border-radius:24px;color:#fff;font-size:24px;font-weight:1000;box-shadow:0 11px 24px rgba(0,0,0,.22);border:2px solid transparent}.signbtn.on{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18),0 12px 26px rgba(0,0,0,.26)}.plus{background:linear-gradient(180deg,var(--green),var(--green2));color:#062b19}.minus{background:linear-gradient(180deg,var(--blush),var(--red));color:#fff}.keypad,.adj{display:grid;gap:10px;margin:14px 0}.keypad{grid-template-columns:repeat(3,1fr)}.adj{grid-template-columns:repeat(4,1fr)}.key,.adj button{min-height:56px;border-radius:22px;font-size:21px;font-weight:1000;box-shadow:0 10px 22px rgba(0,0,0,.2);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));color:var(--text);border:1px solid var(--line)}.clear{background:linear-gradient(180deg,#64748b,#1f2937);color:#fff}.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tool{min-height:54px;border-radius:21px;border:1px solid var(--line);background:rgba(255,255,255,.13);color:var(--text);font-weight:1000}.undo{background:linear-gradient(135deg,var(--orange),var(--blush));color:#fff}.history{display:none;text-align:left;margin-top:10px;padding:10px;border-radius:20px;border:1px solid var(--line);background:rgba(0,0,0,.14)}.history-item{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:7px 2px;border-top:1px solid rgba(255,255,255,.12);font-size:12px}.history-item:first-child{border-top:0}.history-diff{font-weight:1000;color:var(--green)}.history-status{color:var(--warn);font-weight:1000}#adjustArea{display:none}.status{border-radius:28px;padding:16px;font-weight:1000;line-height:1.6}.ok{border-color:rgba(93,240,162,.55);background:linear-gradient(180deg,color-mix(in srgb,var(--green) 26%,transparent),rgba(255,255,255,.08))}.err{border-color:rgba(255,101,174,.6);background:linear-gradient(180deg,color-mix(in srgb,var(--red) 25%,transparent),rgba(255,255,255,.08))}.wait{border-color:rgba(79,220,255,.6)}.offsave{border-color:rgba(255,230,109,.6)}.big{font-size:52px;line-height:1.05}.current{font-size:22px;color:var(--warn);margin-top:8px}.hint{border-radius:23px;padding:12px;color:var(--muted);font-size:13px;font-weight:800;line-height:1.65}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.mini{padding:8px;border-radius:15px;background:rgba(255,255,255,.12);border:1px solid var(--line);font-weight:1000}.mini span{display:block;color:var(--muted);font-size:11px;font-weight:900}@media(max-width:390px){body{padding:8px 8px calc(128px + env(safe-area-inset-bottom))}h1{font-size:24px}.hero{padding:16px 14px}.card{padding:16px 14px 18px;border-radius:28px}.row{grid-template-columns:minmax(0,1fr) 98px;gap:8px}.signbtn,.key,.adj button{min-height:50px;font-size:20px}.themes{gap:4px}.theme{font-size:8.5px}.big{font-size:46px}#reader{min-height:238px;max-height:300px;border-radius:25px}input,.send{min-height:60px;border-radius:22px}input{font-size:17px;padding:0 10px}.send{font-size:16px}}
 </style>
 </head>
-<body>
+<body data-theme="stitch">
 <div class="app">
-  <section class="card hero">
-    <p class="eyebrow">HOUCIHU VERIFY GATE</p>
-    <h1>後慈湖電子驗票系統</h1>
-    <p class="subtitle">掃描 QR Code 或手動輸入票號驗票</p>
-  </section>
-
-  <section class="card verify-card">
-    <div class="head">
-      <div class="title"><span class="ico">📷</span><span>掃描驗票</span></div>
-      <div class="note">QR Code / 票號</div>
-    </div>
-
-    <button type="button" id="startBtn" class="start">📷 啟動掃描驗票</button>
-    <div id="reader"></div>
-
-    <div class="form-grid">
-      <input id="manualTicketInput" placeholder="請手動輸入票號" inputmode="text" autocomplete="off" autocapitalize="characters" enterkeyhint="done">
-      <button type="button" id="manualSubmitBtn" class="send">🎫 驗票</button>
-    </div>
-  </section>
-
-  <div id="resultStatus" class="status-box">請點擊啟動相機，或手動輸入票號驗票</div>
-  <div class="card hint">💡 掃描框會在按下啟動後才展開。若相機無法啟動，請確認 Safari 相機權限與 HTTPS 網址。</div>
+<header class="hero"><p class="eyebrow" id="eyebrow">STITCH DEEP STARRY GATE</p><h1>後慈湖電子驗票系統</h1><p class="subtitle" id="sub">史迪奇深藍星空版・掃碼驗票・直接加減・離線同步</p><div class="themes"><button type="button" class="theme" data-t="stitch">💙史迪奇</button><button type="button" class="theme" data-t="labubu">👾拉布布</button><button type="button" class="theme" data-t="usagi">🐰烏薩奇</button><button type="button" class="theme" data-t="snoopy">🐶史努比</button><button type="button" class="theme" data-t="disney">✨迪士尼</button></div></header>
+<div id="netbar" class="netbar"><span><span class="dot"></span><span id="netText">連線正常</span></span><span id="queueCount">待同步 0 筆</span></div>
+<section class="card"><div class="head"><div class="title"><span class="ico">📷</span><span>掃描驗票</span></div><div class="note">QR Code / 票號</div></div><button type="button" id="start" class="start">📷 啟動掃描驗票</button><div id="reader"></div><div class="row"><input id="manualTicketInput" placeholder="請手動輸入票號" inputmode="text" autocomplete="off" autocapitalize="characters" enterkeyhint="done"><button type="button" id="manualSubmitBtn" class="send">🎫 驗票</button></div></section>
+<section class="card direct"><div class="head"><div class="title"><span class="ico">👥</span><span>直接加減進園人數</span></div><div class="note">先選 + / −</div></div><div class="signrow"><button type="button" id="minusSignBtn" class="signbtn minus">− 扣回</button><button type="button" id="plusSignBtn" class="signbtn plus on">＋ 增加</button></div><div class="row"><input id="directPeopleInput" placeholder="輸入人數" readonly inputmode="none"><button type="button" id="directPeopleBtn" class="send">✅ 送出</button></div><div class="keypad"><button type="button" class="key" data-k="1">1</button><button type="button" class="key" data-k="2">2</button><button type="button" class="key" data-k="3">3</button><button type="button" class="key" data-k="4">4</button><button type="button" class="key" data-k="5">5</button><button type="button" class="key" data-k="6">6</button><button type="button" class="key" data-k="7">7</button><button type="button" class="key" data-k="8">8</button><button type="button" class="key" data-k="9">9</button><button type="button" id="clearKeyBtn" class="key clear">清除</button><button type="button" class="key" data-k="0">0</button><button type="button" id="backspaceKeyBtn" class="key">⌫</button></div><div class="tools"><button type="button" id="undoDirectBtn" class="tool undo">↩️ 撤銷上一筆</button><button type="button" id="toggleHistoryBtn" class="tool">📋 本機紀錄</button></div><div id="historyBox" class="history"><div id="historyList"></div></div></section>
+<div id="status" class="status">👋 請先按「啟動掃描驗票」，也可以手動輸入票號或直接加減進園人數</div>
+<section id="adjustArea" class="card"><div class="head"><div class="title"><span class="ico">🔧</span><span>本張票人數微調</span></div><div class="note">驗票後使用</div></div><div class="adj"><button type="button" class="minus" data-adj="-1">-1</button><button type="button" class="plus" data-adj="1">+1</button><button type="button" class="minus" data-adj="-5">-5</button><button type="button" class="plus" data-adj="5">+5</button></div><div class="row"><input id="manualDiff" type="number" placeholder="輸入數字"><button type="button" id="manualDiffBtn" class="send">📤 送出</button></div></section>
+<div class="hint">💡 驗票狀態以綠色成功、紅色未通過、黃色離線暫存顯示。直接加減請先選方向，再輸入人數送出。</div>
 </div>
-
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbw63eJnsg0a70IbZXBYWktt8CCDfx0mm_MAwzMRDoxKNNvcT2FTTMpJuU8f3qfqHjo/exec";
-let qr=null;
-let isProcessing=false;
-let lastManualClick=0;
-const statusEl=document.getElementById("resultStatus");
-const startBtn=document.getElementById("startBtn");
-const manualInput=document.getElementById("manualTicketInput");
-const manualBtn=document.getElementById("manualSubmitBtn");
-const beep=new Audio("https://www.soundjay.com/buttons/beep-07a.mp3");
-
-startBtn.addEventListener("click",startScanner);
-manualBtn.addEventListener("click",submitManualTicket);
-manualInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitManualTicket(e)}});
-
-function setStatus(type,msg){
-  statusEl.className="status-box "+(type||"");
-  statusEl.textContent=msg;
-}
-
-function startScanner(){
-  if(qr)return;
-  if(location.protocol!=="https:"){
-    setStatus("error","❌ 必須使用 HTTPS 才能開啟相機");
-    return;
-  }
-  if(typeof Html5Qrcode==="undefined"){
-    setStatus("error","❌ 掃描套件尚未載入，請重新整理頁面");
-    return;
-  }
-
-  document.body.classList.add("scanner-on");
-  startBtn.textContent="⏳ 啟動中...";
-  startBtn.disabled=true;
-  setStatus("warning","📷 請允許相機權限…");
-
-  try{
-    qr=new Html5Qrcode("reader",{verbose:false});
-    qr.start(
-      {facingMode:"environment"},
-      {
-        fps:20,
-        qrbox:(w,h)=>{
-          const size=Math.floor(Math.min(w,h)*0.68);
-          return {width:Math.max(180,Math.min(size,260)),height:Math.max(180,Math.min(size,260))};
-        },
-        aspectRatio:1,
-        disableFlip:true
-      },
-      onScanSuccess
-    ).then(()=>{
-      startBtn.style.display="none";
-      setStatus("warning","🔍 相機已啟動，請掃描 QR Code");
-    }).catch(err=>{
-      console.error(err);
-      qr=null;
-      document.body.classList.remove("scanner-on");
-      startBtn.textContent="📷 重試啟動掃描";
-      startBtn.disabled=false;
-      setStatus("error","❌ 相機啟動失敗\n請確認權限是否允許");
-    });
-  }catch(err){
-    console.error(err);
-    qr=null;
-    document.body.classList.remove("scanner-on");
-    startBtn.textContent="📷 重試啟動掃描";
-    startBtn.disabled=false;
-    setStatus("error","❌ 相機啟動失敗");
-  }
-}
-
-function submitManualTicket(e){
-  if(e)e.preventDefault();
-  const now=Date.now();
-  if(now-lastManualClick<500)return;
-  lastManualClick=now;
-
-  const raw=manualInput.value.trim();
-  if(!raw){
-    setStatus("error","🚫 請先輸入票號，再按驗票");
-    manualInput.focus();
-    return;
-  }
-  manualInput.blur();
-  manualInput.value="";
-  verify(extractTicketId(raw));
-}
-
-function onScanSuccess(text){
-  if(isProcessing)return;
-  isProcessing=true;
-  beep.play().catch(()=>{});
-  if(navigator.vibrate)navigator.vibrate(120);
-
-  const id=extractTicketId(text);
-  pauseScanner();
-  verify(id,true);
-}
-
-function extractTicketId(text){
-  const raw=String(text||"").trim();
-  if(!raw)return"";
-  try{
-    const url=new URL(raw,location.href);
-    const id=url.searchParams.get("id");
-    if(id!==null)return id.trim();
-  }catch(e){}
-  const m=raw.match(/[?&]id=([^&]+)/);
-  if(m){
-    try{return decodeURIComponent(m[1].replace(/\+/g," ")).trim()}catch(e){return m[1].trim()}
-  }
-  return raw;
-}
-
-function pauseScanner(){
-  try{
-    if(qr&&typeof qr.getState==="function"&&qr.getState()===2&&typeof qr.pause==="function")qr.pause(true);
-  }catch(e){}
-}
-
-function resumeScanner(){
-  isProcessing=false;
-  try{
-    if(qr&&typeof qr.getState==="function"&&qr.getState()===3&&typeof qr.resume==="function")qr.resume();
-  }catch(e){}
-}
-
-function verify(id,fromScanner=false){
-  if(!id){
-    isProcessing=false;
-    setStatus("error","🚫 票號格式錯誤");
-    if(fromScanner)setTimeout(resumeScanner,800);
-    return;
-  }
-
-  setStatus("warning","⌛ 正在驗票\n"+id);
-
-  if(window.google&&google.script&&google.script.run){
-    google.script.run
-      .withSuccessHandler(msg=>handleVerifyResult(msg,fromScanner))
-      .withFailureHandler(()=>handleVerifyError(fromScanner))
-      .verifyTicket(id);
-    return;
-  }
-
-  fetch(API_URL,{
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    cache:"no-store",
-    body:JSON.stringify({id:id,action:"verify"})
-  })
-  .then(r=>{
-    if(!r.ok)throw new Error("HTTP "+r.status);
-    return r.json();
-  })
-  .then(res=>handleVerifyResult(res,fromScanner))
-  .catch(err=>{
-    console.error(err);
-    handleVerifyError(fromScanner);
-  });
-}
-
-function handleVerifyResult(res,fromScanner){
-  isProcessing=false;
-  let ok=false;
-  let msg="";
-
-  if(typeof res==="string"){
-    ok=res.includes("🟢")||res.includes("成功")||res.includes("OK");
-    msg=res;
-  }else if(res&&typeof res==="object"){
-    ok=!!res.ok;
-    const detail=res.detail||{};
-    msg=res.msg||res.message||(ok?"✅ 驗票成功":"⛔ 驗票未通過");
-    if(ok){
-      const people=detail.people!==undefined?detail.people:"";
-      const current=res.current!==undefined?"\n目前場內 "+res.current+" 人":"";
-      msg="✅ 驗票成功"+(people!==""?"\n本張票 "+people+" 人":"")+current;
-    }
-  }else{
-    msg="⚠️ 無法判讀驗票結果";
-  }
-
-  setStatus(ok?"success":"error",msg);
-  if(fromScanner)setTimeout(resumeScanner,1600);
-}
-
-function handleVerifyError(fromScanner){
-  isProcessing=false;
-  setStatus("error","⚠️ 系統錯誤或網路不穩\n請稍後再試，或改用手動輸入票號");
-  if(fromScanner)setTimeout(resumeScanner,1200);
-}
+const QUEUE_KEY="cihu_ticket_offline_queue_v3",RECENT_KEY="cihu_ticket_recent_seen_v1",HISTORY_KEY="cihu_ticket_adjust_history_v1",THEME_KEY="cihu_ticket_character_theme_v2";
+const REQUEST_TIMEOUT=6200,BIG_DIFF_CONFIRM=20,MAX_DIRECT_DIFF=200;
+let qr=null,scanning=false,lastScan=0,lastTicketId="",syncing=false,directSign="+",lastManualClick=0;
+const $=id=>document.getElementById(id),statusEl=$("status"),startBtn=$("start"),adjArea=$("adjustArea"),manualInput=$("manualTicketInput"),manualBtn=$("manualSubmitBtn"),directPeopleInput=$("directPeopleInput"),directPeopleBtn=$("directPeopleBtn"),undoDirectBtn=$("undoDirectBtn"),toggleHistoryBtn=$("toggleHistoryBtn"),historyBox=$("historyBox"),historyList=$("historyList"),netbar=$("netbar"),netText=$("netText"),queueCount=$("queueCount"),sub=$("sub"),eyebrow=$("eyebrow"),minusSignBtn=$("minusSignBtn"),plusSignBtn=$("plusSignBtn"),manualDiffBtn=$("manualDiffBtn");
+const names={stitch:{n:"史迪奇深藍星空版",e:"STITCH DEEP STARRY GATE"},labubu:{n:"Labubu 奶咖怪可愛版",e:"LABUBU CREAM MONSTER GATE"},usagi:{n:"烏薩奇奶油星空版",e:"USAGI CREAM STARRY GATE"},snoopy:{n:"史努比黑白漫畫版",e:"SNOOPY CLASSIC COMIC GATE"},disney:{n:"迪士尼紫金星光版",e:"MAGIC GOLDEN STARRY GATE"}};
+function normalizeTheme(t){return t==="doraemon"||t==="chiikawa"?"usagi":t}
+function setTheme(t){t=normalizeTheme(t);if(!names[t])t="stitch";document.body.dataset.theme=t;try{localStorage.setItem(THEME_KEY,t)}catch(e){}document.querySelectorAll(".theme").forEach(b=>b.classList.toggle("on",b.dataset.t===t));sub.textContent=names[t].n+"・掃碼驗票・直接加減・離線同步";eyebrow.textContent=names[t].e}
+function setDirectSign(sign){directSign=sign==="-"?"-":"+";minusSignBtn.classList.toggle("on",directSign==="-");plusSignBtn.classList.toggle("on",directSign==="+");directPeopleInput.placeholder=directSign==="-"?"輸入要扣回的人數":"輸入要增加的人數"}
+document.querySelectorAll(".theme").forEach(b=>b.addEventListener("click",()=>setTheme(b.dataset.t)));try{setTheme(localStorage.getItem(THEME_KEY)||"stitch")}catch(e){setTheme("stitch")}setDirectSign("+");
+startBtn.addEventListener("click",startCameraOnce);manualBtn.addEventListener("click",submitManualTicket);manualInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitManualTicket(e)}});directPeopleBtn.addEventListener("click",handleDirectPeople);minusSignBtn.addEventListener("click",()=>setDirectSign("-"));plusSignBtn.addEventListener("click",()=>setDirectSign("+"));document.querySelectorAll(".key[data-k]").forEach(b=>b.addEventListener("click",()=>appendDirectKey(b.dataset.k)));$("clearKeyBtn").addEventListener("click",clearDirectKey);$("backspaceKeyBtn").addEventListener("click",backspaceDirectKey);undoDirectBtn.addEventListener("click",undoLastAdjust);toggleHistoryBtn.addEventListener("click",()=>{historyBox.style.display=historyBox.style.display==="block"?"none":"block";renderHistory()});document.querySelectorAll("[data-adj]").forEach(b=>b.addEventListener("click",()=>adjust(parseInt(b.dataset.adj,10))));manualDiffBtn.addEventListener("click",handleManualAdjust);
+window.addEventListener("online",()=>{updateNetUI();flushQueue()});window.addEventListener("offline",updateNetUI);document.addEventListener("visibilitychange",()=>{if(!document.hidden){updateNetUI();flushQueue();renderHistory()}});setInterval(()=>{if(navigator.onLine)flushQueue()},12000);updateNetUI();flushQueue();renderHistory();
+function submitManualTicket(e){if(e)e.preventDefault();const now=Date.now();if(now-lastManualClick<500)return;lastManualClick=now;const v=manualInput.value.trim();if(!v){showErr("🚫 請先輸入票號，再按驗票");manualInput.focus();return}manualInput.blur();manualInput.value="";onScan(v,true)}
+function appendDirectKey(k){let v=directPeopleInput.value.replace(/\D/g,"");if(v.length>=4)return;v=(v+k).replace(/^0+(?=\d)/,"");directPeopleInput.value=v}function backspaceDirectKey(){directPeopleInput.value=directPeopleInput.value.slice(0,-1)}function clearDirectKey(){directPeopleInput.value=""}
+function startCameraOnce(){if(qr)return;if(typeof Html5Qrcode==="undefined"){showErr("❌ 掃描套件尚未載入");return}document.body.classList.add("scanner-on");startBtn.textContent="⏳ 啟動中...";startBtn.disabled=true;try{qr=new Html5Qrcode("reader",{verbose:false});qr.start({facingMode:"environment"},{fps:30,qrbox:viewfinderSize,aspectRatio:1,disableFlip:true,rememberLastUsedCamera:true,videoConstraints:{facingMode:"environment",width:{ideal:960},height:{ideal:960}}},onScan).then(()=>{statusEl.className="status wait";statusEl.textContent="🔍 正在尋找 QR Code...";startBtn.style.display="none"}).catch(err=>{document.body.classList.remove("scanner-on");showErr("❌ 相機啟動失敗，請允許相機權限");startBtn.textContent="📷 重試啟動掃描";startBtn.disabled=false;qr=null;console.error(err)})}catch(e){document.body.classList.remove("scanner-on");showErr("❌ 相機啟動失敗");startBtn.disabled=false}}
+function viewfinderSize(w,h){const edge=Math.floor(Math.min(w,h)*0.68);return{width:Math.max(180,Math.min(edge,260)),height:Math.max(180,Math.min(edge,260))}}
+function onScan(text,isManual=false){const now=Date.now();if(scanning||(!isManual&&now-lastScan<650))return;const id=extractTicketId(text);if(!id){showErr("🚫 票號格式錯誤");return}if(isRecentlySeen(id)){showLocalDuplicate(id);return}lastScan=now;scanning=true;lastTicketId=id;adjArea.style.display="block";rememberTicket(id);if(navigator.vibrate)navigator.vibrate(35);statusEl.className="status wait";statusEl.textContent="⚡ 驗證中...";pauseScanner();const payload={id,action:"verify"};postFast(payload).then(res=>{if(!res.ok){renderFail(res.msg||"驗票失敗",id);resumeScan(450);return}renderSuccess(res);resumeScan(500)}).catch(()=>{saveOffline({kind:"verify",payload,createdAt:Date.now(),ticketId:id});renderOfflineSaved("🎟️ 已離線暫存票號",id);resumeScan(450)})}
+function extractTicketId(text){const raw=String(text||"").trim();if(!raw)return"";try{const url=new URL(raw,location.href);const id=url.searchParams.get("id");if(id!==null)return id.trim()}catch(e){}const m=raw.match(/[?&]id=([^&]+)/);if(m){try{return decodeURIComponent(m[1].replace(/\+/g," ")).trim()}catch(e){return m[1].trim()}}return raw}
+function scannerState(){if(!qr||typeof qr.getState!=="function")return null;return qr.getState()}function pauseScanner(){if(scannerState()===2&&typeof qr.pause==="function")qr.pause(true)}function resumeScan(ms){setTimeout(()=>{if(scannerState()===3&&typeof qr.resume==="function")qr.resume();scanning=false},ms)}
+function displayNumber(v){const n=Number(v);return Number.isFinite(n)?String(n):"0"}function formatSigned(v){const n=Number(v)||0;return`${n>0?"+":""}${n}`}
+function renderSuccess(res){const d=res.detail||{};if(navigator.vibrate)navigator.vibrate([80]);statusEl.className="status ok";statusEl.innerHTML=`<div>✅ 驗票成功</div><div class="big">${displayNumber(d.people)}</div><div>本張票人數</div><div class="current">場內 ${displayNumber(res.current)} 人</div><div class="result-grid"><div class="mini">${displayNumber(d.cash_full)} / ${displayNumber(d.cash_group)} / ${displayNumber(d.cash_discount)}<span>現金 全/團/優</span></div><div class="mini">${displayNumber(d.card_full)} / ${displayNumber(d.card_group)} / ${displayNumber(d.card_discount)}<span>悠遊 全/團/優</span></div><div class="mini">${displayNumber(d.free)}<span>免費</span></div></div>`}
+function renderFail(msg,id){if(navigator.vibrate)navigator.vibrate([50,40,50]);statusEl.className="status err";statusEl.innerHTML=`⛔ 驗票未通過<br>${escapeHtml(msg)}${id?`<br><small>票號：${escapeHtml(id)}</small>`:""}`}
+function showErr(msg){statusEl.className="status err";statusEl.textContent=msg}
+function handleManualAdjust(){const val=parseInt($("manualDiff").value,10);if(isNaN(val)||val===0){showErr("🚫 請輸入要微調的人數");return}if(!confirmLargeDiff(val))return;adjust(val);$("manualDiff").value=""}
+function handleDirectPeople(){const raw=parseInt(directPeopleInput.value,10);if(isNaN(raw)||raw<=0){showErr("🚫 請先選 + 或 −，再輸入人數");return}const val=directSign==="-"?-raw:raw;if(!validateDirectDiff(val))return;if(!confirmLargeDiff(val))return;directPeopleInput.value="";submitDirectAdjust(val)}
+function validateDirectDiff(diff){if(Math.abs(diff)>MAX_DIRECT_DIFF){showErr(`🚫 單次加減不可超過 ${MAX_DIRECT_DIFF} 人，避免誤觸`);return false}return true}function confirmLargeDiff(diff){return Math.abs(diff)<BIG_DIFF_CONFIRM||confirm(`確定要一次修正 ${formatSigned(diff)} 人嗎？`)}function submitDirectAdjust(diff){adjust(diff,"直接加減人數","手動直接輸入",{record:true,kind:"direct"})}
+function undoLastAdjust(){const h=loadHistory();const target=h.find(i=>i.kind==="direct"&&!i.undone);if(!target){showErr("目前沒有可撤銷的直接加減紀錄");return}if(!confirm(`確定撤銷上一筆 ${formatSigned(target.diff)} 人？`))return;target.undone=true;saveHistory(h);renderHistory();adjust(-target.diff,"撤銷上一筆加減","撤銷:"+(target.actionId||""),{record:true,kind:"undo"})}
+function adjust(diff,source="驗票端微調",notePrefix="票號:",options={}){const actionId=String(Date.now())+Math.random().toString(16).slice(2);const payload={type:"IN",delta:diff,source,note:notePrefix+(lastTicketId||""),actionId};statusEl.className="status wait";statusEl.textContent="🔄 同步中...";postFast(payload).then(res=>{if(options.record)recordHistory({actionId,kind:options.kind||"direct",diff,source,status:"完成",current:res.current,createdAt:Date.now()});statusEl.className="status ok";statusEl.innerHTML=`✅ 已修正 ${formatSigned(diff)}<div class="current">目前場內 ${displayNumber(res.current)} 人</div>`}).catch(()=>{saveOffline({kind:"adjust",payload,createdAt:Date.now(),ticketId:lastTicketId});if(options.record)recordHistory({actionId,kind:options.kind||"direct",diff,source,status:"待同步",createdAt:Date.now()});renderOfflineSaved(`🔧 已離線暫存修正 ${formatSigned(diff)}`,lastTicketId)})}
+function postFast(payload){const c=new AbortController();const timer=setTimeout(()=>c.abort(),REQUEST_TIMEOUT);return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},cache:"no-store",keepalive:true,signal:c.signal,body:JSON.stringify(payload)}).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).finally(()=>clearTimeout(timer))}
+function loadQueue(){try{return JSON.parse(localStorage.getItem(QUEUE_KEY)||"[]")}catch(e){return[]}}function saveQueue(q){localStorage.setItem(QUEUE_KEY,JSON.stringify(q));updateNetUI()}function saveOffline(item){let q=loadQueue();const keyBase=item.kind+":"+JSON.stringify(item.payload);const key=item.kind==="verify"?keyBase:keyBase+":"+item.createdAt+":"+Math.random().toString(16).slice(2);if(item.kind==="verify"&&q.some(x=>x.key===key)){updateNetUI();return}q.push({...item,key,queueId:String(Date.now())+Math.random().toString(16).slice(2),tries:0});saveQueue(q)}
+function renderOfflineSaved(title,ticketId){statusEl.className="status offsave";statusEl.innerHTML=`${title}<br>不用重掃，恢復網路會自動補送${ticketId?`<br><small>票號：${escapeHtml(ticketId)}</small>`:""}<div class="current">待同步 ${loadQueue().length} 筆</div>`}
+async function flushQueue(){if(syncing||!navigator.onLine)return;let q=loadQueue();if(q.length===0){updateNetUI();return}syncing=true;updateNetUI("同步中...");const remain=[];let done=0;for(const item of q){try{const res=await postFast(item.payload);done++;if(res&&res.ok===false)console.warn("GAS rejected queued item",res)}catch(e){item.tries=(item.tries||0)+1;remain.push(item)}}syncing=false;saveQueue(remain);if(done>0){statusEl.className=remain.length?"status offsave":"status ok";statusEl.innerHTML=remain.length?`⚠️ 已同步 ${done} 筆<br>尚待同步：${remain.length} 筆`:`✅ 離線資料已全部同步`}}
+function updateNetUI(extra){const q=loadQueue();const online=navigator.onLine;netbar.classList.toggle("offline",!online||q.length>0);netText.textContent=extra||(online?"連線正常":"離線模式");queueCount.textContent=`待同步 ${q.length} 筆`}
+function loadHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]")}catch(e){return[]}}function saveHistory(h){localStorage.setItem(HISTORY_KEY,JSON.stringify(h.slice(0,20)))}function recordHistory(item){const h=loadHistory();h.unshift(item);saveHistory(h);renderHistory()}function renderHistory(){if(!historyList)return;const h=loadHistory().slice(0,5);if(h.length===0){historyList.innerHTML='<div class="history-item"><span>尚無本機加減紀錄</span><span>—</span></div>';return}historyList.innerHTML=h.map(i=>`<div class="history-item"><span>${escapeHtml(nowTime(i.createdAt))} ${escapeHtml(i.kind==="undo"?"撤銷":"加減")}</span><span class="history-diff">${formatSigned(i.diff)} 人</span><span class="history-status">${i.undone?"已撤銷":escapeHtml(i.status||"")}</span></div>`).join("")}function nowTime(ts){return new Date(ts||Date.now()).toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})}
+function loadRecent(){try{return JSON.parse(localStorage.getItem(RECENT_KEY)||"[]")}catch(e){return[]}}function rememberTicket(id){const now=Date.now();let list=loadRecent().filter(x=>now-x.t<10*60*1000&&x.id!==id);list.push({id,t:now});if(list.length>80)list=list.slice(list.length-80);localStorage.setItem(RECENT_KEY,JSON.stringify(list))}function isRecentlySeen(id){const now=Date.now();return loadRecent().some(x=>x.id===id&&now-x.t<80*1000)}function showLocalDuplicate(id){if(navigator.vibrate)navigator.vibrate([40,40,40]);statusEl.className="status err";statusEl.innerHTML=`⚠️ 這支手機剛剛掃過<br>先不要重掃，避免重複送出<br><small>票號：${escapeHtml(id)}</small>`}function escapeHtml(v){return String(v).replace(/[&<>'"]/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[s]))}
 </script>
 </body>
 </html>
