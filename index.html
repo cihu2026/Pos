@@ -3,26 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#f6a8d8">
+<meta name="theme-color" content="#171a4f">
 <title>後慈湖整合系統</title>
 <style>
 :root{
-  --bg1:#ffd6ee;
-  --bg2:#b9a7ff;
-  --bg3:#705bd6;
-  --card:rgba(255,255,255,.24);
-  --line:rgba(255,255,255,.38);
+  --bg1:#151847;
+  --bg2:#2b2466;
+  --bg3:#070918;
+  --card:rgba(255,255,255,.16);
+  --line:rgba(255,255,255,.28);
   --text:#fff;
-  --muted:rgba(255,255,255,.82);
-  --a:#72caff;
-  --b:#ff91d6;
-  --icon:"💙";
+  --muted:rgba(255,255,255,.78);
+  --a:#8ed8ff;
+  --b:#d8a6ff;
+  --icon:"🌌";
 }
-body[data-theme=stitch]{--bg1:#ffd6ee;--bg2:#b9a7ff;--bg3:#705bd6;--a:#72caff;--b:#ff91d6;--icon:"💙"}
-body[data-theme=labubu]{--bg1:#ffe2bd;--bg2:#e8ad78;--bg3:#8d6045;--a:#ffc96f;--b:#ff9ab8;--icon:"👾"}
-body[data-theme=usagi]{--bg1:#ffe1f3;--bg2:#f4a5d0;--bg3:#96518d;--a:#ff91d6;--b:#ffd9f1;--icon:"🐰"}
-body[data-theme=snoopy]{--bg1:#f8fbff;--bg2:#d7e0ee;--bg3:#707b8f;--a:#9fb1c8;--b:#ffe57a;--icon:"🐶"}
-body[data-theme=disney]{--bg1:#f5dcff;--bg2:#b99cff;--bg3:#5f45b6;--a:#b18cff;--b:#ffd96d;--icon:"✨"}
+body[data-theme=starry]{--bg1:#151847;--bg2:#2b2466;--bg3:#070918;--card:rgba(255,255,255,.16);--line:rgba(255,255,255,.28);--a:#8ed8ff;--b:#d8a6ff;--icon:"🌌"}
+body[data-theme=stitch]{--bg1:#ffd6ee;--bg2:#b9a7ff;--bg3:#705bd6;--card:rgba(255,255,255,.24);--line:rgba(255,255,255,.38);--a:#72caff;--b:#ff91d6;--icon:"💙"}
+body[data-theme=labubu]{--bg1:#ffe2bd;--bg2:#e8ad78;--bg3:#8d6045;--card:rgba(255,255,255,.24);--line:rgba(255,255,255,.38);--a:#ffc96f;--b:#ff9ab8;--icon:"👾"}
+body[data-theme=usagi]{--bg1:#ffe1f3;--bg2:#f4a5d0;--bg3:#96518d;--card:rgba(255,255,255,.24);--line:rgba(255,255,255,.38);--a:#ff91d6;--b:#ffd9f1;--icon:"🐰"}
+body[data-theme=snoopy]{--bg1:#f8fbff;--bg2:#d7e0ee;--bg3:#707b8f;--card:rgba(255,255,255,.24);--line:rgba(255,255,255,.38);--a:#9fb1c8;--b:#ffe57a;--icon:"🐶"}
+body[data-theme=disney]{--bg1:#f5dcff;--bg2:#b99cff;--bg3:#5f45b6;--card:rgba(255,255,255,.24);--line:rgba(255,255,255,.38);--a:#b18cff;--b:#ffd96d;--icon:"✨"}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{width:100%;min-height:100%;overflow-x:hidden;background:var(--bg3)}
 body{
@@ -32,7 +33,11 @@ body{
   padding:max(12px,env(safe-area-inset-top)) 12px calc(24px + env(safe-area-inset-bottom));
   font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;
   color:var(--text);
-  background:linear-gradient(180deg,var(--bg1),var(--bg2) 42%,var(--bg3));
+  background:
+    radial-gradient(circle at 15% 8%,rgba(255,255,255,.26),transparent 18%),
+    radial-gradient(circle at 86% 12%,rgba(169,205,255,.22),transparent 22%),
+    radial-gradient(circle at 80% 78%,rgba(232,165,255,.16),transparent 24%),
+    linear-gradient(180deg,var(--bg1),var(--bg2) 42%,var(--bg3));
   overflow-x:hidden;
 }
 body::before{
@@ -40,49 +45,64 @@ body::before{
   position:fixed;
   inset:0;
   pointer-events:none;
-  background:
-    radial-gradient(circle at 18% 7%,rgba(255,255,255,.48),transparent 24%),
-    radial-gradient(circle at 88% 18%,rgba(255,255,255,.24),transparent 23%),
-    radial-gradient(2px 2px at 48px 70px,rgba(255,255,255,.52),transparent),
-    radial-gradient(1.5px 1.5px at 220px 130px,rgba(255,255,255,.4),transparent);
-  background-size:auto,auto,360px 220px,360px 220px;
+  background-image:
+    radial-gradient(1.2px 1.2px at 28px 36px,rgba(255,255,255,.95),transparent),
+    radial-gradient(1.6px 1.6px at 118px 82px,rgba(255,255,255,.75),transparent),
+    radial-gradient(1px 1px at 220px 58px,rgba(255,255,255,.7),transparent),
+    radial-gradient(1.4px 1.4px at 310px 128px,rgba(255,255,255,.82),transparent),
+    radial-gradient(1px 1px at 80px 176px,rgba(255,255,255,.68),transparent),
+    radial-gradient(1.5px 1.5px at 260px 220px,rgba(255,255,255,.78),transparent);
+  background-size:360px 260px;
+  opacity:.88;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:-20% -20% auto auto;
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(255,255,255,.22),rgba(216,166,255,.12) 36%,transparent 66%);
+  filter:blur(1px);
 }
 .app{position:relative;z-index:1;width:100%;max-width:500px;margin:0 auto;display:grid;gap:12px}
 .card,.nav,.chip,.mini{
   background:var(--card);
   border:1px solid var(--line);
-  box-shadow:0 12px 26px rgba(66,38,118,.14);
-  -webkit-backdrop-filter:blur(18px);
-  backdrop-filter:blur(18px);
+  box-shadow:0 14px 32px rgba(0,0,0,.18);
+  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter:blur(20px);
 }
-.header{border-radius:28px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.header{border-radius:30px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .title small{display:block;font-size:11px;font-weight:900;letter-spacing:.18em;color:var(--muted)}
 .title h1{margin-top:5px;font-size:25px;line-height:1.15;font-weight:950;letter-spacing:.02em}
-.logo{width:58px;height:58px;flex:0 0 58px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));font-size:31px;box-shadow:0 10px 20px rgba(0,0,0,.13)}
+.logo{width:58px;height:58px;flex:0 0 58px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));font-size:31px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .themeTitle{font-size:12px;font-weight:900;letter-spacing:.12em;opacity:.82;padding:0 2px;margin-top:2px}
 .themes{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:none}.themes::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;border-radius:999px;border-color:rgba(255,255,255,.3);color:#fff;padding:9px 12px;font-size:13px;font-weight:900;white-space:nowrap}.chip.on{background:linear-gradient(135deg,var(--a),var(--b));border-color:rgba(255,255,255,.55)}
-.notice{border-radius:26px;padding:15px 16px;display:flex;gap:12px;align-items:flex-start}.notice .dot{width:10px;height:10px;margin-top:6px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 0 0 6px rgba(255,255,255,.12)}.notice strong{display:block;font-size:16px;line-height:1.25}.notice p{margin-top:5px;font-size:13px;line-height:1.5;font-weight:800;color:var(--muted)}
-.status{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{border-radius:22px;padding:12px 14px}.stat span{display:block;font-size:12px;font-weight:900;color:var(--muted)}.stat b{display:block;margin-top:4px;font-size:17px;line-height:1.1}
-.list{display:grid;gap:10px}.nav{min-height:76px;border-radius:25px;padding:13px 15px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:14px;transition:transform .12s ease,background .12s ease}.nav:active,.mini:active,.chip:active{transform:scale(.985)}
-.ico{width:48px;height:48px;flex:0 0 48px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.21);font-size:25px}.txt{min-width:0;flex:1}.txt strong{display:block;font-size:20px;line-height:1.15;font-weight:950}.txt small{display:block;margin-top:4px;font-size:13px;line-height:1.25;font-weight:800;color:var(--muted)}.arrow{font-size:23px;font-weight:900;opacity:.72}.nav.primary{background:linear-gradient(135deg,rgba(114,202,255,.42),rgba(255,145,214,.34));border-color:rgba(255,255,255,.56)}
-.sub{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{border-radius:22px;min-height:52px;display:grid;place-items:center;text-align:center;text-decoration:none;color:#fff;font-size:14px;font-weight:950;padding:13px 8px}
+.chip{flex:0 0 auto;border-radius:999px;border-color:rgba(255,255,255,.25);color:#fff;padding:9px 12px;font-size:13px;font-weight:900;white-space:nowrap}.chip.on{background:linear-gradient(135deg,var(--a),var(--b));border-color:rgba(255,255,255,.6);box-shadow:0 10px 22px rgba(0,0,0,.16)}
+.notice{border-radius:28px;padding:15px 16px;display:flex;gap:12px;align-items:flex-start}.notice .dot{width:10px;height:10px;margin-top:6px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 0 0 6px rgba(255,255,255,.1),0 0 18px rgba(216,166,255,.55)}.notice strong{display:block;font-size:16px;line-height:1.25}.notice p{margin-top:5px;font-size:13px;line-height:1.5;font-weight:800;color:var(--muted)}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{border-radius:24px;padding:12px 14px}.stat span{display:block;font-size:12px;font-weight:900;color:var(--muted)}.stat b{display:block;margin-top:4px;font-size:17px;line-height:1.1}
+.list{display:grid;gap:10px}.nav{min-height:76px;border-radius:26px;padding:13px 15px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:14px;transition:transform .12s ease,background .12s ease}.nav:active,.mini:active,.chip:active{transform:scale(.985)}
+.ico{width:48px;height:48px;flex:0 0 48px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.16);font-size:25px}.txt{min-width:0;flex:1}.txt strong{display:block;font-size:20px;line-height:1.15;font-weight:950}.txt small{display:block;margin-top:4px;font-size:13px;line-height:1.25;font-weight:800;color:var(--muted)}.arrow{font-size:23px;font-weight:900;opacity:.72}.nav.primary{background:linear-gradient(135deg,rgba(142,216,255,.32),rgba(216,166,255,.26));border-color:rgba(255,255,255,.48)}
+.sub{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{border-radius:23px;min-height:52px;display:grid;place-items:center;text-align:center;text-decoration:none;color:#fff;font-size:14px;font-weight:950;padding:13px 8px}
 footer{text-align:center;font-size:11px;font-weight:850;letter-spacing:.12em;opacity:.74;padding:3px 0 8px}
 @media(max-width:370px){body{padding-left:10px;padding-right:10px}.title h1{font-size:23px}.logo{width:54px;height:54px;flex-basis:54px}.nav{min-height:72px;padding:12px 13px}.txt strong{font-size:19px}.txt small{font-size:12px}.chip{font-size:12px;padding:8px 11px}}
 </style>
 </head>
-<body data-theme="stitch">
+<body data-theme="starry">
 <main class="app">
   <section class="card header">
     <div class="title">
       <small>HOUCIHU PORTAL</small>
       <h1>後慈湖整合系統</h1>
     </div>
-    <div class="logo" id="themeIcon">💙</div>
+    <div class="logo" id="themeIcon">🌌</div>
   </section>
 
   <div class="themeTitle">主題切換</div>
   <section class="themes" aria-label="主題切換">
+    <button class="chip" data-theme="starry">🌌 星空</button>
     <button class="chip" data-theme="stitch">💙 史迪奇</button>
     <button class="chip" data-theme="labubu">👾 Labubu</button>
     <button class="chip" data-theme="usagi">🐰 烏薩奇</button>
@@ -93,14 +113,14 @@ footer{text-align:center;font-size:11px;font-weight:850;letter-spacing:.12em;opa
   <section class="card notice">
     <div class="dot"></div>
     <div>
-      <strong>現場手機快速入口</strong>
-      <p>售票、驗票、候補、出園、人流與公務團，請由下方功能進入。</p>
+      <strong>星空版現場入口</strong>
+      <p>售票、驗票、候補、出園、人流與公務團，手機一鍵進入。</p>
     </div>
   </section>
 
   <section class="status">
     <div class="card stat"><span>入口模式</span><b>手機版</b></div>
-    <div class="card stat"><span>目前主題</span><b id="themeName">史迪奇</b></div>
+    <div class="card stat"><span>目前主題</span><b id="themeName">星空</b></div>
   </section>
 
   <section class="list">
@@ -145,6 +165,7 @@ footer{text-align:center;font-size:11px;font-weight:850;letter-spacing:.12em;opa
 </main>
 <script>
 const themes={
+  starry:["🌌","星空"],
   stitch:["💙","史迪奇"],
   labubu:["👾","Labubu"],
   usagi:["🐰","烏薩奇"],
@@ -155,7 +176,7 @@ const themeIcon=document.getElementById("themeIcon");
 const themeName=document.getElementById("themeName");
 const buttons=document.querySelectorAll(".chip");
 function setTheme(theme){
-  if(!themes[theme]) theme="stitch";
+  if(!themes[theme]) theme="starry";
   document.body.dataset.theme=theme;
   themeIcon.textContent=themes[theme][0];
   themeName.textContent=themes[theme][1];
@@ -166,7 +187,7 @@ buttons.forEach(btn=>{
   btn.type="button";
   btn.addEventListener("click",()=>setTheme(btn.dataset.theme));
 });
-setTheme(localStorage.getItem("houcihu-theme")||"stitch");
+setTheme(localStorage.getItem("houcihu-theme")||"starry");
 </script>
 </body>
 </html>
