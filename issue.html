@@ -6,11 +6,7 @@
 <meta name="theme-color" id="themeColor" content="#08143f">
 <title>後慈湖售票系統</title>
 <style>
-:root{
-  --bg:#151847;--bg2:#2b2466;--text:#fff;--muted:#d7ddff;--line:rgba(255,255,255,.28);
-  --primary:#8ed8ff;--accent:#d8a6ff;--star:#ffe66d;--blush:#ff8fc7;
-  --green:#9fffd0;--green2:#49c98c;--orange:#ffc36a;--red:#ff65ae;--icon:"🌌";
-}
+:root{--bg:#151847;--bg2:#2b2466;--text:#fff;--muted:#d7ddff;--line:rgba(255,255,255,.28);--primary:#8ed8ff;--accent:#d8a6ff;--star:#ffe66d;--blush:#ff8fc7;--green:#9fffd0;--green2:#49c98c;--orange:#ffc36a;--red:#ff65ae;--icon:"🌌"}
 body[data-theme=starry]{--bg:#151847;--bg2:#2b2466;--text:#fff;--muted:#d7ddff;--line:rgba(255,255,255,.28);--primary:#8ed8ff;--accent:#d8a6ff;--star:#ffe66d;--blush:#ff8fc7;--green:#9fffd0;--green2:#49c98c;--orange:#ffc36a;--red:#ff65ae;--icon:"🌌"}
 body[data-theme=stitch]{--bg:#07133a;--bg2:#123783;--text:#fff;--muted:#cbd9ff;--line:rgba(139,214,255,.34);--primary:#4fdcff;--accent:#7c7bff;--star:#ffe66d;--blush:#ff65ae;--green:#5df0a2;--green2:#1db96b;--orange:#ffae5f;--red:#d93476;--icon:"💙"}
 body[data-theme=labubu]{--bg:#20140f;--bg2:#6e472f;--text:#fff7ea;--muted:#ffe0bd;--line:rgba(255,232,199,.42);--primary:#f7dba8;--accent:#ff9bb8;--star:#ffe58a;--blush:#ff8eaa;--green:#a8ffbf;--green2:#32b874;--orange:#d99a5f;--red:#c43a5a;--icon:"👾"}
@@ -18,34 +14,22 @@ body[data-theme=usagi]{--bg:#2b1230;--bg2:#8b3b79;--text:#fff7fc;--muted:#ffd8ec
 body[data-theme=snoopy]{--bg:#090d16;--bg2:#2b3448;--text:#fff;--muted:#d9e2f1;--line:rgba(226,232,240,.34);--primary:#e5e7eb;--accent:#ffd166;--star:#ffd166;--blush:#ef4444;--green:#dcfce7;--green2:#22c55e;--orange:#ffd166;--red:#991b1b;--icon:"🐶"}
 body[data-theme=disney]{--bg:#130b3f;--bg2:#6d28d9;--text:#fff;--muted:#efe5ff;--line:rgba(251,191,36,.38);--primary:#8bd9ff;--accent:#fbbf24;--star:#ffd76a;--blush:#f9a8d4;--green:#a7f3d0;--green2:#10b981;--orange:#fbbf24;--red:#be185d;--icon:"✨"}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif}
-body{
-  color:var(--text);
-  background:
-    radial-gradient(circle at 12% 8%,color-mix(in srgb,var(--primary) 36%,transparent),transparent 28%),
-    radial-gradient(circle at 88% 6%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 30%),
-    radial-gradient(circle at 15% 92%,color-mix(in srgb,var(--blush) 24%,transparent),transparent 28%),
-    linear-gradient(145deg,var(--bg),var(--bg2) 58%,#050817);
-  overflow-x:hidden;
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;opacity:.43;
-  background-image:
-    radial-gradient(circle,rgba(255,255,255,.9) 1px,transparent 1.8px),
-    radial-gradient(circle,color-mix(in srgb,var(--star) 90%,transparent) 1px,transparent 1.9px),
-    radial-gradient(circle,color-mix(in srgb,var(--primary) 74%,transparent) 1px,transparent 1.9px);
-  background-size:38px 38px,76px 76px,116px 116px;background-position:0 0,22px 18px,55px 33px;
-}
-.container{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,2fr) minmax(330px,1.05fr);min-height:100vh;gap:14px;padding:14px}.left{display:grid;grid-template-rows:auto auto 1fr auto;gap:14px}
+html,body{min-height:100%;width:100%;max-width:100%;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;overflow-x:hidden}
+body{color:var(--text);background:radial-gradient(circle at 12% 8%,color-mix(in srgb,var(--primary) 36%,transparent),transparent 28%),radial-gradient(circle at 88% 6%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 30%),radial-gradient(circle at 15% 92%,color-mix(in srgb,var(--blush) 24%,transparent),transparent 28%),linear-gradient(145deg,var(--bg),var(--bg2) 58%,#050817)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.43;background-image:radial-gradient(circle,rgba(255,255,255,.9) 1px,transparent 1.8px),radial-gradient(circle,color-mix(in srgb,var(--star) 90%,transparent) 1px,transparent 1.9px),radial-gradient(circle,color-mix(in srgb,var(--primary) 74%,transparent) 1px,transparent 1.9px);background-size:38px 38px,76px 76px,116px 116px;background-position:0 0,22px 18px,55px 33px}
+.container{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,2fr) minmax(330px,1.05fr);min-height:100vh;gap:14px;padding:14px;width:100%;max-width:100%;min-width:0}
+.left{display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-width:0;width:100%}
+.panel,.theme-panel,.side-panel{min-width:0;max-width:100%}
 .panel{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.08));border:1px solid var(--line);border-radius:30px;padding:16px;color:var(--text);box-shadow:0 22px 62px rgba(5,10,38,.28);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);overflow:hidden}
-.theme-panel{position:sticky;top:0;z-index:9;padding:12px;border-radius:24px;background:rgba(10,16,48,.72);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:1000;letter-spacing:.13em;color:var(--muted);margin-bottom:10px}.seal{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900}
-.theme-switch{display:grid;grid-template-columns:repeat(6,minmax(72px,1fr));gap:8px}.theme-btn{width:100%;min-height:44px;padding:8px;border-radius:999px;font-size:13px;white-space:nowrap;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);box-shadow:0 6px 14px rgba(0,0,0,.12);color:var(--text);font-weight:1000}.theme-btn.active{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 9px 20px color-mix(in srgb,var(--primary) 26%,transparent)}
+.theme-panel{position:sticky;top:0;z-index:9;padding:12px;border-radius:24px;background:rgba(10,16,48,.72);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:1000;letter-spacing:.13em;color:var(--muted);margin-bottom:10px;min-width:0}.seal{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:900;flex:0 0 34px}
+.theme-switch{display:grid;grid-template-columns:repeat(6,minmax(72px,1fr));gap:8px;min-width:0}.theme-btn{width:100%;min-height:44px;padding:8px;border-radius:999px;font-size:13px;white-space:nowrap;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);box-shadow:0 6px 14px rgba(0,0,0,.12);color:var(--text);font-weight:1000}.theme-btn.active{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 9px 20px color-mix(in srgb,var(--primary) 26%,transparent)}
 .header-card{text-align:center;background:linear-gradient(135deg,color-mix(in srgb,var(--bg2) 86%,#000 0%),color-mix(in srgb,var(--primary) 70%,transparent));color:#fff}.header-card:after{content:var(--icon);position:absolute;right:20px;top:16px;font-size:31px;opacity:.82}.header-card:before{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--star),var(--accent),var(--green))}
-#clock{position:relative;font-size:17px;font-weight:850;margin-bottom:8px;color:var(--muted)}#currentType{position:relative;font-size:29px;font-weight:1000;margin-bottom:10px}.input-label{position:relative;font-size:15px;color:var(--muted);margin-bottom:8px;font-weight:850}#inputQty{position:relative;width:100%;border:1px solid var(--line);border-radius:27px;background:rgba(255,255,255,.14);font-size:84px;font-weight:1000;text-align:center;color:#fff;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}#inputQty::placeholder{color:rgba(255,255,255,.46)}.quick-note{position:relative;font-size:14px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}button{width:100%;min-height:96px;font:inherit;font-size:21px;font-weight:1000;border:none;border-radius:25px;cursor:pointer;transition:.12s;box-shadow:0 12px 24px rgba(0,0,0,.16);touch-action:manipulation;user-select:none}button:active{transform:scale(.966);filter:brightness(1.03)}.cash{background:linear-gradient(135deg,var(--green),var(--green2));color:#062b19}.card-btn{background:linear-gradient(135deg,var(--primary),#a9e6ee);color:#05313a}.free{background:linear-gradient(135deg,var(--red),#ffd4df);color:#fff}.checkout{background:linear-gradient(135deg,var(--star),var(--orange));font-size:27px;color:#3c2703}.clear{background:linear-gradient(135deg,#64748b,#cbd5e1);color:#0f172a}.clear-all{background:linear-gradient(135deg,#334155,#111827);color:#fff;min-height:74px}
-.side-panel{display:flex;flex-direction:column}.side-title{position:relative;margin:0 0 12px;font-size:27px;font-weight:1000;letter-spacing:.03em}.summary-chip{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.summary-chip div{padding:11px;border-radius:18px;background:rgba(255,255,255,.14);border:1px solid var(--line)}.summary-chip span{display:block;color:var(--muted);font-size:12px;font-weight:900}.summary-chip b{font-size:20px}#list{position:relative;font-size:20px;line-height:1.9;flex-grow:1;color:var(--text)}.ticket-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed color-mix(in srgb,var(--muted) 30%,transparent)}.ticket-row span:last-child{font-size:22px;font-weight:1000}#warn{position:relative;color:var(--star);font-size:16px;line-height:1.6;min-height:42px;margin-top:10px;font-weight:1000}.total-label{position:relative;font-size:18px;color:var(--muted);text-align:right;margin-top:auto;font-weight:900}.total{position:relative;font-size:86px;line-height:1;text-align:right;color:var(--primary);font-weight:1000;margin:8px 0 14px;font-variant-numeric:tabular-nums}#lastTicket{position:relative;margin-top:10px;padding:14px;border-radius:20px;background:rgba(255,255,255,.14);font-size:18px;font-weight:1000;text-align:center;color:var(--star);border:1px solid var(--line)}
-@media(max-width:840px){body{overflow:auto}.container{display:flex;flex-direction:column;min-height:auto;padding:10px;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:calc(18px + env(safe-area-inset-bottom))}.panel{padding:13px;border-radius:24px}.theme-panel{border-radius:22px;padding:10px}.brand{font-size:12px;margin-bottom:8px}.theme-switch{display:flex;overflow-x:auto;gap:7px;padding-bottom:3px;scrollbar-width:none}.theme-switch::-webkit-scrollbar{display:none}.theme-btn{min-width:86px;min-height:40px;font-size:12px;padding:7px 9px}#clock{font-size:16px}#currentType{font-size:22px}#inputQty{font-size:56px}.grid{grid-template-columns:repeat(2,1fr);gap:9px}button{min-height:78px;font-size:18px;border-radius:20px}.checkout{font-size:21px}.clear-all{min-height:62px}.side-title{font-size:22px}#list{font-size:17px}.ticket-row span:last-child{font-size:20px}.total{font-size:54px}#lastTicket{font-size:15px}#warn{font-size:14px}}
+#clock{position:relative;font-size:17px;font-weight:850;margin-bottom:8px;color:var(--muted)}#currentType{position:relative;font-size:29px;font-weight:1000;margin-bottom:10px;overflow-wrap:anywhere}.input-label{position:relative;font-size:15px;color:var(--muted);margin-bottom:8px;font-weight:850}#inputQty{position:relative;width:100%;max-width:100%;border:1px solid var(--line);border-radius:27px;background:rgba(255,255,255,.14);font-size:84px;font-weight:1000;text-align:center;color:#fff;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}#inputQty::placeholder{color:rgba(255,255,255,.46)}.quick-note{position:relative;font-size:14px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;font-weight:800;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%}button{width:100%;min-width:0;min-height:96px;font:inherit;font-size:21px;font-weight:1000;border:none;border-radius:25px;cursor:pointer;transition:.12s;box-shadow:0 12px 24px rgba(0,0,0,.16);touch-action:manipulation;user-select:none}button:active{transform:scale(.966);filter:brightness(1.03)}.cash{background:linear-gradient(135deg,var(--green),var(--green2));color:#062b19}.card-btn{background:linear-gradient(135deg,var(--primary),#a9e6ee);color:#05313a}.free{background:linear-gradient(135deg,var(--red),#ffd4df);color:#fff}.checkout{background:linear-gradient(135deg,var(--star),var(--orange));font-size:27px;color:#3c2703}.clear{background:linear-gradient(135deg,#64748b,#cbd5e1);color:#0f172a}.clear-all{background:linear-gradient(135deg,#334155,#111827);color:#fff;min-height:74px}
+.side-panel{display:flex;flex-direction:column;width:100%}.side-title{position:relative;margin:0 0 12px;font-size:27px;font-weight:1000;letter-spacing:.03em}.summary-chip{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:12px}.summary-chip div{min-width:0;padding:11px;border-radius:18px;background:rgba(255,255,255,.14);border:1px solid var(--line)}.summary-chip span{display:block;color:var(--muted);font-size:12px;font-weight:900}.summary-chip b{font-size:20px;overflow-wrap:anywhere}#list{position:relative;font-size:20px;line-height:1.9;flex-grow:1;color:var(--text);min-width:0}.ticket-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed color-mix(in srgb,var(--muted) 30%,transparent)}.ticket-row span{min-width:0;overflow-wrap:anywhere}.ticket-row span:last-child{font-size:22px;font-weight:1000;flex:0 0 auto}#warn{position:relative;color:var(--star);font-size:16px;line-height:1.6;min-height:42px;margin-top:10px;font-weight:1000}.total-label{position:relative;font-size:18px;color:var(--muted);text-align:right;margin-top:auto;font-weight:900}.total{position:relative;font-size:86px;line-height:1;text-align:right;color:var(--primary);font-weight:1000;margin:8px 0 14px;font-variant-numeric:tabular-nums;max-width:100%;overflow-wrap:anywhere}#lastTicket{position:relative;margin-top:10px;padding:14px;border-radius:20px;background:rgba(255,255,255,.14);font-size:18px;font-weight:1000;text-align:center;color:var(--star);border:1px solid var(--line);overflow-wrap:anywhere}
+@media(max-width:840px){html,body{width:100%;max-width:100%;overflow-x:hidden}body{overflow-y:auto}.container{display:block;width:100%;max-width:100%;min-width:0;min-height:auto;padding:10px;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:calc(18px + env(safe-area-inset-bottom));overflow:visible}.left{display:grid;width:100%;max-width:100%;min-width:0;gap:10px}.panel,.theme-panel,.side-panel{width:100%;max-width:100%;min-width:0}.panel{padding:13px;border-radius:24px}.theme-panel{position:relative;top:auto;border-radius:22px;padding:10px}.brand{font-size:12px;margin-bottom:8px;white-space:normal;overflow-wrap:anywhere}.theme-switch{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;gap:7px;padding-bottom:3px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.theme-switch::-webkit-scrollbar{display:none}.theme-btn{flex:0 0 auto;width:auto;min-width:86px;min-height:40px;font-size:12px;padding:7px 9px}#clock{font-size:16px}#currentType{font-size:22px;padding:0 24px}#inputQty{font-size:56px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}button{min-height:78px;font-size:18px;border-radius:20px}.checkout{font-size:21px}.clear-all{min-height:62px}.side-panel{margin-top:10px}.side-title{font-size:22px}#list{font-size:17px}.ticket-row span:last-child{font-size:20px}.total{font-size:54px}#lastTicket{font-size:15px}#warn{font-size:14px}}
+@media(max-width:390px){.container{padding-left:8px;padding-right:8px}.panel{padding:11px}.grid{gap:7px}button{font-size:16px;min-height:72px}.theme-btn{min-width:82px}#currentType{font-size:19px}.quick-note{font-size:12px}.summary-chip{gap:7px}.summary-chip b{font-size:17px}}
 </style>
 </head>
 <body data-theme="starry">
@@ -62,7 +46,6 @@ body:before{
         <button type="button" class="theme-btn" data-theme="disney">✨ 迪士尼</button>
       </div>
     </div>
-
     <div class="panel header-card">
       <div id="clock"></div>
       <div id="currentType">🌌 後慈湖售票系統｜星空版</div>
@@ -70,7 +53,6 @@ body:before{
       <input id="inputQty" type="tel" inputmode="numeric" maxlength="3" placeholder="0" oninput="syncInput()">
       <div class="quick-note">快捷鍵：Q/W/E 現金　A/S/D 悠遊　F 免費　Enter 結帳</div>
     </div>
-
     <div class="panel grid">
       <button class="cash" onclick="add('現金全票','cash_full')">🎫 現金全票<br>Q</button>
       <button class="cash" onclick="add('現金團體','cash_group')">👥 現金團體<br>W</button>
@@ -82,206 +64,39 @@ body:before{
       <button class="clear" onclick="clearInput()">⌫ 清除<br>Esc</button>
       <button class="checkout" onclick="checkout()">💰 結帳<br>Enter</button>
     </div>
-
     <div class="panel"><button class="clear-all" onclick="reset()">❌ 全部重設 Delete</button></div>
   </div>
-
   <div class="panel side-panel">
     <h2 class="side-title">🧾 本次票券</h2>
-    <div class="summary-chip">
-      <div><span>票券人數</span><b id="peopleCount">0</b></div>
-      <div><span>團體狀態</span><b id="groupPrice">未使用</b></div>
-    </div>
-    <div id="list"></div>
-    <div id="warn"></div>
-    <div class="total-label">應收總計</div>
-    <div class="total" id="total">0</div>
-    <div id="lastTicket">尚未結帳</div>
+    <div class="summary-chip"><div><span>票券人數</span><b id="peopleCount">0</b></div><div><span>團體狀態</span><b id="groupPrice">未使用</b></div></div>
+    <div id="list"></div><div id="warn"></div><div class="total-label">應收總計</div><div class="total" id="total">0</div><div id="lastTicket">尚未結帳</div>
   </div>
 </div>
-
 <script>
 var GAS_WEB_APP_URL="https://script.google.com/macros/s/AKfycbw63eJnsg0a70IbZXBYWktt8CCDfx0mm_MAwzMRDoxKNNvcT2FTTMpJuU8f3qfqHjo/exec";
-var input="";
-var printing=false;
-var data={cash_full:0,cash_group:0,cash_discount:0,card_full:0,card_group:0,card_discount:0,free:0};
+var input="";var printing=false;var data={cash_full:0,cash_group:0,cash_discount:0,card_full:0,card_group:0,card_discount:0,free:0};
 var TICKET_LABELS={cash_full:"現金全票",cash_group:"現金團體",cash_discount:"現金優待",card_full:"悠遊全票",card_group:"悠遊團體",card_discount:"悠遊優待",free:"免費"};
-var TICKET_IMAGES=[
-  "https://cihu2026.github.io/Pos/IMG_1672.JPG",
-  "https://cihu2026.github.io/Pos/IMG_2538.JPG",
-  "https://cihu2026.github.io/Pos/IMG_2539.JPG",
-  "https://cihu2026.github.io/Pos/IMG_2540.JPG",
-  "https://cihu2026.github.io/Pos/IMG_2542.JPG"
-];
+var TICKET_IMAGES=["https://cihu2026.github.io/Pos/IMG_1672.JPG","https://cihu2026.github.io/Pos/IMG_2538.JPG","https://cihu2026.github.io/Pos/IMG_2539.JPG","https://cihu2026.github.io/Pos/IMG_2540.JPG","https://cihu2026.github.io/Pos/IMG_2542.JPG"];
 TICKET_IMAGES.forEach(function(src){var img=new Image();img.src=src;});
-
-var THEME_INFO={
-  starry:{icon:"🌌",name:"星空版",color:"#08143f"},
-  stitch:{icon:"💙",name:"史迪奇深藍星空",color:"#07133a"},
-  labubu:{icon:"👾",name:"Labubu 奶咖星空",color:"#20140f"},
-  usagi:{icon:"🐰",name:"烏薩奇粉色星空",color:"#2b1230"},
-  snoopy:{icon:"🐶",name:"史努比黑白星空",color:"#090d16"},
-  disney:{icon:"✨",name:"迪士尼紫金星空",color:"#130b3f"}
-};
-function normalizeTheme(theme){
-  if(theme==="doraemon"||theme==="chiikawa") return "usagi";
-  return THEME_INFO[theme] ? theme : "starry";
-}
-function setTheme(theme){
-  var next=normalizeTheme(theme);
-  document.body.dataset.theme=next;
-  try{
-    localStorage.setItem("houcihu-theme",next);
-    localStorage.setItem("houcihu_pos_theme",next);
-  }catch(e){}
-  document.querySelectorAll(".theme-btn").forEach(function(btn){
-    btn.classList.toggle("active",btn.dataset.theme===next);
-  });
-  var seal=document.querySelector(".seal");
-  if(seal) seal.textContent=THEME_INFO[next].icon;
-  var themeColor=document.getElementById("themeColor")||document.querySelector('meta[name="theme-color"]');
-  if(themeColor) themeColor.setAttribute("content",THEME_INFO[next].color);
-  if(!printing && getTotalPeople()===0){
-    document.getElementById("currentType").textContent=THEME_INFO[next].icon+" 後慈湖售票系統｜"+THEME_INFO[next].name;
-  }
-}
-function initTheme(){
-  var theme="starry";
-  try{theme=localStorage.getItem("houcihu-theme")||localStorage.getItem("houcihu_pos_theme")||"starry";}catch(e){}
-  document.querySelectorAll(".theme-btn").forEach(function(btn){
-    btn.onclick=function(){setTheme(btn.dataset.theme);};
-  });
-  setTheme(theme);
-}
-function updateClock(){document.getElementById("clock").textContent=new Date().toLocaleString("zh-TW",{hour12:false});}
-setInterval(updateClock,1000);updateClock();
-function syncInput(){
-  input=(document.getElementById("inputQty").value||"").replace(/\D/g,"").slice(0,3);
-  document.getElementById("inputQty").value=input;
-}
-function qty(){var n=parseInt(input||"1",10);return isNaN(n)||n<=0?1:n;}
-function clearInput(){input="";document.getElementById("inputQty").value="";}
-function add(type,key){
-  var n=qty();
-  data[key]+=n;
-  document.getElementById("currentType").textContent=type+" +"+n;
-  clearInput();
-  calc();
-}
-function reset(){
-  if(getTotalPeople()>0 && !confirm("確定全部重設？")) return;
-  Object.keys(data).forEach(function(k){data[k]=0;});
-  clearInput();
-  document.getElementById("lastTicket").textContent="尚未結帳";
-  calc();
-  setTheme(document.body.dataset.theme||"starry");
-}
-function getTotalPeople(){var total=0;Object.keys(data).forEach(function(k){total+=Number(data[k]||0);});return total;}
-function getGroupTotal(){return data.cash_group+data.card_group;}
-function getGroupPrice(){return getGroupTotal()>=40?80:100;}
-function getGroupStatus(){var gt=getGroupTotal();if(gt<=0)return"未使用";return gt>=40?"團體80":"未滿40";}
-function calcTotal(){var gp=getGroupPrice();return data.cash_full*100+data.cash_group*gp+data.cash_discount*50+data.card_full*100+data.card_group*gp+data.card_discount*50;}
-function row(name,count,price){if(!count)return"";return '<div class="ticket-row"><span>'+name+' × '+count+'</span><span>$'+(count*price)+'</span></div>';}
-function calc(){
-  var gp=getGroupPrice();
-  var html="";
-  html+=row("現金全票",data.cash_full,100);
-  html+=row("現金團體",data.cash_group,gp);
-  html+=row("現金優待",data.cash_discount,50);
-  html+=row("悠遊全票",data.card_full,100);
-  html+=row("悠遊團體",data.card_group,gp);
-  html+=row("悠遊優待",data.card_discount,50);
-  html+=row("免費",data.free,0);
-  document.getElementById("list").innerHTML=html||"尚無票券";
-  document.getElementById("total").textContent=calcTotal();
-  document.getElementById("peopleCount").textContent=getTotalPeople();
-  document.getElementById("groupPrice").textContent=getGroupStatus();
-  document.getElementById("warn").textContent=getGroupTotal()>0&&getGroupTotal()<40?"⚠️ 團體票未滿 40 人，暫以全票 100 元計算":"";
-}
-function checkout(){
-  if(getTotalPeople()<=0){alert("尚未加入票券");return;}
-  var total=calcTotal();
-  var people=getTotalPeople();
-  var ticketId="HCH"+Date.now().toString().slice(-8)+Math.floor(Math.random()*90+10);
-  printing=true;
-  document.getElementById("lastTicket").textContent="列印中："+ticketId;
-  fetch(GAS_WEB_APP_URL,{
-    method:"POST",
-    mode:"no-cors",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify({
-      action:"saveOrder",
-      ticketId:ticketId,
-      cash_full:data.cash_full,
-      cash_group:data.cash_group,
-      cash_discount:data.cash_discount,
-      card_full:data.card_full,
-      card_group:data.card_group,
-      card_discount:data.card_discount,
-      free:data.free,
-      total:total,
-      type:"入園票",
-      people:people
-    })
-  }).catch(function(e){console.warn(e);});
-  printTicket(ticketId,total,people);
-  finishCheckout(ticketId);
-}
-function getPrintDetail(){
-  var gp=getGroupPrice();
-  var rows="";
-  function addLine(key){
-    var count=data[key];
-    if(count<=0)return;
-    var label=TICKET_LABELS[key]||key;
-    if(key==="cash_group"||key==="card_group") label+=gp===80?"（團體）":"（未滿40）";
-    rows+='<div class="line"><span>'+label+'</span><span>× '+count+'</span></div>';
-  }
-  addLine("cash_full");addLine("cash_group");addLine("cash_discount");addLine("card_full");addLine("card_group");addLine("card_discount");addLine("free");
-  return rows;
-}
-function printTicket(ticketId,total,people){
-  var ticketImage=TICKET_IMAGES[Math.floor(Math.random()*TICKET_IMAGES.length)];
-  var qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=500x500&ecc=M&margin=8&data="+encodeURIComponent(ticketId);
-  var w=window.open("about:blank","_blank","width=380,height=720");
-  if(!w){alert("瀏覽器阻擋彈出視窗，請允許彈出視窗後再列印。");return;}
-  var detail=getPrintDetail();
-  w.document.open();
-  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>'+ticketId+'</title><style>@page{size:58mm auto;margin:0}html,body{width:58mm;margin:0;padding:0;background:#fff}body{text-align:center;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.ticket{width:58mm;box-sizing:border-box;overflow:hidden;background:#fff;padding:2mm 3mm 5mm}.cover{width:52mm;height:18mm;margin:0 auto 2mm;overflow:hidden;background:#eee}.cover img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.35) brightness(1.08)}.title{font-size:20px;font-weight:900;letter-spacing:1px;margin-top:1mm}.id{font-size:12px;margin:1mm 0 2mm;word-break:break-all}.dash{border-top:1px dashed #555;margin:2mm 0}.detail{font-size:13px;line-height:1.7;text-align:left;margin:0 2mm}.line{display:flex;justify-content:space-between;align-items:center;gap:4mm}.summary{font-size:20px;font-weight:900;line-height:1.7;margin:3mm 0 2mm}.qr{margin:2mm auto 1mm;padding:2mm;border:2px solid #333;border-radius:4mm;display:inline-block;background:#fff}.qr img{width:34mm;height:34mm;display:block}.valid{font-size:12px;font-weight:900;margin-top:2mm}.note{font-size:12px;line-height:1.6;margin-top:1mm}.time{font-size:11px;margin-top:3mm}</style></head><body><div class="ticket"><div class="cover"><img src="'+ticketImage+'"></div><div class="title">後慈湖入園券</div><div class="id">票號：'+ticketId+'</div><div class="dash"></div><div class="detail">'+detail+'</div><div class="dash"></div><div class="summary"><div>總人數：'+people+' 位</div><div>總金額：$'+total+'</div></div><div class="qr"><img src="'+qrUrl+'"></div><div class="valid">※ 限當日有效 ※</div><div class="note">請出示此券核銷入場</div><div class="time">'+new Date().toLocaleString("zh-TW",{hour12:false})+'</div></div></body></html>');
-  w.document.close();
-  setTimeout(function(){try{w.focus();w.print();}catch(e){}},1500);
-  setTimeout(function(){try{w.close();}catch(e){}},8000);
-}
-function finishCheckout(ticketId){
-  Object.keys(data).forEach(function(k){data[k]=0;});
-  calc();
-  document.getElementById("lastTicket").textContent="已結帳："+ticketId;
-  printing=false;
-  setTheme(document.body.dataset.theme||"starry");
-}
-document.addEventListener("keydown",function(e){
-  var tag=document.activeElement&&document.activeElement.tagName;
-  var isTyping=tag==="INPUT"||tag==="TEXTAREA";
-  if(isTyping&&e.key!=="Enter"&&e.key!=="Escape") return;
-  var k=e.key.toLowerCase();
-  if(k==="q") add("現金全票","cash_full");
-  else if(k==="w") add("現金團體","cash_group");
-  else if(k==="e") add("現金優待","cash_discount");
-  else if(k==="a") add("悠遊全票","card_full");
-  else if(k==="s") add("悠遊團體","card_group");
-  else if(k==="d") add("悠遊優待","card_discount");
-  else if(k==="f") add("免費","free");
-  else if(e.key==="Enter") checkout();
-  else if(e.key==="Escape") clearInput();
-  else if(e.key==="Delete") reset();
-});
-window.add=add;
-window.checkout=checkout;
-window.reset=reset;
-window.clearInput=clearInput;
-window.syncInput=syncInput;
-initTheme();
-calc();
+var THEME_INFO={starry:{icon:"🌌",name:"星空版",color:"#08143f"},stitch:{icon:"💙",name:"史迪奇深藍星空",color:"#07133a"},labubu:{icon:"👾",name:"Labubu 奶咖星空",color:"#20140f"},usagi:{icon:"🐰",name:"烏薩奇粉色星空",color:"#2b1230"},snoopy:{icon:"🐶",name:"史努比黑白星空",color:"#090d16"},disney:{icon:"✨",name:"迪士尼紫金星空",color:"#130b3f"}};
+function normalizeTheme(theme){if(theme==="doraemon"||theme==="chiikawa")return"usagi";return THEME_INFO[theme]?theme:"starry"}
+function setTheme(theme){var next=normalizeTheme(theme);document.body.dataset.theme=next;try{localStorage.setItem("houcihu-theme",next);localStorage.setItem("houcihu_pos_theme",next)}catch(e){}document.querySelectorAll(".theme-btn").forEach(function(btn){btn.classList.toggle("active",btn.dataset.theme===next)});var seal=document.querySelector(".seal");if(seal)seal.textContent=THEME_INFO[next].icon;var themeColor=document.getElementById("themeColor")||document.querySelector('meta[name="theme-color"]');if(themeColor)themeColor.setAttribute("content",THEME_INFO[next].color);if(!printing&&getTotalPeople()===0)document.getElementById("currentType").textContent=THEME_INFO[next].icon+" 後慈湖售票系統｜"+THEME_INFO[next].name}
+function initTheme(){var theme="starry";try{theme=localStorage.getItem("houcihu-theme")||localStorage.getItem("houcihu_pos_theme")||"starry"}catch(e){}document.querySelectorAll(".theme-btn").forEach(function(btn){btn.onclick=function(){setTheme(btn.dataset.theme)}});setTheme(theme)}
+function updateClock(){document.getElementById("clock").textContent=new Date().toLocaleString("zh-TW",{hour12:false})}setInterval(updateClock,1000);updateClock();
+function syncInput(){input=(document.getElementById("inputQty").value||"").replace(/\D/g,"").slice(0,3);document.getElementById("inputQty").value=input}
+function qty(){var n=parseInt(input||"1",10);return isNaN(n)||n<=0?1:n}function clearInput(){input="";document.getElementById("inputQty").value=""}
+function add(type,key){var n=qty();data[key]+=n;document.getElementById("currentType").textContent=type+" +"+n;clearInput();calc()}
+function reset(){if(getTotalPeople()>0&&!confirm("確定全部重設？"))return;Object.keys(data).forEach(function(k){data[k]=0});clearInput();document.getElementById("lastTicket").textContent="尚未結帳";calc();setTheme(document.body.dataset.theme||"starry")}
+function getTotalPeople(){var total=0;Object.keys(data).forEach(function(k){total+=Number(data[k]||0)});return total}function getGroupTotal(){return data.cash_group+data.card_group}function getGroupPrice(){return getGroupTotal()>=40?80:100}function getGroupStatus(){var gt=getGroupTotal();if(gt<=0)return"未使用";return gt>=40?"團體80":"未滿40"}
+function calcTotal(){var gp=getGroupPrice();return data.cash_full*100+data.cash_group*gp+data.cash_discount*50+data.card_full*100+data.card_group*gp+data.card_discount*50}
+function row(name,count,price){if(!count)return"";return'<div class="ticket-row"><span>'+name+' × '+count+'</span><span>$'+count*price+'</span></div>'}
+function calc(){var gp=getGroupPrice(),html="";html+=row("現金全票",data.cash_full,100);html+=row("現金團體",data.cash_group,gp);html+=row("現金優待",data.cash_discount,50);html+=row("悠遊全票",data.card_full,100);html+=row("悠遊團體",data.card_group,gp);html+=row("悠遊優待",data.card_discount,50);html+=row("免費",data.free,0);document.getElementById("list").innerHTML=html||"尚無票券";document.getElementById("total").textContent=calcTotal();document.getElementById("peopleCount").textContent=getTotalPeople();document.getElementById("groupPrice").textContent=getGroupStatus();document.getElementById("warn").textContent=getGroupTotal()>0&&getGroupTotal()<40?"⚠️ 團體票未滿 40 人，暫以全票 100 元計算":""}
+function checkout(){if(getTotalPeople()<=0){alert("尚未加入票券");return}var total=calcTotal(),people=getTotalPeople(),ticketId="HCH"+Date.now().toString().slice(-8)+Math.floor(Math.random()*90+10);printing=true;document.getElementById("lastTicket").textContent="列印中："+ticketId;fetch(GAS_WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"saveOrder",ticketId:ticketId,cash_full:data.cash_full,cash_group:data.cash_group,cash_discount:data.cash_discount,card_full:data.card_full,card_group:data.card_group,card_discount:data.card_discount,free:data.free,total:total,type:"入園票",people:people})}).catch(function(e){console.warn(e)});printTicket(ticketId,total,people);finishCheckout(ticketId)}
+function getPrintDetail(){var gp=getGroupPrice(),rows="";function addLine(key){var count=data[key];if(count<=0)return;var label=TICKET_LABELS[key]||key;if(key==="cash_group"||key==="card_group")label+=gp===80?"（團體）":"（未滿40）";rows+='<div class="line"><span>'+label+'</span><span>× '+count+'</span></div>'}addLine("cash_full");addLine("cash_group");addLine("cash_discount");addLine("card_full");addLine("card_group");addLine("card_discount");addLine("free");return rows}
+function printTicket(ticketId,total,people){var ticketImage=TICKET_IMAGES[Math.floor(Math.random()*TICKET_IMAGES.length)],qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=500x500&ecc=M&margin=8&data="+encodeURIComponent(ticketId),w=window.open("about:blank","_blank","width=380,height=720");if(!w){alert("瀏覽器阻擋彈出視窗，請允許彈出視窗後再列印。");return}var detail=getPrintDetail();w.document.open();w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>'+ticketId+'</title><style>@page{size:58mm auto;margin:0}html,body{width:58mm;margin:0;padding:0;background:#fff}body{text-align:center;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}.ticket{width:58mm;box-sizing:border-box;overflow:hidden;background:#fff;padding:2mm 3mm 5mm}.cover{width:52mm;height:18mm;margin:0 auto 2mm;overflow:hidden;background:#eee}.cover img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.35) brightness(1.08)}.title{font-size:20px;font-weight:900;letter-spacing:1px;margin-top:1mm}.id{font-size:12px;margin:1mm 0 2mm;word-break:break-all}.dash{border-top:1px dashed #555;margin:2mm 0}.detail{font-size:13px;line-height:1.7;text-align:left;margin:0 2mm}.line{display:flex;justify-content:space-between;align-items:center;gap:4mm}.summary{font-size:20px;font-weight:900;line-height:1.7;margin:3mm 0 2mm}.qr{margin:2mm auto 1mm;padding:2mm;border:2px solid #333;border-radius:4mm;display:inline-block;background:#fff}.qr img{width:34mm;height:34mm;display:block}.valid{font-size:12px;font-weight:900;margin-top:2mm}.note{font-size:12px;line-height:1.6;margin-top:1mm}.time{font-size:11px;margin-top:3mm}</style></head><body><div class="ticket"><div class="cover"><img src="'+ticketImage+'"></div><div class="title">後慈湖入園券</div><div class="id">票號：'+ticketId+'</div><div class="dash"></div><div class="detail">'+detail+'</div><div class="dash"></div><div class="summary"><div>總人數：'+people+' 位</div><div>總金額：$'+total+'</div></div><div class="qr"><img src="'+qrUrl+'"></div><div class="valid">※ 限當日有效 ※</div><div class="note">請出示此券核銷入場</div><div class="time">'+new Date().toLocaleString("zh-TW",{hour12:false})+'</div></div></body></html>');w.document.close();setTimeout(function(){try{w.focus();w.print()}catch(e){}},1500);setTimeout(function(){try{w.close()}catch(e){}},8000)}
+function finishCheckout(ticketId){Object.keys(data).forEach(function(k){data[k]=0});calc();document.getElementById("lastTicket").textContent="已結帳："+ticketId;printing=false;setTheme(document.body.dataset.theme||"starry")}
+document.addEventListener("keydown",function(e){var tag=document.activeElement&&document.activeElement.tagName,isTyping=tag==="INPUT"||tag==="TEXTAREA";if(isTyping&&e.key!=="Enter"&&e.key!=="Escape")return;var k=e.key.toLowerCase();if(k==="q")add("現金全票","cash_full");else if(k==="w")add("現金團體","cash_group");else if(k==="e")add("現金優待","cash_discount");else if(k==="a")add("悠遊全票","card_full");else if(k==="s")add("悠遊團體","card_group");else if(k==="d")add("悠遊優待","card_discount");else if(k==="f")add("免費","free");else if(e.key==="Enter")checkout();else if(e.key==="Escape")clearInput();else if(e.key==="Delete")reset()});
+window.add=add;window.checkout=checkout;window.reset=reset;window.clearInput=clearInput;window.syncInput=syncInput;initTheme();calc();
 </script>
 </body>
 </html>
