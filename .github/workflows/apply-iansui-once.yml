@@ -1,0 +1,78 @@
+name: Apply Iansui font once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-iansui-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-font:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply Iansui to all HTML and CSS files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          import_rule = "@import url('https://fonts.googleapis.com/css2?family=Iansui&display=swap');"
+          override = 'html,body,button,input,select,textarea,*{font-family:"Iansui","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}'
+
+          changed = []
+          ignored_dirs = {'.git', 'node_modules', 'vendor'}
+
+          for path in Path('.').rglob('*'):
+              if not path.is_file() or any(part in ignored_dirs for part in path.parts):
+                  continue
+              if path.suffix.lower() not in {'.html', '.css'}:
+                  continue
+
+              text = path.read_text(encoding='utf-8')
+              original = text
+
+              if path.suffix.lower() == '.html':
+                  if 'family=Iansui' not in text:
+                      if '<style>' in text:
+                          text = text.replace('<style>', '<style>\n' + import_rule, 1)
+                      elif '</head>' in text:
+                          text = text.replace('</head>', '<style>\n' + import_rule + '\n' + override + '\n</style>\n</head>', 1)
+                  if override not in text:
+                      if '</style>' in text:
+                          text = text.replace('</style>', override + '\n</style>', 1)
+                      elif '</head>' in text:
+                          text = text.replace('</head>', '<style>' + override + '</style>\n</head>', 1)
+              else:
+                  if 'family=Iansui' not in text:
+                      text = import_rule + '\n' + text
+                  if override not in text:
+                      text = text.rstrip() + '\n' + override + '\n'
+
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+                  changed.append(str(path))
+
+          print('Changed files:')
+          print('\n'.join(changed) if changed else '(none)')
+          PY
+
+      - name: Remove one-time workflow
+        run: rm -f .github/workflows/apply-iansui-once.yml
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git commit -m "Use Iansui font across all POS pages"
+          git push
