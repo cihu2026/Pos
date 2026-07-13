@@ -1,0 +1,58 @@
+name: Fix Iansui controls
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-iansui-controls.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-fonts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Force Iansui on controls
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          import_line = "@import url('https://fonts.googleapis.com/css2?family=Iansui&display=swap');"
+          force_rule = '''\nhtml,body,button,button *,input,select,textarea,option,a,.theme-btn,.chip,.nav,.mini{font-family:"Iansui","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif !important;}\n'''
+
+          for path in list(Path('.').rglob('*.html')) + list(Path('.').rglob('*.css')):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              original = text
+
+              if path.suffix == '.html':
+                  if import_line not in text:
+                      text = re.sub(r'<style([^>]*)>', lambda m: m.group(0) + '\n' + import_line, text, count=1, flags=re.I)
+                  if force_rule.strip() not in text:
+                      text = re.sub(r'</style>', force_rule + '\n</style>', text, count=1, flags=re.I)
+              else:
+                  if import_line not in text:
+                      text = import_line + '\n' + text
+                  if force_rule.strip() not in text:
+                      text += force_rule
+
+              # Make sure Iansui is first anywhere a family list already exists.
+              text = text.replace('font-family:-apple-system,BlinkMacSystemFont,"Iansui",', 'font-family:"Iansui",-apple-system,BlinkMacSystemFont,')
+              text = text.replace('font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC",', 'font-family:"Iansui","Noto Sans TC",-apple-system,BlinkMacSystemFont,')
+
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+
+          Path('.github/workflows/fix-iansui-controls.yml').unlink(missing_ok=True)
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Force Iansui font on all POS buttons and controls"
+          git push
