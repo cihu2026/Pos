@@ -1,0 +1,38 @@
+name: 同步即時影像測速資料
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-liveview-speed-cameras
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 讀取網站內容
+        uses: actions/checkout@v4
+
+      - name: 同步官方清單
+        run: >-
+          python3 liveview/scripts/update_speed_cameras.py
+          liveview/speed-cameras.json
+
+      - name: 發布有變動的資料
+        run: |
+          if git diff --quiet -- liveview/speed-cameras.json; then
+            echo "官方資料沒有變動"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add liveview/speed-cameras.json
+          git commit -m "自動同步桃園測速資料"
+          git push
