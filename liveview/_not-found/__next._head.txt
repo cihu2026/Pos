@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[97367,["/Pos/liveview/_next/static/chunks/0dbhjjzl8qfwv.js"],"ViewportBoundary"]
+3:I[97367,["/Pos/liveview/_next/static/chunks/0dbhjjzl8qfwv.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+5:I[27201,["/Pos/liveview/_next/static/chunks/0dbhjjzl8qfwv.js"],"IconMark"]
+0:{"rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"大溪・慈湖周邊即時影像｜15 支現場鏡頭"}],["$","meta","1",{"name":"description","content":"即時查看慈湖、後慈湖、石門水庫、大溪橋、東眼山、康莊路、內柵與北橫周邊 15 支現場鏡頭。"}],["$","meta","2",{"name":"codex-preview","content":"development"}],["$","link","3",{"rel":"shortcut icon","href":"/Pos/liveview/favicon.svg"}],["$","link","4",{"rel":"icon","href":"/Pos/liveview/favicon.svg"}],["$","$L5","5",{}]]}]}]}],null]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"M1RRe5wbWSDbbKxeZx0-w"}
