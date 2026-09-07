@@ -3,7 +3,7 @@
   "datasetUrl": "https://data.gov.tw/dataset/25935",
   "resourceUrl": "https://opendata.tycg.gov.tw/api/dataset/ecd45ee5-4489-436b-bd08-7d4e4111c4a4/resource/36e77f60-dabe-4fd0-8f69-a99f9acfd6f4/download",
   "resourceName": "115年7月桃園市測速照相設備",
-  "sourceModifiedAt": "2026-07-23T15:07:50+08:00",
+  "sourceModifiedAt": "2026-09-07T10:55:18+08:00",
   "sourceHash": "3fd7d380bd297bf4f197c11c20202352cd1bd0b8",
   "sourceFrequency": "即時",
   "applicableFrom": "2026-07-13",
@@ -393,5 +393,5 @@
       "note": ""
     }
   ],
-  "syncedAt": "2026-07-29T12:24:54+00:00"
+  "syncedAt": "2026-09-07T04:51:57+00:00"
 }
