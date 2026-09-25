@@ -234,17 +234,31 @@ function doPost(e) {
 }
 
 function appendStatusLog(logSheet, data) {
-  let type = data.type;
-  let delta = Number(data.delta || data.people || 1);
+  let type = String(data.type || "").toUpperCase();
+  let delta = Number(
+    data.delta !== undefined ? data.delta :
+    data.people !== undefined ? data.people : 1
+  );
 
-  if (type === "IN" && delta < 0) {
-    type = "OUT";
-    delta = Math.abs(delta);
+  if (!Number.isFinite(delta) || delta === 0) {
+    throw new Error("人數必須為非 0 數字");
   }
 
-  if (type === "OUT" && delta < 0) {
-    type = "IN";
-    delta = Math.abs(delta);
+  const isCorrection =
+    data.isCorrection === true ||
+    /correction/i.test(String(data.action || "")) ||
+    /更正/.test(String(data.source || ""));
+
+  // 一般操作仍接受舊版的負數寫法；但 A 點「離園更正」必須保留
+  // OUT 的負值，才能真正扣回今日離園數，而不是誤算成新的 IN。
+  if (!isCorrection) {
+    if (type === "IN" && delta < 0) {
+      type = "OUT";
+      delta = Math.abs(delta);
+    } else if (type === "OUT" && delta < 0) {
+      type = "IN";
+      delta = Math.abs(delta);
+    }
   }
 
   if (type !== "IN" && type !== "OUT") {
