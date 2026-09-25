@@ -55,36 +55,61 @@ function buildIndexMap(sheet) {
   const map = {};
 
   for (let i = 0; i < data.length; i++) {
-    map[String(data[i][0])] = i + 2;
+    const id = String(data[i][0] || "").trim();
+    if (id) map[id] = i + 2;
   }
 
   return map;
 }
 
+// ===============================
+// 售票：儲存交易紀錄
+// GitHub Pages issue.html 會用 action: "saveOrder" 呼叫這段
+// ===============================
 function saveOrder(order) {
-  if (!order || !order.ticketId) {
-    throw new Error("缺少票號");
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+
+  try {
+    if (!order || !order.ticketId) {
+      throw new Error("缺少票號");
+    }
+
+    const sheet = getSheet();
+    const index = buildIndexMap(sheet);
+    const ticketId = String(order.ticketId).trim();
+
+    if (index[ticketId]) {
+      throw new Error("票號重複");
+    }
+
+    const row = sheet.getLastRow() + 1;
+
+    const cashGroup = Number(order.cash_group || 0);
+    const cardGroup = Number(order.card_group || 0);
+    const ticketType = cashGroup > 0 || cardGroup > 0 ? "團體" : "散客";
+
+    sheet.getRange(row, 1, 1, 13).setValues([[
+      ticketId,
+      new Date(),
+      Number(order.cash_full || 0),
+      Number(order.cash_group || 0),
+      Number(order.cash_discount || 0),
+      Number(order.card_full || 0),
+      Number(order.card_group || 0),
+      Number(order.card_discount || 0),
+      Number(order.free || 0),
+      Number(order.total || 0),
+      "尚未使用",
+      ticketType,
+      Number(order.people || 0)
+    ]]);
+
+    return ticketId;
+
+  } finally {
+    lock.releaseLock();
   }
-
-  const sheet = getSheet();
-  const index = buildIndexMap(sheet);
-
-  if (index[String(order.ticketId)]) {
-    throw new Error("票號重複");
-  }
-
-  const row = sheet.getLastRow() + 1;
-
-  const ticketType = (Number(order.cash_group || 0) > 0 || Number(order.card_group || 0) > 0) ? "團體" : "散客";
-
-sheet.getRange(row, 1, 1, 13).setValues([[ order.ticketId, new Date(), order.cash_full || 0, order.cash_group || 0, order.cash_discount || 0, order.card_full || 0, order.card_group || 0, order.card_discount || 0, order.free || 0, order.total || 0, "尚未使用", ticketType, order.people || 0 ]]);
-
-
-
-
-
-
-  return order.ticketId;
 }
 
 function verifyTicketAndGetDetail(id) {
@@ -94,7 +119,7 @@ function verifyTicketAndGetDetail(id) {
   try {
     const sheet = getSheet();
     const indexMap = buildIndexMap(sheet);
-    const row = indexMap[String(id)];
+    const row = indexMap[String(id).trim()];
 
     if (!row) {
       return {
@@ -107,14 +132,14 @@ function verifyTicketAndGetDetail(id) {
     const values = sheet.getRange(row, 1, 1, 13).getValues()[0];
 
     const detail = {
-      people: values[12],
-      cash_full: values[2],
-      cash_group: values[3],
-      cash_discount: values[4],
-      card_full: values[5],
-      card_group: values[6],
-      card_discount: values[7],
-      free: values[8]
+      people: Number(values[12] || 0),
+      cash_full: Number(values[2] || 0),
+      cash_group: Number(values[3] || 0),
+      cash_discount: Number(values[4] || 0),
+      card_full: Number(values[5] || 0),
+      card_group: Number(values[6] || 0),
+      card_discount: Number(values[7] || 0),
+      free: Number(values[8] || 0)
     };
 
     if (values[10] === "已使用") {
@@ -138,9 +163,13 @@ function verifyTicketAndGetDetail(id) {
   }
 }
 
+// ===============================
+// POST 路由
+// A. 售票存檔：data.action === "saveOrder" 或 data.ticketId
+// B. 人流手動 IN / OUT
+// C. 驗票掃描入園：data.id
+// ===============================
 function doPost(e) {
-  const logSheet = getStatusSheet();
-
   try {
     if (!e || !e.postData || !e.postData.contents) {
       throw new Error("缺少 POST 資料");
@@ -148,11 +177,27 @@ function doPost(e) {
 
     const data = JSON.parse(e.postData.contents);
 
+    // A. 售票系統：儲存交易紀錄
+    if (data.action === "saveOrder" || data.ticketId) {
+      const ticketId = saveOrder(data);
+
+      return jsonOutput({
+        ok: true,
+        status: "success",
+        msg: "售票交易已儲存",
+        ticketId: ticketId
+      });
+    }
+
+    const logSheet = getStatusSheet();
+
+    // B. 即時人流：手動 IN / OUT
     if (data.type === "OUT" || (data.type === "IN" && !data.id)) {
       appendStatusLog(logSheet, data);
       return returnCount(logSheet);
     }
 
+    // C. 驗票系統：掃描票號入園
     const id = data.id;
     if (!id) throw new Error("缺少票號");
 
@@ -182,23 +227,42 @@ function doPost(e) {
   } catch (err) {
     return jsonOutput({
       ok: false,
+      status: "error",
       msg: err.message
     });
   }
 }
 
 function appendStatusLog(logSheet, data) {
-  let type = data.type;
-  let delta = Number(data.delta || 1);
+  let type = String(data.type || "").toUpperCase();
+  let delta = Number(
+    data.delta !== undefined ? data.delta :
+    data.people !== undefined ? data.people : 1
+  );
 
-  if (type === "IN" && delta < 0) {
-    type = "OUT";
-    delta = Math.abs(delta);
+  if (!Number.isFinite(delta) || delta === 0) {
+    throw new Error("人數必須為非 0 數字");
   }
 
-  if (type === "OUT" && delta < 0) {
-    type = "IN";
-    delta = Math.abs(delta);
+  const isCorrection =
+    data.isCorrection === true ||
+    /correction/i.test(String(data.action || "")) ||
+    /更正/.test(String(data.source || ""));
+
+  // 一般操作仍接受舊版的負數寫法；但 A 點「離園更正」必須保留
+  // OUT 的負值，才能真正扣回今日離園數，而不是誤算成新的 IN。
+  if (!isCorrection) {
+    if (type === "IN" && delta < 0) {
+      type = "OUT";
+      delta = Math.abs(delta);
+    } else if (type === "OUT" && delta < 0) {
+      type = "IN";
+      delta = Math.abs(delta);
+    }
+  }
+
+  if (type !== "IN" && type !== "OUT") {
+    throw new Error("人流類型錯誤，必須是 IN 或 OUT");
   }
 
   const row = logSheet.getLastRow() + 1;
@@ -214,8 +278,6 @@ function appendStatusLog(logSheet, data) {
 }
 
 function getCounts(sheet) {
-  let currentIn = 0;
-  let currentOut = 0;
   let todayIn = 0;
   let todayOut = 0;
 
@@ -229,23 +291,22 @@ function getCounts(sheet) {
   }
 
   const vals = sheet.getDataRange().getValues();
-  const todayStart = new Date().setHours(0, 0, 0, 0);
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayStartTime = todayStart.getTime();
 
   for (let i = 1; i < vals.length; i++) {
     const time = new Date(vals[i][0]).getTime();
     const type = vals[i][1];
     const num = Number(vals[i][2]) || 0;
 
-    if (type === "IN") currentIn += num;
-    if (type === "OUT") currentOut += num;
+    if (isNaN(time) || time < todayStartTime) continue;
 
-    if (!isNaN(time) && time >= todayStart) {
-      if (type === "IN") todayIn += num;
-      if (type === "OUT") todayOut += num;
-    }
+    if (type === "IN") todayIn += num;
+    if (type === "OUT") todayOut += num;
   }
 
-  const current = Math.max(0, currentIn - currentOut);
+  const current = Math.max(0, todayIn - todayOut);
 
   return {
     current: current,
@@ -259,6 +320,7 @@ function returnCount(sheet) {
   const counts = getCounts(sheet);
 
   return jsonOutput({
+    ok: true,
     status: "success",
     current: counts.current,
     remain: counts.remain,
@@ -277,11 +339,18 @@ function cleanOldStatus() {
   const sheet = getStatusSheet();
   const data = sheet.getDataRange().getValues();
 
-  const todayStart = new Date().setHours(0, 0, 0, 0);
+  if (!data || data.length === 0) {
+    sheet.appendRow(["時間", "類型", "人數", "來源"]);
+    return;
+  }
+
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayStartTime = todayStart.getTime();
 
   const filtered = data.filter((row, i) => {
     if (i === 0) return true;
-    return new Date(row[0]).getTime() >= todayStart;
+    return new Date(row[0]).getTime() >= todayStartTime;
   });
 
   sheet.clear();
