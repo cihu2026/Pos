@@ -1,122 +1,358 @@
-// ========================================
-// 後慈湖 POS Apps Script v4.3 PRO
-// GitHub Pages 售票前台專用後端｜免 POS_KEY 版
-// Designed & Developed by Abby Luo
-// ========================================
+// ===============================
+// 全域設定
+// ===============================
+const SHEET_ID = "1bW8HA7i2iaxT8v4nIlqCLP0GsYZXFBj_hykmLwD7qRE";
+const SHEET_NAME = "交易紀錄";
+const STATUS_SHEET_NAME = "RealTimeStatus";
+const MAX_VISITORS = 50;
 
-const TX_SHEET = "交易紀錄";
-const LOG_SHEET = "log";
-const TZ = "Asia/Taipei";
-
-function props_(){ return PropertiesService.getScriptProperties(); }
-function sheetId_(){ return String(props_().getProperty("POS_SHEET_ID") || "").trim(); }
-function now_(){ return Utilities.formatDate(new Date(), TZ, "yyyy/MM/dd HH:mm:ss"); }
-function dayKey_(){ return Utilities.formatDate(new Date(), TZ, "yyyyMMdd"); }
-function json_(obj){ return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON); }
-
-function db_(){
-  const id = sheetId_();
-  if(id) return SpreadsheetApp.openById(id);
-  const active = SpreadsheetApp.getActiveSpreadsheet();
-  if(active) return active;
-  throw new Error("missing POS_SHEET_ID");
+function getSpreadsheet() {
+  return SpreadsheetApp.openById(SHEET_ID);
 }
 
-function getSheet_(name, headers){
-  let sh = db_().getSheetByName(name);
-  if(!sh){
-    sh = db_().insertSheet(name);
-    if(headers && headers.length) sh.appendRow(headers);
+function getSheet() {
+  const sheet = getSpreadsheet().getSheetByName(SHEET_NAME);
+  if (!sheet) throw new Error("找不到工作表：" + SHEET_NAME);
+  return sheet;
+}
+
+function getStatusSheet() {
+  const ss = getSpreadsheet();
+  let sheet = ss.getSheetByName(STATUS_SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(STATUS_SHEET_NAME);
   }
-  return sh;
-}
 
-function txHeaders_(){
-  return ["票號","時間","日期鍵","操作員","總張數","總金額","現金金額","悠遊卡金額","免費張數","明細JSON","前端時間"];
-}
-
-function txSheet_(){
-  const sh = getSheet_(TX_SHEET, txHeaders_());
-  const headers = txHeaders_();
-  const current = sh.getRange(1,1,1,headers.length).getValues()[0];
-  for(let i=0;i<headers.length;i++){
-    if(String(current[i] || "") !== headers[i]) sh.getRange(1,i+1).setValue(headers[i]);
+  if (sheet.getLastRow() < 1) {
+    sheet.appendRow(["時間", "類型", "人數", "來源"]);
   }
-  return sh;
+
+  return sheet;
 }
 
-function log_(action, msg){
-  getSheet_(LOG_SHEET, ["時間","動作","內容"]).appendRow([now_(), action, msg]);
-}
-
-function doGet(e){
-  return json_({success:true, ok:true, service:"Houcihu POS API", mode:"no-key", message:"POST only for sale actions"});
-}
-
-function doPost(e){
-  const action = String((e.parameter.action || "")).toLowerCase();
-
-  if(action === "verify") return json_({success:true, ok:true, message:"no key required", time:now_()});
-  if(action === "sale") return saveSale_(e);
-  if(action === "summary") return summary_();
-
-  return json_({success:false, ok:false, message:"unknown action"});
-}
-
-function nextTicketNo_(sh, key){
-  const rows = sh.getDataRange().getValues();
-  let max = 0;
-  for(let i=1;i<rows.length;i++){
-    if(String(rows[i][2]) !== key) continue;
-    const no = String(rows[i][0] || "");
-    const m = no.match(/-(\d+)$/);
-    if(m) max = Math.max(max, Number(m[1]));
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action === "getCount") {
+    return jsonOutput(getCounts(getStatusSheet()));
   }
-  return "HCH" + key + "-" + String(max + 1).padStart(5,"0");
+
+  const page = e && e.parameter && e.parameter.page ? e.parameter.page : "index";
+
+  if (page === "status") {
+    return HtmlService.createHtmlOutputFromFile("Status")
+      .addMetaTag("viewport", "width=device-width, initial-scale=1");
+  }
+
+  return HtmlService.createHtmlOutputFromFile("index")
+    .addMetaTag("viewport", "width=device-width, initial-scale=1");
 }
 
-function saveSale_(e){
+function buildIndexMap(sheet) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return {};
+
+  const data = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  const map = {};
+
+  for (let i = 0; i < data.length; i++) {
+    const id = String(data[i][0] || "").trim();
+    if (id) map[id] = i + 2;
+  }
+
+  return map;
+}
+
+// ===============================
+// 售票：儲存交易紀錄
+// GitHub Pages issue.html 會用 action: "saveOrder" 呼叫這段
+// ===============================
+function saveOrder(order) {
   const lock = LockService.getScriptLock();
-  lock.waitLock(8000);
-  try{
-    const sh = txSheet_();
-    const key = dayKey_();
-    const ticketNo = nextTicketNo_(sh, key);
-    const operator = String(e.parameter.operator || "staff").trim();
-    const totalQty = Math.max(0, Number(e.parameter.totalQty || 0));
-    const totalAmount = Math.max(0, Number(e.parameter.totalAmount || 0));
-    const cashAmount = Math.max(0, Number(e.parameter.cashAmount || 0));
-    const easycardAmount = Math.max(0, Number(e.parameter.easycardAmount || 0));
-    const freeQty = Math.max(0, Number(e.parameter.freeQty || 0));
-    const items = String(e.parameter.items || "[]");
-    const clientTime = String(e.parameter.clientTime || "");
+  lock.waitLock(10000);
 
-    if(totalQty <= 0) return json_({success:false, ok:false, message:"empty sale"});
+  try {
+    if (!order || !order.ticketId) {
+      throw new Error("缺少票號");
+    }
 
-    sh.appendRow([ticketNo, now_(), key, operator, totalQty, totalAmount, cashAmount, easycardAmount, freeQty, items, clientTime]);
-    log_("SALE", ticketNo + " qty=" + totalQty + " amount=" + totalAmount);
-    return json_({success:true, ok:true, ticketNo:ticketNo, time:now_()});
-  }catch(err){
-    try{ log_("ERROR", err.message); }catch(_){ }
-    return json_({success:false, ok:false, message:err.message});
-  }finally{
-    try{ lock.releaseLock(); }catch(_){ }
+    const sheet = getSheet();
+    const index = buildIndexMap(sheet);
+    const ticketId = String(order.ticketId).trim();
+
+    if (index[ticketId]) {
+      throw new Error("票號重複");
+    }
+
+    const row = sheet.getLastRow() + 1;
+
+    const cashGroup = Number(order.cash_group || 0);
+    const cardGroup = Number(order.card_group || 0);
+    const ticketType = cashGroup > 0 || cardGroup > 0 ? "團體" : "散客";
+
+    sheet.getRange(row, 1, 1, 13).setValues([[
+      ticketId,
+      new Date(),
+      Number(order.cash_full || 0),
+      Number(order.cash_group || 0),
+      Number(order.cash_discount || 0),
+      Number(order.card_full || 0),
+      Number(order.card_group || 0),
+      Number(order.card_discount || 0),
+      Number(order.free || 0),
+      Number(order.total || 0),
+      "尚未使用",
+      ticketType,
+      Number(order.people || 0)
+    ]]);
+
+    return ticketId;
+
+  } finally {
+    lock.releaseLock();
   }
 }
 
-function summary_(){
-  const sh = txSheet_();
-  const rows = sh.getDataRange().getValues();
-  const key = dayKey_();
-  let count = 0, qty = 0, amount = 0, cash = 0, easycard = 0, freeQty = 0;
-  for(let i=1;i<rows.length;i++){
-    if(String(rows[i][2]) !== key) continue;
-    count++;
-    qty += Number(rows[i][4] || 0);
-    amount += Number(rows[i][5] || 0);
-    cash += Number(rows[i][6] || 0);
-    easycard += Number(rows[i][7] || 0);
-    freeQty += Number(rows[i][8] || 0);
+function verifyTicketAndGetDetail(id) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+
+  try {
+    const sheet = getSheet();
+    const indexMap = buildIndexMap(sheet);
+    const row = indexMap[String(id).trim()];
+
+    if (!row) {
+      return {
+        ok: false,
+        msg: "❌ 查無此票",
+        detail: null
+      };
+    }
+
+    const values = sheet.getRange(row, 1, 1, 13).getValues()[0];
+
+    const detail = {
+      people: Number(values[12] || 0),
+      cash_full: Number(values[2] || 0),
+      cash_group: Number(values[3] || 0),
+      cash_discount: Number(values[4] || 0),
+      card_full: Number(values[5] || 0),
+      card_group: Number(values[6] || 0),
+      card_discount: Number(values[7] || 0),
+      free: Number(values[8] || 0)
+    };
+
+    if (values[10] === "已使用") {
+      return {
+        ok: false,
+        msg: "⚠️ 重複掃描",
+        detail: detail
+      };
+    }
+
+    sheet.getRange(row, 11).setValue("已使用");
+
+    return {
+      ok: true,
+      msg: "🟢 驗票成功",
+      detail: detail
+    };
+
+  } finally {
+    lock.releaseLock();
   }
-  return json_({success:true, ok:true, date:key, count, qty, amount, cash, easycard, freeQty, time:now_()});
+}
+
+// ===============================
+// POST 路由
+// A. 售票存檔：data.action === "saveOrder" 或 data.ticketId
+// B. 人流手動 IN / OUT
+// C. 驗票掃描入園：data.id
+// ===============================
+function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      throw new Error("缺少 POST 資料");
+    }
+
+    const data = JSON.parse(e.postData.contents);
+
+    // A. 售票系統：儲存交易紀錄
+    if (data.action === "saveOrder" || data.ticketId) {
+      const ticketId = saveOrder(data);
+
+      return jsonOutput({
+        ok: true,
+        status: "success",
+        msg: "售票交易已儲存",
+        ticketId: ticketId
+      });
+    }
+
+    const logSheet = getStatusSheet();
+
+    // B. 即時人流：手動 IN / OUT
+    if (data.type === "OUT" || (data.type === "IN" && !data.id)) {
+      appendStatusLog(logSheet, data);
+      return returnCount(logSheet);
+    }
+
+    // C. 驗票系統：掃描票號入園
+    const id = data.id;
+    if (!id) throw new Error("缺少票號");
+
+    const result = verifyTicketAndGetDetail(id);
+
+    if (result.ok) {
+      appendStatusLog(logSheet, {
+        type: "IN",
+        delta: Number(result.detail.people || 1),
+        source: "掃描入園",
+        note: id
+      });
+    }
+
+    const counts = getCounts(logSheet);
+
+    return jsonOutput({
+      ok: result.ok,
+      msg: result.msg,
+      detail: result.detail,
+      current: counts.current,
+      remain: counts.remain,
+      in: counts.in,
+      out: counts.out
+    });
+
+  } catch (err) {
+    return jsonOutput({
+      ok: false,
+      status: "error",
+      msg: err.message
+    });
+  }
+}
+
+function appendStatusLog(logSheet, data) {
+  let type = String(data.type || "").toUpperCase();
+  let delta = Number(
+    data.delta !== undefined ? data.delta :
+    data.people !== undefined ? data.people : 1
+  );
+
+  if (!Number.isFinite(delta) || delta === 0) {
+    throw new Error("人數必須為非 0 數字");
+  }
+
+  const isCorrection =
+    data.isCorrection === true ||
+    /correction/i.test(String(data.action || "")) ||
+    /更正/.test(String(data.source || ""));
+
+  // 一般操作仍接受舊版的負數寫法；但 A 點「離園更正」必須保留
+  // OUT 的負值，才能真正扣回今日離園數，而不是誤算成新的 IN。
+  if (!isCorrection) {
+    if (type === "IN" && delta < 0) {
+      type = "OUT";
+      delta = Math.abs(delta);
+    } else if (type === "OUT" && delta < 0) {
+      type = "IN";
+      delta = Math.abs(delta);
+    }
+  }
+
+  if (type !== "IN" && type !== "OUT") {
+    throw new Error("人流類型錯誤，必須是 IN 或 OUT");
+  }
+
+  const row = logSheet.getLastRow() + 1;
+
+  logSheet.getRange(row, 1, 1, 4).setValues([[
+    new Date(),
+    type,
+    delta,
+    data.note
+      ? (data.source || "手動操作") + " / " + data.note
+      : data.source || "手動操作"
+  ]]);
+}
+
+function getCounts(sheet) {
+  let todayIn = 0;
+  let todayOut = 0;
+
+  if (!sheet || sheet.getLastRow() <= 1) {
+    return {
+      current: 0,
+      remain: MAX_VISITORS,
+      in: 0,
+      out: 0
+    };
+  }
+
+  const vals = sheet.getDataRange().getValues();
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayStartTime = todayStart.getTime();
+
+  for (let i = 1; i < vals.length; i++) {
+    const time = new Date(vals[i][0]).getTime();
+    const type = vals[i][1];
+    const num = Number(vals[i][2]) || 0;
+
+    if (isNaN(time) || time < todayStartTime) continue;
+
+    if (type === "IN") todayIn += num;
+    if (type === "OUT") todayOut += num;
+  }
+
+  const current = Math.max(0, todayIn - todayOut);
+
+  return {
+    current: current,
+    remain: Math.max(0, MAX_VISITORS - current),
+    in: todayIn,
+    out: todayOut
+  };
+}
+
+function returnCount(sheet) {
+  const counts = getCounts(sheet);
+
+  return jsonOutput({
+    ok: true,
+    status: "success",
+    current: counts.current,
+    remain: counts.remain,
+    in: counts.in,
+    out: counts.out
+  });
+}
+
+function jsonOutput(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function cleanOldStatus() {
+  const sheet = getStatusSheet();
+  const data = sheet.getDataRange().getValues();
+
+  if (!data || data.length === 0) {
+    sheet.appendRow(["時間", "類型", "人數", "來源"]);
+    return;
+  }
+
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayStartTime = todayStart.getTime();
+
+  const filtered = data.filter((row, i) => {
+    if (i === 0) return true;
+    return new Date(row[0]).getTime() >= todayStartTime;
+  });
+
+  sheet.clear();
+  sheet.getRange(1, 1, filtered.length, filtered[0].length).setValues(filtered);
 }
