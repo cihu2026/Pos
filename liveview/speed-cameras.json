@@ -1,10 +1,10 @@
 {
   "datasetTitle": "桃園市測速照相設備地點",
   "datasetUrl": "https://data.gov.tw/dataset/25935",
-  "resourceUrl": "https://opendata.tycg.gov.tw/api/dataset/ecd45ee5-4489-436b-bd08-7d4e4111c4a4/resource/14576a5a-4aec-44e9-8442-93ed9f233560/download",
-  "resourceName": "115年7月桃園市測速照相設備",
-  "sourceModifiedAt": "2026-09-29T10:21:25+08:00",
-  "sourceHash": "9db6f685c71f839a048e3e565917acc3fa8097ee",
+  "resourceUrl": "https://opendata.tycg.gov.tw/api/dataset/ecd45ee5-4489-436b-bd08-7d4e4111c4a4/resource/6aa72aaf-d703-4a9e-acd7-24c17e934dc3/download",
+  "resourceName": "桃園市測速照相設備(115年7月)",
+  "sourceModifiedAt": "2026-09-30T10:41:43+08:00",
+  "sourceHash": "e11d6648e9ba6373fde30cb27f3b70e731f595fd",
   "sourceFrequency": "即時",
   "applicableFrom": "2026-07-13",
   "sourceTotal": 124,
@@ -393,5 +393,5 @@
       "note": ""
     }
   ],
-  "syncedAt": "2026-09-29T08:39:55+00:00"
+  "syncedAt": "2026-09-30T06:49:17+00:00"
 }
